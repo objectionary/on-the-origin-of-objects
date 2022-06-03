@@ -60,7 +60,7 @@ As a humble attempt to create such a common ground for the world of objects, we 
     \item Synchronization in multi-threading (\cref{sec:synchronization})
 \end{itemize}
 
-An object in EO is either a composition of other objects or an atom, which is a foreign function interface to a lower-level runtime such as, for example, JVM or Assembly. In this paper, we denote atoms by a star, for example: \aff{mul}.
+An object in EO is either a composition of other objects or an atom, which is a foreign function interface to a lower-level runtime such as, for example, JVM or Assembly. In this paper, we denote atoms by a star, for example: \aff{times}.
 
 Everywhere in the paper we use bold font to highlight an object when it's mentioned for the first time.
 
@@ -118,7 +118,7 @@ The object \deff{int} is an eight-bytes abstraction of a two's complement signed
 
 The attribute \adeff{plus} is a summary of this number and another \ff{int}.
 The attribute \deff{minus} is a subtraction of another \ff{int} from this number.
-The attributes \adeff{mul} and \adeff{div} are a multiplication and a division of this number and another \ff{int}.
+The attributes \adeff{times} and \adeff{div} are a multiplication and a division of this number and another \ff{int}.
 The attribute \deff{neg} is the same number with a different sign.
 
 The attribute \adeff{lt} is a \ff{bool} object \ff{TRUE} if it's ``less than'' another \ff{int} and \ff{FALSE} otherwise. Attributes \deff{gt}, \deff{lte}, and \deff{gte} are ``greater than,'' ``less than or equal,'' and ``greater than or equal'' comparisons respectively.
@@ -180,7 +180,7 @@ The object \deff{float} is an abstraction of a floating point number, which take
 
 The attribute \adeff{plus} is a summary of this number and another \ff{float}.
 The attribute \deff{minus} is a subtraction of another \ff{float} from this number.
-The attributes \adeff{mul} and \adeff{div} are a multiplication and a division of this number and another \ff{float}.
+The attributes \adeff{times} and \adeff{div} are a multiplication and a division of this number and another \ff{float}.
 The attribute \deff{neg} is the same number with a different sign.
 
 The attribute \adeff{lt} is a \ff{bool} object \ff{TRUE} if it's ``less than'' another \ff{float} and \ff{FALSE} otherwise. Attributes \deff{gt}, \deff{lte}, and \deff{gte} are ``greater than,'' ``less than or equal,'' and ``greater than or equal'' comparisons respectively.
