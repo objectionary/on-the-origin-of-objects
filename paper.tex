@@ -1,0 +1,565 @@
+\documentclass[sigplan,review,11pt,nonacm,natbib=false]{acmart}
+\settopmatter{printfolios=false,printccs=false,printacmref=false}
+\usepackage[maxnames=1,minnames=1,maxbibnames=100,natbib=true,citestyle=authoryear,bibstyle=authoryear,doi=false,url=false,isbn=false,isbn=false]{biblatex}
+\addbibresource{main.bib}
+\ifnum\pdfshellescape=1
+  \usepackage[finalizecache]{minted}
+\else
+  \usepackage[frozencache]{minted}
+\fi
+\usepackage{ffcode}
+\usepackage[capitalize]{cleveref}
+\usepackage{to-be-determined}
+
+\title{On the Origins of Objects by Means of Careful Selection}
+\author{Yegor Bugayenko}
+\email{yegor256@gmail.com}
+\affiliation{Huawei\city{Moscow}\country{Russia}}
+\ccsdesc[100]{Object-Oriented Programming}
+\keywords{Object-Oriented Programming}
+
+\newcommand\aff[1]{\ff{\textcolor{gray}{$\star$}#1}}
+\newcommand\deff[1]{\textbf{\ff{#1}}}
+\newcommand\adeff[1]{\textbf{\aff{#1}}}
+\newcommand\eohex[1]{\ff{#1}}
+
+\begin{document}
+\raggedbottom
+
+\begin{abstract}
+We introduce a taxonomy of objects for EO programming language. This taxonomy is designed with a few principles in mind: non-redundancy, simplicity, and so on. The taxonomy is supposed to be used as a navigation map by EO programmers. It may also be helpful as a guideline for designers of other object-oriented languages or libraries for them.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+Each object-oriented programming language offers its own set of objects, classes, types, functions, constants, traits, templates, and so on, which programmers can use off-the-shelf to model their specific use cases:
+``Development Kit'' in Java,
+``Standard Library'' in C++, Python, Swift, Rust, and Ruby,
+``.NET Standard'' in C\#,
+``Built-in Objects'' in JavaScript,
+and so on.
+
+Each Standard Library (SL) freely defines its own principles of abstraction. For example, to get an absolute value of a numeric object \ff{x} in Java, one has to call a static method of another class \ff{Math.abs(x)}, while in Ruby it would be a property of the same object \ff{x.abs}. For example, in Java, an attempt to get a value from a hash map by a key will produce \ff{null} in case of its absence, while in C++ it will return an empty iterator. There are many similar examples demonstrating the absence of common ground between SLs.
+
+As a humble attempt to create such a common ground for the world of objects, we suggest our own taxonomy of objects for EO\footnote{\url{https://www.eolang.org}}, an object-oriented programming language with an intentionally reduced feature set~\citep{bugayenko2021eolang}. All objects are groupped as such:
+
+\begin{itemize}
+    \item Primitives (\cref{sec:primitives})
+    \item Array (\cref{sec:array})
+    \item Flow control abstractions (\cref{sec:flow})
+    \item Non-standard bit-width numbers (\cref{sec:digits})
+    \item Memory abstractions (\cref{sec:memory})
+    \item Math functions and algorithms (\cref{sec:math})
+    \item String manipulations (\cref{sec:strings})
+    \item Collections (\cref{sec:collections})
+    \item I/O Streams (\cref{sec:streams})
+    \item File System abstractions (\cref{sec:fs})
+    \item Net Sockets (\cref{sec:sockets})
+    \item Synchronization in multi-threading (\cref{sec:synchronization})
+\end{itemize}
+
+An object in EO is either a composition of other objects or an atom, which is a foreign function interface to a lower-level runtime such as, for example, JVM or Assembly. In this paper, we denote atoms by a star, for example: \aff{mul}.
+
+Everywhere in the paper we use bold font to highlight an object when it's mentioned for the first time.
+
+In this paper we don't provide exact specification of each object, in order to avoid conflicts with their exact definitions in Objectionary\footnote{\url{https://www.objectionary.com}}.
+
+\section{Principles}
+
+We adhere to a few principles:
+
+\begin{itemize}
+    \item As fewer atoms as possible.
+    Whenever it's possible, we try to implement objects in EO, instead of turning them into atoms.
+    \item No duplication.
+    There should be no functionality implemented two or more times in the entire taxonomy.
+\end{itemize}
+
+In case of any runtime error, an object is supposed to ``return'' an error object, with \ff{msg} attribute present (as \ff{string}) and \ff{@} attribute absent.
+
+\section{Primitives}\label{sec:primitives}
+
+There are five primitive data objects described below. All of them have \adeff{as-bytes} attribute, which is an abstraction of their representation as a sequence of bytes.
+All primitives also have \deff{as-hash} attribute, which, being an \ff{int}, is their own implementation of a hash function.
+They also have \deff{eq} attribute, which is \ff{TRUE} if the primitive is equal to another object, through the use of \ff{\^{}.as-bytes.eq}.
+
+\subsection{Bytes}
+
+The center of the taxonomy is \deff{bytes} data object, which is an abstraction of an sequence of bytes. The sequence can either be empty or contain an theoretically unlimited number of bytes. A byte is a unit of information that consists of eight adjacent binary digits (bits), each of which consists of a 0 or 1. In EO syntax a sequence of bytes is denoted as either \eohex{--} (double dash) for an empty one or as a concatenation of \eohex{xx-}, where \ff{xx} is a hexadecimal representation of a byte.
+
+The object \ff{bytes} has these four attributes, to turn itself into one of four primitive data objects:
+\adeff{as-int},
+\adeff{as-bool},
+\adeff{as-float},
+and
+\adeff{as-string}. The attribute \aff{as-int} expects the size of the sequence to be less or equal to eight. The attribute \aff{as-bool} expects exactly one byte to be in the sequence. The attribute \aff{as-float} expects exactly eight bytes.
+
+There are also attributes for bitwise operations:
+\adeff{and},
+\adeff{or},
+\adeff{xor},
+\adeff{left},
+and
+\adeff{right}.
+
+The object also has attribute \adeff{eq} for comparing itself with another sequence of bytes.
+
+The attribute \adeff{size} is the total number of bytes in the sequence.
+
+The attribute \adeff{slice} represents a sub-sequence inside the current one.
+
+The attribute \adeff{concat} is a new sequence, which is a concatenation of two byte sequences: the current and the provided one.
+
+\subsection{Int}
+
+The object \deff{int} is an eight-bytes abstraction of a two's complement signed integer in a big-endian order.
+
+The attribute \adeff{plus} is a summary of this number and another \ff{int}.
+The attribute \deff{minus} is a subtraction of another \ff{int} from this number.
+The attributes \adeff{mul} and \adeff{div} are a multiplication and a division of this number and another \ff{int}.
+The attribute \deff{neg} is the same number with a different sign.
+
+The attribute \adeff{lt} is a \ff{bool} object \ff{TRUE} if it's ``less than'' another \ff{int} and \ff{FALSE} otherwise. Attributes \deff{gt}, \deff{lte}, and \deff{gte} are ``greater than,'' ``less than or equal,'' and ``greater than or equal'' comparisons respectively.
+
+Integers with a different bit-width are explained in \cref{sec:digits}.
+All other manipulations with integers can be done in their decorators. Some of them are explained in \cref{sec:math}.
+
+\subsection{Bool}
+
+The object \deff{bool} is a one-bit abstraction of a Boolean value. Its \aff{as-bytes} is either \eohex{00-} or \eohex{01-}.
+
+There are two pre-defined objects \deff{TRUE} and \deff{FALSE}.
+
+The attribute \deff{not} is a Boolean inversion. Attributes \deff{and}, \deff{or}, \deff{xor} are logical conjunction, disjunction, and exclusive disjunction of the object itself with an a array of other Boolean values; they use \aff{and}, \aff{or}, and \aff{xor} from \ff{\^{}.as-bytes} respectively.
+
+The attribute \adeff{if} is a branching mechanism, expecting three arguments: a condition as \ff{bool}, a ``positive'' object, and a ``negative'' object. When being dataized, the object \aff{if} first dataizes the condition and then, according to the result obtained, either dataizes the positive object or the negative one, returning the result as a result of its own dataization. Both positive and negative objects must be copies of the same abstract object. This code give a title to a random number:
+
+\begin{ffcode}
+QQ.io.stdout
+  QQ.txt.sprintf
+    "Coin toss: %s"
+    if.
+      random.gte 0.5
+      "heads"
+      "tail"
+\end{ffcode}
+
+The attribute \adeff{while} is an iterating mechanism, expecting two attributes: a condition as \ff{bool} and an abstract object with one free attribute. When being dataized, the object \aff{while} first dataizes the condition and then either stops if it is \ff{FALSE} or dataizes the abstract object with an \ff{int} equal to the number of the iterating cycle. This code makes a few attempts to find a random number that is smaller than 0.1:
+
+\begin{ffcode}
+while.
+  random.gte 0.1
+  [i]
+    QQ.io.stdout > @
+      QQ.txt.sprintf
+        "Attempt #%d" i
+\end{ffcode}
+
+The attribute \deff{switch} is an abstraction of a multi-case branching, where the object itself is compared sequentially with $k$ in provided $(k, v)$ pairs and the dataization result is equal to $v$ of the first matching pair, while the last pair is the one to be used if no other pairs match:
+
+\begin{ffcode}
+QQ.io.stdout
+  TRUE.switch
+    *
+      *
+        password.eq "swordfish"
+        "password is correct!"
+      *
+        password.eq ""
+        "empty password is not allowed"
+      *
+        FALSE
+        "password is wrong"
+\end{ffcode}
+
+\subsection{Float}
+
+The object \deff{float} is an abstraction of a floating point number, which takes eight bytes and fills them up according to the format suggested by \citet{ieee754}.
+
+The attribute \adeff{plus} is a summary of this number and another \ff{float}.
+The attribute \deff{minus} is a subtraction of another \ff{float} from this number.
+The attributes \adeff{mul} and \adeff{div} are a multiplication and a division of this number and another \ff{float}.
+The attribute \deff{neg} is the same number with a different sign.
+
+The attribute \adeff{lt} is a \ff{bool} object \ff{TRUE} if it's ``less than'' another \ff{float} and \ff{FALSE} otherwise. Attributes \deff{gt}, \deff{lte}, and \deff{gte} are ``greater than,'' ``less than or equal,'' and ``greater than or equal'' comparisons respectively.
+
+Floating-point numbers with a different bit-width are explained in \cref{sec:digits}.
+All other manipulations with floating-point numbers can be done in their decorators. Some of them are explained in \cref{sec:math}.
+
+\subsection{String}
+
+The object \deff{string} is an abstraction of a piece of Unicode text in UTF-8 encoding, according to \citet{unicode}. UTF-8 uses one byte for the first 128 code points, and up to 4 bytes for other characters.
+
+The attribute \adeff{slice} takes a piece of a string as another \ff{string}. The attribute \adeff{length} is a total count of characters in the string.
+
+Strings in other encodings, such as UTF-16 or CP1251, may be implemented through direct manipulations with \ff{bytes}.
+
+All other manipulations with strings are explained in \cref{sec:strings}.
+
+\section{Array}\label{sec:array}
+
+The object \deff{array} is an abstraction of an immutable sequence of objects. For example, this code represents a two-dimensional array \ff{x} of numbers and strings:
+
+\begin{ffcode}
+* > x
+  * "green" 0x0D1
+  * "red" 0xF21
+  * "blue" 0x11C
+\end{ffcode}
+
+The attribute \adeff{with} is a new \ff{array} with all elements from the current array and a new element added to the end of it.
+
+The attribute \adeff{at} is the $i$-th element of the array.
+
+The attribute \adeff{length} is the total amount of elements in the array.
+
+All other manipulations with arrays can be implemented in their decorators. Some of them are explained in \cref{sec:collections}.
+
+\section{Flow Control}\label{sec:flow}
+
+The object \adeff{seq} is an abstraction of sequence of objects to be dataized sequentially irrespective of the dataization results. For example, this code prints two messages to the console and makes a division by zero in the middle:
+
+\begin{ffcode}
+seq
+  QQ.io.stdout "Hello, world!
+  42.div 0
+  QQ.io.stdout "Bye!"
+\end{ffcode}
+
+The object \adeff{goto} enables forward and backward ``jumps'' either immediately finishing dataization or restarting it. For example, this code won't print a message to the console if \ff{x} is equal to zero:
+
+\begin{ffcode}
+goto
+  [g]
+    seq > @
+      if. > y
+        x.eq 0
+        g.forward 0
+        42.div x
+      QQ.io.stdout
+        QQ.txt.sprintf "42/x = %d" y
+\end{ffcode}
+
+In this example, the number will be read from the console again, if it's equal to zero:
+
+\begin{ffcode}
+goto
+  [g]
+    seq > @
+      as-int. > x
+        QQ.txt.parsed
+          QQ.io.stdin
+      if.
+        x.eq 0
+        g.backward
+        QQ.io.stdout
+          QQ.txt.sprintf
+            "Number %d is OK!" x
+\end{ffcode}
+
+
+\section{Digits}\label{sec:digits}
+
+All objects presented in this Section belong to \ff{QQ.digits} package.
+
+Objects \deff{int8}, \deff{int16}, \deff{int32}, and \deff{int128} are decorators of \ff{bytes} with a predefined size. They implement the same numeric operations as \ff{int}.
+Objects \deff{float16}, \deff{float32}, and \deff{float128} are also decorators of \ff{bytes}, implementing the same operations as \ff{float}.
+
+\section{Memory}\label{sec:memory}
+
+The object \adeff{memory} is an abstraction of a read-write memory capable of storing one of five primitive data objects mentioned in \cref{sec:primitives}. The attribute \adeff{write} implements writing operation, while the object \aff{memory} itself decorates the data object stored in it. This code writes a number into memory and then reads it back and prints:
+
+\begin{ffcode}
+memory > m
+seq
+  m.write 42
+  QQ.io.stdout
+    QQ.txt.sprintf "Memory contains %d" m
+\end{ffcode}
+
+The object \adeff{cage} is similar to \aff{memory}, but it can store any object, not only five primitives. The use of \aff{cage} is strongly discouraged. The following code stores a ``book'' in a \aff{cage}, then retrieves it back, and prints one of its attribute:
+
+\begin{ffcode}
+[] > book
+  title > "Object Thinking"
+  author > "David West"
+cage > c
+seq
+  c.write book
+  QQ.io.stdout
+    QQ.txt.sprintf
+      "Title is %s" c.title
+\end{ffcode}
+
+The object \deff{ram} is an abstraction of a random-access memory of certain size, which has two attributes \adeff{write} and \adeff{read} enabling writing and reading respectively. In this example, one kilobyte of memory is allocated when a copy of \aff{ram} is created, 13 bytes is written into it starting with the 200-th byte, and then only five of them read back and \ff{"Hello"} is printed:
+
+\begin{ffcode}
+ram 1024 > d
+seq
+  d.write 200 "Hello, world!"
+  QQ.io.stdout
+    as-string.
+      d.read 200 5
+\end{ffcode}
+
+The object \deff{heap} encapsulates a copy of \aff{ram} and is an abstraction of a memory management as it exists in \citet{posix}. There are two attributes \deff{malloc} and \deff{free}, which allocate and free memory blocks respectively. An allocation of a memory block creates a copy of \deff{heap.pointer} object, which is a decorator of \ff{int} with two additional attributes \deff{write} and \deff{read}.
+%
+In this code, 13 bytes are allocated, a string is stored into them, then read and printed, and then the bytes are freed:
+
+\begin{ffcode}
+heap (ram 1024) > h
+seq
+  h.malloc > p
+  p.write "Hello, world!"
+  QQ.io.stdout
+    (p.read 13).as-string
+  h.free p
+\end{ffcode}
+
+
+\section{Math}\label{sec:math}
+
+All objects in this Section belong to \ff{QQ.math} package.
+
+The object \deff{angle} is a decorator of \ff{float}. It assumes that the angle is in radians and has the following attributes for trigonometric functions:
+\deff{sine}, \deff{cosine}, and \deff{tangent}. There are attributes \deff{as-degrees} and \deff{as-radians} for switching from radians to degrees and backwards.
+
+The object \deff{rich-float} is a decorator of \ff{float} with the following additional attributes:
+
+\begin{itemize}
+    \item \deff{abs}: absolute value of itself ($|\rho|$)
+    \item \deff{ceil}: round itself up
+    \item \deff{floor}: round itself down
+    \item \deff{ln}: natural logarithm ($\ln \rho$)
+    \item \deff{log}: logarithm ($\log_x \rho$)
+    \item \deff{max}: the greater of itself and another number
+    \item \deff{min}: the smaller of itself and another number
+    \item \deff{power}: itself raised to the power ($\rho^x$)
+    \item \deff{signum}: the sign of itself
+    \item \deff{sqrt}: square root of itself ($\sqrt\rho$)
+\end{itemize}
+
+The object \deff{rich-int} is a decorator of \ff{int} and has the same attributes as \ff{rich-float}.
+
+\section{Strings}\label{sec:strings}
+
+All objects presented in this Section belong to \ff{QQ.txt} package.
+
+The object \deff{parsed} encapsulates a \ff{string} and has a few attributes: \deff{as-int}, \deff{as-hex}, \deff{as-octal}, \deff{as-bytes}, \deff{as-float}, and \deff{as-bool}. For example, this code parses a hexadecimal number from the console:
+
+\begin{ffcode}
+as-hex.
+  QQ.txt.parsed
+    QQ.io.stdin
+\end{ffcode}
+
+The object \deff{sprintf} builds a string according to the format provided and compliant with \citet[Chapter 5]{posix}, for example:
+
+\begin{ffcode}
+QQ.txt.sprintf
+  "Hi, %d! The weight is %0.2f."
+  "Jeff"
+  3.14
+\end{ffcode}
+
+The object \deff{text} is a decorator of a \ff{string}, it has the following attributes:
+
+\begin{itemize}
+    \item \deff{contains}: checks whether it contains $x$
+    \item \deff{ends-with}: checks whether it ends with $x$
+    \item \deff{join}: joins an array with this one as a glue
+    \item \deff{lower-case}: makes it lower case
+    \item \deff{ltrim}: removes leading
+    \item \deff{replace}: finds and replaces a sub-string
+    \item \deff{rtrim}: removes trailing spaces
+    \item \deff{split}: breaks it into an array of strings
+    \item \deff{starts-with}: checks whether it starts with $x$
+    \item \deff{trim}: removes both leading and trailing spaces
+    \item \deff{upper-case}: makes it upper case
+\end{itemize}
+
+\tbd{Maybe other functions?}
+
+\tbd{Regular expressions}
+
+\section{Collections}\label{sec:collections}
+
+Here we discuss abstractions of lists, maps, sets, and other ``collections.'' All objects presented in this Section belong to \ff{QQ.collections} package.
+
+\subsection{List}
+
+The object \deff{list} is a decorator of \ff{array}.
+
+The attribute \deff{is-empty} is \ff{TRUE} if the length of the array is zero.
+
+The attribute \deff{eq} is \ff{TRUE} if each element of the array is equal to the corresponding element of another array and the lengths of both arrays are the same.
+
+The attribute \deff{without} is a new array with the $i$-th element removed.
+
+The attributes \deff{each}, \deff{reduce}, \deff{find}, \deff{filter}, and \deff{map} are similar to \ff{forEach}, \ff{reduce}, \ff{find}, \ff{reduce}, and \ff{map} methods of \ff{Array} object in JavaScript~\citep{EcmaScript}. The attributes \deff{eachi}, \deff{reducei}, \deff{filteri}, \deff{findi}, and \deff{mapi} are semantically the same, but with an \ff{int} as a counter of a cycle.
+
+The attribute \deff{slice} is a part of the array.
+
+The attribute \deff{sorted} is a new array with elements sorted using given comparison abstract object with two free attributes.
+
+The attribute \deff{reversed} is a new array with elements positioned in a reverse order.
+
+\subsection{Map}
+
+The object \deff{map} is a decorator of \ff{array} of pairs $(k, v)$. The \ff{map} ensures that all $k$ are always unique. It is expected that each $k$ has \ff{as-hash} attribute that behaves as \ff{int}.
+
+The attributes \ff{with}, \ff{without}, \ff{find}, and \ff{findi} are reimplemented in \ff{map}.
+
+\subsection{Set}
+
+The object \deff{set} is a decorator of \ff{array}. The \ff{set} ensures that all elements in the array are always unique. It is expected that each $k$ has \ff{as-hash} attribute that behaves as \ff{int}.
+
+The attributes \ff{with}, \ff{without}, \ff{find}, and \ff{findi} are reimplemented in \ff{set}.
+
+\subsection{Mutable Arrays}
+
+The objects \deff{array-list} and \deff{linked-list} are the abstractions of mutable lists that behave like \ff{array}. They have three additional attributes: \deff{inject}, \deff{replace}, and \deff{extract}.
+
+\tbd{describe them better}
+
+\section{I/O Streams}\label{sec:streams}
+
+Here we define manipulations with input and output streams. All objects presented in this Section belong to \ff{QQ.io} package.
+
+It is expected that an input stream has the following interface:
+
+\begin{ffcode}
+[] > input
+  data > @
+  [max-count] > read /input
+  [] > close
+\end{ffcode}
+
+It is expected that an output stream has the following interface:
+
+\begin{ffcode}
+[] > output
+  [bytes-to-write] > write /input
+  [] > close
+\end{ffcode}
+
+The object \adeff{stdout} is an ``output'' that prints a \ff{string} to the standard output stream, while the object \adeff{stderr} is an ``output'' that prints to the standard error stream.
+
+The object \adeff{stdin} is an abstraction of a \ff{string} currently available in the standard input stream until the EOL character (\ff{\char`\\n}) and is an ``input.'' If there is no string in the stream, the object blocks dataization and waits. This code endlessly reads strings from the console and immediately prints them back:
+
+\begin{ffcode}
+TRUE.while
+  [i]
+    QQ.io.stdout > @
+      QQ.io.stdin
+\end{ffcode}
+
+The object \adeff{bytes-as-input} is an ``input'' made from \ff{bytes}.
+
+The object \adeff{memory-as-output} is an ``output'' directed towards a copy of \ff{memory}.
+
+The object \adeff{copied} is channel between an ``input'' and an ``output,'' which moves all available bytes from the former to the latter when being dataized. For example, this code write a text to a temporary file:
+
+\begin{ffcode}
+QQ.io.copied
+  QQ.io.bytes-as-input
+    as-bytes.
+      "Hello, world!"
+  as-output.
+    QQ.fs.file "/tmp/foo.txt"
+    "w+"
+\end{ffcode}
+
+The object \deff{content} is a \ff{string} representation of the entire content of an ``input.''
+
+\section{File System}\label{sec:fs}
+
+Here we define manipulations with files and directories.
+All objects presented in this Section belong to \ff{QQ.fs} package.
+
+The object \deff{file} is an abstraction of a file and is a decorator of \ff{string}, which is the path of the file.
+%
+The attribute \adeff{exists} is \ff{TRUE} if the file exists.
+%
+The attribute \adeff{is-dir} is \ff{TRUE} if the file is a directory.
+%
+The attribute \adeff{touch} makes sure the file exists.
+%
+The attribute \adeff{rm} removes the file.
+%
+The attribute \adeff{mv} renames or moves the file to a new place.
+%
+The attribute \adeff{size} is the size of the file in bytes.
+%
+The attribute \adeff{as-output} is an output stream for this file, while the attribute \adeff{as-input} is an input stream.
+
+The object \deff{directory} is an abstraction of a directory.
+%
+The attribute \deff{mkdir} creates the directory with all its parent directories.
+%
+The attribute \deff{rm-rf} deletes the directory recursively with all its subdirectories.
+%
+The attribute \deff{walk} finds files in the directory using glob pattern matching.
+%
+The attribute \deff{tmpfile} is a temporary file in the directory.
+
+The object \adeff{tmpdir} is a system \ff{directory} of temporary files.
+
+The object \deff{path} is a decorator of a \ff{string} and is a path of a file.
+%
+The attribute \adeff{resolve} is a new path with a suffix appended to the current one.
+%
+The attribute \adeff{dir-name} is the name of the directory in the path.
+%
+The attribute \adeff{ext-name} is the extension in the path.
+%
+The attribute \adeff{base-name} is the name of the file in the path.
+
+\section{Sockets}\label{sec:sockets}
+
+Here we define objects used for both server-side and client-side TCP sockets in accordance with \citet{posix}.
+All objects presented in this Section belong to \ff{QQ.net} package.
+
+The object \deff{socket} is an abstraction of a TCP socket. The attribute \adeff{connect} establishes a connection and makes a copy of the socket. Then, the attributes \adeff{as-input} and \adeff{as-output} may be used for reading from the socket and for writing to it. For example, this code opens a connection to the 80th TCP port of \ff{google.com} and then reads the entire stream as a Unicode string:
+
+\begin{ffcode}
+connect. > s
+  QQ.net.socket
+    "google.com"
+    80
+QQ.io.stdout
+  QQ.io.content
+    s.as-input
+s.close
+\end{ffcode}
+
+The attribute \adeff{listen} make a copy of the socket and establishes a server connection. Then, the attribute \adeff{accept} can be used to wait for an incoming connection and then make a copy when it arrives. For example, this code binds to the 8080th port on a localhost and when a connection arrives, prints a message into it:
+
+\begin{ffcode}
+listen. > s
+  QQ.net.socket
+    "127.0.0.1"
+    8080
+QQ.io.copied
+  QQ.io.bytes-as-input
+    "Hello, world!".as-bytes
+  s.accept.as-output
+s.close
+\end{ffcode}
+
+The attribute \adeff{close} terminates the connection.
+
+\section{Synchronization}\label{sec:synchronization}
+
+Here we define objects used for explicit synchronization between threads.
+All objects presented in this Section belong to \ff{QQ.sync} package.
+
+The object \deff{semaphore} is a counting semaphore with two attributes: \adeff{capture} and \adeff{release}.
+
+The object \deff{atomic-memory} is a synchronized decorator of \ff{memory} with a binary \ff{semaphore} encapsulated.
+
+\printbibliography
+
+\end{document}
