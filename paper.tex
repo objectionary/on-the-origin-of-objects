@@ -259,6 +259,19 @@ goto
             "Number %d is OK!" x
 \end{ffcode}
 
+The object \adeff{try} enables catching of dataization failures and encapsulates three abstract objects. For example, the following code prints "division by zero" and then "finally":
+
+\begin{ffcode}
+try
+  []
+    42.div 0 > @
+  [ex]
+    stdout > @
+      ex.msg
+  []
+    stdout > @
+      "finally"
+\end{ffcode}
 
 \section{Digits}\label{sec:digits}
 
