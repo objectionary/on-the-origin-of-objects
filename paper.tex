@@ -71,13 +71,13 @@ In this paper we don't provide exact specification of each object, in order to a
 We adhere to a few principles:
 
 \begin{itemize}
-    \item As fewer atoms as possible.
-    Whenever it's possible, we try to implement objects in EO, instead of turning them into atoms.
-    \item No duplication.
-    There should be no functionality implemented two or more times in the entire taxonomy.
+    \item Wherever possible, objects must be implemented in EO, instead of being atoms.
+    \item There should be no functionality implemented two or more times in the entire taxonomy.
+    \item Object names must not be abbreviated and must constitute an English sentence when being used through dot notation,
+    for example \ff{x.times.y > z} means ``$x$ times $y$ is $z$.'' There are a few exceptions though, like \ff{eq}, \ff{seq}, \ff{lt}, and a few others.
 \end{itemize}
 
-In case of any runtime error, an object is supposed to ``return'' an error object, with \ff{msg} attribute present (as \ff{string}) and \ff{@} attribute absent.
+In case of any runtime error, an object is supposed to ``return'' an error object, with \ff{message} attribute present (as \ff{string}) and \ff{@} attribute absent.
 
 \section{Primitives}\label{sec:primitives}
 
@@ -323,6 +323,8 @@ seq
 
 All objects in this Section belong to \ff{QQ.math} package.
 
+The object \adeff{random} is a abstraction of a random \ff{float} between zero and one inclusively.
+
 The object \deff{angle} is a decorator of \ff{float}. It assumes that the angle is in radians and has the following attributes for trigonometric functions:
 \deff{sine}, \deff{cosine}, and \deff{tangent}. There are attributes \deff{as-degrees} and \deff{as-radians} for switching from radians to degrees and backwards.
 
@@ -398,7 +400,7 @@ The attribute \deff{eq} is \ff{TRUE} if each element of the array is equal to th
 
 The attribute \deff{without} is a new array with the $i$-th element removed.
 
-The attributes \deff{each}, \deff{reduce}, \deff{find}, \deff{filter}, and \deff{map} are similar to \ff{forEach}, \ff{reduce}, \ff{find}, \ff{reduce}, and \ff{map} methods of \ff{Array} object in JavaScript~\citep{EcmaScript}. The attributes \deff{eachi}, \deff{reducei}, \deff{filteri}, \deff{findi}, and \deff{mapi} are semantically the same, but with an \ff{int} as a counter of a cycle.
+The attributes \deff{each}, \deff{reduced}, \deff{found}, \deff{filtered}, and \deff{mapped} are similar to \ff{forEach}, \ff{reduce}, \ff{find}, \ff{reduce}, and \ff{map} methods of \ff{Array} object in JavaScript~\citep{EcmaScript}. The attributes \deff{eachi}, \deff{reducedi}, \deff{filteredi}, \deff{foundi}, and \deff{mappedi} are semantically the same, but with an \ff{int} as a counter of a cycle.
 
 The attribute \deff{slice} is a part of the array.
 
@@ -410,13 +412,13 @@ The attribute \deff{reversed} is a new array with elements positioned in a rever
 
 The object \deff{map} is a decorator of \ff{array} of pairs $(k, v)$. The \ff{map} ensures that all $k$ are always unique. It is expected that each $k$ has \ff{as-hash} attribute that behaves as \ff{int}.
 
-The attributes \ff{with}, \ff{without}, \ff{find}, and \ff{findi} are reimplemented in \ff{map}.
+The attributes \ff{with}, \ff{without}, \ff{found}, and \ff{foundi} are reimplemented in \ff{map}.
 
 \subsection{Set}
 
 The object \deff{set} is a decorator of \ff{array}. The \ff{set} ensures that all elements in the array are always unique. It is expected that each $k$ has \ff{as-hash} attribute that behaves as \ff{int}.
 
-The attributes \ff{with}, \ff{without}, \ff{find}, and \ff{findi} are reimplemented in \ff{set}.
+The attributes \ff{with}, \ff{without}, \ff{found}, and \ff{foundi} are reimplemented in \ff{set}.
 
 \subsection{Mutable Arrays}
 
