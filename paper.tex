@@ -402,11 +402,11 @@ The object \deff{text} is a decorator of a \ff{string}, it has the following att
     \item \deff{upper-case}: makes it upper case
 \end{itemize}
 
-The object \deff{regex} is an abstraction of a regular expression, in accordance with \citet[Part~2]{posix} (Extended Regular Expressions) and full support of Unicode. The attribute \deff{matched} is a split of the \ff{string} into parts:
+The object \deff{regex} is an abstraction of a regular expression, in accordance with \citet[Part~2]{posix} (Extended Regular Expressions) and full support of Unicode. The attribute \deff{match} is a split of the \ff{string} into parts:
 
 \begin{ffcode}
 QQ.txt.regex "/(и([^ ]+))/i" > r
-r.matched > m
+r.match > m
   "Из искры возгорится пламя"
 eq.
   m
