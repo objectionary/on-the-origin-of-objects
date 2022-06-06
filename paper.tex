@@ -11,21 +11,23 @@
 \usepackage[capitalize]{cleveref}
 \usepackage{to-be-determined}
 
-\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
 \usepackage[T2A]{fontenc}
 \usepackage[russian,english]{babel}
+\usepackage{substitutefont}
+  \substitutefont{T2A}{LinuxBiolinumT-TLF}{LibertinusSans-TLF}
   \renewcommand\ttdefault{cmtt}
 
 \title{On the Origins of Objects by Means of Careful Selection}
 \author{Yegor Bugayenko}
 \email{yegor256@gmail.com}
-\affiliation{Huawei\city{Moscow}\country{Russia}}
+\affiliation{\institution{Huawei}\city{Moscow}\country{Russia}}
 \ccsdesc[100]{Object-Oriented Programming}
 \keywords{Object-Oriented Programming}
 
 \newcommand\aff[1]{\ff{\textcolor{gray}{$\star$}#1}}
-\newcommand\deff[1]{\textbf{\ff{#1}}}
-\newcommand\adeff[1]{\textbf{\aff{#1}}}
+\newcommand\deff[1]{\ff{\textcolor{blue!50!black}{\textbf{#1}}}}
+\newcommand\adeff[1]{\aff{\textcolor{blue!50!black}{\textbf{#1}}}}
 \newcommand\eohex[1]{\ff{#1}}
 
 \begin{document}
@@ -67,7 +69,7 @@ As a humble attempt to create such a common ground for the world of objects, we 
 
 An object in EO is either a composition of other objects or an atom, which is a foreign function interface to a lower-level runtime such as, for example, JVM or Assembly. In this paper, we denote atoms by a star, for example: \aff{times}.
 
-Everywhere in the paper we use bold font to highlight an object when it's mentioned for the first time.
+Everywhere in the paper we use dark blue color to highlight an object when it's mentioned for the first time.
 
 In this paper we don't provide exact specification of each object, in order to avoid conflicts with their exact definitions in Objectionary\footnote{\url{https://www.objectionary.com}}.
 
