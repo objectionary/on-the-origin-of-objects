@@ -11,6 +11,11 @@
 \usepackage[capitalize]{cleveref}
 \usepackage{to-be-determined}
 
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[russian,english]{babel}
+  \renewcommand\ttdefault{cmtt}
+
 \title{On the Origins of Objects by Means of Careful Selection}
 \author{Yegor Bugayenko}
 \email{yegor256@gmail.com}
@@ -386,18 +391,46 @@ The object \deff{text} is a decorator of a \ff{string}, it has the following att
     \item \deff{ends-with}: checks whether it ends with $x$
     \item \deff{join}: joins an array with this one as a glue
     \item \deff{lower-case}: makes it lower case
-    \item \deff{ltrim}: removes leading
+    \item \deff{left-trim}: removes leading spaces
     \item \deff{replace}: finds and replaces a sub-string
-    \item \deff{rtrim}: removes trailing spaces
+    \item \deff{right-trim}: removes trailing spaces
     \item \deff{split}: breaks it into an array of strings
     \item \deff{starts-with}: checks whether it starts with $x$
     \item \deff{trim}: removes both leading and trailing spaces
     \item \deff{upper-case}: makes it upper case
 \end{itemize}
 
-\tbd{Maybe other functions?}
+The object \deff{regex} is an abstraction of a regular expression, in accordance with \citet[Part~2]{posix} (Extended Regular Expressions) and full support of Unicode. The attribute \deff{matched} is a split of the \ff{string} into parts:
 
-\tbd{Regular expressions}
+\begin{ffcode}
+QQ.txt.regex "/(и([^ ]+))/i" > r
+r.matched > m
+  "Из искры возгорится пламя"
+eq.
+  m
+  *
+    *
+      "Из"
+      0
+      *
+        "И"
+        * "з" 1 *
+    * " "
+    *
+      "искры"
+      3
+      *
+        "и"
+        * "скры" 4 *
+    * " возгор"
+    *
+      "ится"
+      15
+      *
+        "и"
+        "тся" 16 *
+    * " пламя"
+\end{ffcode}
 
 \section{Collections}\label{sec:collections}
 
@@ -413,7 +446,7 @@ The attribute \deff{eq} is \ff{TRUE} if each element of the array is equal to th
 
 The attribute \deff{without} is a new array with the $i$-th element removed.
 
-The attributes \deff{each}, \deff{reduced}, \deff{found}, \deff{filtered}, and \deff{mapped} are similar to \ff{forEach}, \ff{reduce}, \ff{find}, \ff{reduce}, and \ff{map} methods of \ff{Array} object in JavaScript~\citep{EcmaScript}. The attributes \deff{eachi}, \deff{reducedi}, \deff{filteredi}, \deff{foundi}, and \deff{mappedi} are semantically the same, but with an \ff{int} as a counter of a cycle.
+The attributes \deff{each}, \deff{reduced}, \deff{found}, \deff{filtered}, and \deff{mapped} are similar to \ff{forEach}, \ff{reduce}, \ff{find}, \ff{reduce}, and \ff{map} methods of \ff{Array} object in JavaScript~\citep{EcmaScript}. The attributes \deff{eachi}, \deff{reducedi}, \deff{filteredi}, \deff{foundi}, and \deff{mappedi} are semantically the same, but with an extra \ff{int} argument as a counter of a cycle.
 
 The attribute \deff{slice} is a part of the array.
 
