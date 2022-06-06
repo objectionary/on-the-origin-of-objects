@@ -8,6 +8,8 @@
 --ignore=newtcbox:pp
 --ignore=settopmatter
 --ignore=CJK
+--ignore=substitutefont:ppp
+--ignore=ttdefault
 --ignore=lref:p,lrefs:pp
 --ignore=tikzstyle,tikzpicture,usetikzlibrary,ingraph
 --ignore=tikz:op

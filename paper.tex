@@ -1,6 +1,6 @@
 \documentclass[sigplan,review,11pt,nonacm,natbib=false]{acmart}
 \settopmatter{printfolios=false,printccs=false,printacmref=false}
-\usepackage[maxnames=1,minnames=1,maxbibnames=100,natbib=true,citestyle=authoryear,bibstyle=authoryear,doi=false,url=false,isbn=false,isbn=false,backend=bibtex]{biblatex}
+\usepackage[maxnames=1,minnames=1,maxbibnames=100,natbib=true,citestyle=authoryear,bibstyle=authoryear,doi=false,url=false,isbn=false,isbn=false,backend=biber]{biblatex}
 \addbibresource{main.bib}
 \ifnum\pdfshellescape=1
   \usepackage[finalizecache]{minted}
@@ -50,7 +50,7 @@ and so on.
 
 Each Standard Library (SL) freely defines its own principles of abstraction. For example, to get an absolute value of a numeric object \ff{x} in Java, one has to call a static method of another class \ff{Math.abs(x)}, while in Ruby it would be a property of the same object \ff{x.abs}. For example, in Java, an attempt to get a value from a hash map by a key will produce \ff{null} in case of its absence, while in C++ it will return an empty iterator. There are many similar examples demonstrating the absence of common ground between SLs.
 
-As a humble attempt to create such a common ground for the world of objects, we suggest our own taxonomy of objects for EO\footnote{\url{https://www.eolang.org}}, an object-oriented programming language with an intentionally reduced feature set~\citep{bugayenko2021eolang}. All objects are groupped as such:
+As a humble attempt to create such a common ground for the world of objects, we suggest our own taxonomy of objects for EO\footnote{\url{https://www.eolang.org}}, an object-oriented programming language with an intentionally reduced feature set~\citep{bugayenko2021eolang}. All objects are grouped as such:
 
 \begin{itemize}
     \item Primitives (\cref{sec:primitives})
@@ -81,7 +81,12 @@ We adhere to a few principles:
     \item Wherever possible, objects must be implemented in EO, instead of being atoms.
     \item There should be no functionality implemented two or more times in the entire taxonomy.
     \item Object names must not be abbreviated and must constitute an English sentence when being used through dot notation,
-    for example \ff{x.times.y > z} means ``$x$ times $y$ is $z$.'' There are a few exceptions though, like \ff{eq}, \ff{seq}, \ff{lt}, and a few others.
+    for example:
+\begin{ffcode}
+x.times.y > z
+\end{ffcode}
+means ``$x$ times $y$ is $z$.''
+There are a few exceptions though, like \ff{eq}, \ff{seq}, \ff{lt}, and a few others.
 \end{itemize}
 
 In case of any runtime error, an object is supposed to ``return'' an error object, with \ff{message} attribute present (as \ff{string}) and \ff{@} attribute absent.
@@ -226,6 +231,8 @@ All other manipulations with arrays can be implemented in their decorators. Some
 
 \section{Flow Control}\label{sec:flow}
 
+Here we define objects that help control dataization flow.
+
 The object \adeff{seq} is an abstraction of sequence of objects to be dataized sequentially. For example, this code prints one message to the console and then terminates the program due to the inability to dataize the division by zero in the middle:
 
 \begin{ffcode}
@@ -282,12 +289,15 @@ try
 
 \section{Digits}\label{sec:digits}
 
+Here we define objects that represent numbers with smaller or larger bitwise width comparing with the default 64-bits convention.
 All objects presented in this Section belong to \ff{QQ.digits} package.
 
 Objects \deff{int8}, \deff{int16}, \deff{int32}, and \deff{int128} are decorators of \ff{bytes} with a predefined size. They implement the same numeric operations as \ff{int}.
 Objects \deff{float16}, \deff{float32}, and \deff{float128} are also decorators of \ff{bytes}, implementing the same operations as \ff{float}.
 
 \section{Memory}\label{sec:memory}
+
+Here we define objects that manage memory.
 
 The object \adeff{memory} is an abstraction of a read-write memory capable of storing one of five primitive data objects mentioned in \cref{sec:primitives}. The attribute \adeff{write} implements writing operation, while the object \aff{memory} itself decorates the data object stored in it. This code writes a number into memory and then reads it back and prints:
 
@@ -341,6 +351,7 @@ seq
 
 \section{Math}\label{sec:math}
 
+Here we define objects that represent math functions and algorithms.
 All objects in this Section belong to \ff{QQ.math} package.
 
 The object \adeff{random} is a abstraction of a random \ff{float} between zero and one inclusively.
@@ -448,7 +459,7 @@ The attribute \deff{eq} is \ff{TRUE} if each element of the array is equal to th
 
 The attribute \deff{without} is a new array with the $i$-th element removed.
 
-The attributes \deff{each}, \deff{reduced}, \deff{found}, \deff{filtered}, and \deff{mapped} are similar to \ff{forEach}, \ff{reduce}, \ff{find}, \ff{reduce}, and \ff{map} methods of \ff{Array} object in JavaScript~\citep{EcmaScript}. The attributes \deff{eachi}, \deff{reducedi}, \deff{filteredi}, \deff{foundi}, and \deff{mappedi} are semantically the same, but with an extra \ff{int} argument as a counter of a cycle.
+The attributes \deff{each}, \deff{reduced}, \deff{found}, \deff{filtered}, and \deff{mapped} are respectively similar to \ff{forEach}, \ff{reduce}, \ff{find}, \ff{reduce}, and \ff{map} methods of \ff{Array} object in JavaScript~\citep{EcmaScript}. A few ``twin'' attributes \deff{eachi}, \deff{reducedi}, \deff{filteredi}, \deff{foundi}, and \deff{mappedi} are semantically the same, but with an extra \ff{int} argument as a counter of a cycle.
 
 The attribute \deff{slice} is a part of the array.
 
@@ -570,7 +581,7 @@ The attribute \adeff{base-name} is the name of the file in the path.
 Here we define objects used for both server-side and client-side TCP sockets in accordance with \citet{posix}.
 All objects presented in this Section belong to \ff{QQ.net} package.
 
-The object \deff{socket} is an abstraction of a TCP socket. The attribute \adeff{connect} establishes a connection and makes a copy of the socket. Then, the attributes \adeff{as-input} and \adeff{as-output} may be used for reading from the socket and for writing to it. For example, this code opens a connection to the 80th TCP port of \ff{google.com} and then reads the entire stream as a Unicode string:
+The object \deff{socket} is an abstraction of a TCP socket. The attribute \adeff{connect} establishes a connection and makes a copy of the socket object. Then, its attributes \adeff{as-input} and \adeff{as-output} may be used for reading from the socket and for writing to it. For example, this code opens a connection to the 80th TCP port of \ff{google.com} and then reads the entire stream as a Unicode string:
 
 \begin{ffcode}
 connect. > s
