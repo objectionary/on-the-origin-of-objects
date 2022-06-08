@@ -392,12 +392,14 @@ The object \deff{rich-int} is a decorator of \ff{int} and has the same attribute
 
 All objects presented in this Section belong to \ff{QQ.txt} package.
 
-The object \deff{parsed} encapsulates a \ff{string} and has a few attributes: \deff{as-int}, \deff{as-hex}, \deff{as-octal}, \deff{as-bytes}, \deff{as-float}, and \deff{as-bool}. For example, this code parses a hexadecimal number from the console:
+The object \deff{sscanf} encapsulates a format \ff{string} and a content \ff{string}. It behaves like an array of scanned data objects. For example, this code parses a hexadecimal number from the console:
 
 \begin{ffcode}
-as-hex.
-  QQ.txt.parsed
+at.
+  QQ.txt.sscanf
+    "%x"
     QQ.io.stdin
+  0
 \end{ffcode}
 
 The object \deff{sprintf} builds a string according to the format provided and compliant with \citet[Chapter 5]{posix}, for example:
