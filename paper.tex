@@ -314,7 +314,7 @@ Here we define objects that manage memory.
 The object \adeff{memory} is an abstraction of a read-write memory capable of storing one of five primitive data objects mentioned in \cref{sec:primitives}. The attribute \adeff{write} implements writing operation, while the object \aff{memory} itself decorates the data object stored in it. This code writes a number into memory and then reads it back and prints:
 
 \begin{ffcode}
-memory > m
+memory 0 > m
 seq
   m.write 42
   QQ.io.stdout
@@ -327,7 +327,7 @@ The object \adeff{cage} is similar to \aff{memory}, but it can store any object,
 [] > book
   title > "Object Thinking"
   author > "David West"
-cage > c
+cage 0 > c
 seq
   c.write book
   QQ.io.stdout
