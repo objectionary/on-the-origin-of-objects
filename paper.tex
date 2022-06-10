@@ -181,23 +181,6 @@ while.
         "Attempt #%d" i
 \end{ffcode}
 
-The attribute \deff{switch} is an abstraction of a multi-case branching, where the object itself is compared sequentially with $k$ in provided $(k, v)$ pairs and the dataization result is equal to $v$ of the first matching pair, while the last pair is the one to be used if no other pairs match:
-
-\begin{ffcode}
-QQ.io.stdout
-  TRUE.switch
-    *
-      *
-        password.eq "swordfish"
-        "password is correct!"
-      *
-        password.eq ""
-        "empty password is not allowed"
-      *
-        FALSE
-        "password is wrong"
-\end{ffcode}
-
 \subsection{Float}
 
 The object \deff{float} is an abstraction of a floating point number, which takes eight bytes and fills them up according to the format suggested by \citet{ieee754}.
@@ -297,6 +280,22 @@ try
   []
     QQ.io.stdout > @
       "finally"
+\end{ffcode}
+
+The object \deff{switch} is an abstraction of a multi-case branching that encapsulates $(k, v)$ pairs and the dataization result is equal to $v$ of the first pair where $k$ is \ff{TRUE}, while the last pair is the one to be used if no other pairs match:
+
+\begin{ffcode}
+QQ.io.stdout
+  switch
+    []
+      password.eq "swordfish" > @
+      "password is correct!"
+    []
+      password.eq "" > @
+      "empty password is not allowed"
+    []
+      FALSE > @
+      "password is wrong"
 \end{ffcode}
 
 \section{Digits}\label{sec:digits}
