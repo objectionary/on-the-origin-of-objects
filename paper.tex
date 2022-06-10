@@ -287,14 +287,14 @@ The object \deff{switch} is an abstraction of a multi-case branching that encaps
 \begin{ffcode}
 QQ.io.stdout
   switch
-    []
-      password.eq "swordfish" > @
+    *
+      password.eq "swordfish"
       "password is correct!"
-    []
-      password.eq "" > @
+    *
+      password.eq ""
       "empty password is not allowed"
-    []
-      FALSE > @
+    *
+      FALSE
       "password is wrong"
 \end{ffcode}
 
