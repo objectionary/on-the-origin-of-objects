@@ -62,6 +62,7 @@ As a humble attempt to create such a common ground for the world of objects, we 
 \begin{itemize}
     \item Primitives (\cref{sec:primitives})
     \item Array (\cref{sec:array})
+    \item Error handling (\cref{sec:errors})
     \item Flow control abstractions (\cref{sec:flow})
     \item Non-standard bit-width numbers (\cref{sec:digits})
     \item Memory abstractions (\cref{sec:memory})
@@ -225,6 +226,37 @@ The attribute \adeff{length} is the total amount of elements in the array.
 
 All other manipulations with arrays can be implemented in their decorators. Some of them are explained in \cref{sec:collections}.
 
+\section{Error Handling}\label{sec:errors}
+
+Here we define objects that help handle errors and exceptional situations.
+
+The object \adeff{error} causes program termination at the first attempt to dataize it.
+It encapsulates any other object, which can play the role of an exception
+floating to the upper level:
+
+\begin{ffcode}
+[x] > d
+  if.
+    x.eq 0
+    error "Can't divide by zero"
+    42.div x
+\end{ffcode}
+
+The object \adeff{try} enables catching of \aff{error} objects and extracting exceptions from them.
+For example, the following code prints "division by zero" and then "finally":
+
+\begin{ffcode}
+try
+  []
+    42.div 0 > @
+  [e]
+    QQ.io.stdout > @
+      e
+  []
+    QQ.io.stdout > @
+      "finally"
+\end{ffcode}
+
 \section{Flow Control}\label{sec:flow}
 
 Here we define objects that help control dataization flow.
@@ -267,20 +299,6 @@ goto
         QQ.io.stdout
           QQ.txt.sprintf
             "Number %d is OK!" x
-\end{ffcode}
-
-The object \adeff{try} enables catching of dataization failures and encapsulates three abstract objects. For example, the following code prints "division by zero" and then "finally":
-
-\begin{ffcode}
-try
-  []
-    42.div 0 > @
-  [ex]
-    QQ.io.stdout > @
-      ex.msg
-  []
-    QQ.io.stdout > @
-      "finally"
 \end{ffcode}
 
 The object \deff{switch} is an abstraction of a multi-case branching that encapsulates $(k, v)$ pairs and the dataization result is equal to $v$ of the first pair where $k$ is \ff{TRUE}, while the last pair is the one to be used if no other pairs match:
@@ -634,5 +652,7 @@ The object \deff{semaphore} is a counting semaphore with two attributes: \adeff{
 The object \deff{atomic-memory} is a synchronized decorator of \ff{memory} with a binary \ff{semaphore} encapsulated.
 
 \printbibliography
+
+\clearpage
 
 \end{document}
