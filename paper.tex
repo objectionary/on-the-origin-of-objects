@@ -354,7 +354,7 @@ seq
       "Title is %s" c.title
 \end{ffcode}
 
-The object \adeff{ram} is an abstraction of a random-access memory of certain size. It behaves like \aff{bytes}, but has an additional attribute \adeff{write}. In this example, one kilobyte of memory with random data is allocated when a copy of \ff{ram} is created, a non-copying slice \ff{s} of 13 bytes is made starting with the 200-th byte, data is written into it, then a sub-slice is created of only five bytes, and finally a string is read back and \ff{"Hello"} is printed:
+The object \deff{ram} is an abstraction of a random-access memory of certain size. It behaves like \aff{bytes}, but has an additional attribute \adeff{write} and a new behavior of \adeff{slice}. In this example, one kilobyte of memory with random data is allocated when a copy of \ff{ram} is created, a non-copying slice \ff{s} of 13 bytes is made starting with the 200-th byte, data is written into it, then a sub-slice is created of only five bytes, and finally a string is read back and \ff{"Hello"} is printed:
 
 \begin{ffcode}
 ram 1024 > r
@@ -367,7 +367,7 @@ seq
       s.slice 0 5
 \end{ffcode}
 
-The object \deff{heap} encapsulates a copy of \aff{ram} and is an abstraction of a memory management as it exists in \citet{posix}. There are two attributes \deff{malloc} and \deff{free}, which allocate and free memory blocks respectively. An allocation of a memory block creates a copy of \deff{heap.pointer} object, which is a decorator of \ff{int} with two additional attributes \deff{write} and \deff{read}.
+The object \deff{heap} encapsulates a copy of \ff{ram} and is an abstraction of a memory management as it exists in \citet{posix}. There are two attributes \deff{malloc} and \deff{free}, which allocate and free memory blocks respectively. An allocation of a memory block creates a copy of \deff{heap.pointer} object, which is a decorator of \ff{int} with two additional attributes \deff{write} and \deff{read}.
 %
 In this code, 13 bytes are allocated, a string is stored into them, then read and printed, and then the bytes are freed:
 
