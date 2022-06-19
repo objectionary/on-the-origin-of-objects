@@ -354,7 +354,7 @@ seq
       "Title is %s" c.title
 \end{ffcode}
 
-The object \deff{ram} is an abstraction of a random-access memory of certain size, which has two attributes \adeff{write} and \adeff{read} enabling writing and reading respectively. In this example, one kilobyte of memory is allocated when a copy of \ff{ram} is created, 13 bytes is written into it starting with the 200-th byte, and then only five of them read back and \ff{"Hello"} is printed:
+The object \deff{ram} is an abstraction of a random-access memory of certain size, which has two attributes \adeff{write} and \adeff{read} enabling writing and reading respectively. In this example, one kilobyte of memory with random data is allocated when a copy of \ff{ram} is created, 13 bytes is written into it starting with the 200-th byte, and then only five of them read back and \ff{"Hello"} is printed:
 
 \begin{ffcode}
 ram 1024 > d
