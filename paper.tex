@@ -354,7 +354,7 @@ seq
       "Title is %s" c.title
 \end{ffcode}
 
-The object \deff{ram} is an abstraction of a random-access memory of certain size. It behaves like \aff{bytes}, but has an additional attribute \adeff{write} and a new behavior of \adeff{slice}. In this example, one kilobyte of memory with random data is allocated when a copy of \ff{ram} is created, a non-copying slice \ff{s} of 13 bytes is made starting with the 200-th byte, data is written into it, then a sub-slice is created of only five bytes, and finally a string is read back and \ff{"Hello"} is printed:
+The object \deff{ram} is an abstraction of a random-access memory of certain size. It behaves like \ff{bytes}, but has an additional attribute \adeff{write}. In this example, one kilobyte of memory with random data is allocated when a copy of \ff{ram} is created, a non-copying slice \ff{s} of 13 bytes is made starting with the 200-th byte, data is written into it, then a non-copying sub-slice is created of only five bytes, and finally a string is read back and \ff{"Hello"} is printed:
 
 \begin{ffcode}
 ram 1024 > r
