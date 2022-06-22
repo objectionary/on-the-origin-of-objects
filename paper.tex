@@ -393,7 +393,7 @@ The object \adeff{random} is a abstraction of a random \ff{float} between zero a
 The object \deff{angle} is a decorator of \ff{float}. It assumes that the angle is in radians and has the following attributes for trigonometric functions:
 \deff{sine}, \deff{cosine}, and \deff{tangent}. There are attributes \deff{as-degrees} and \deff{as-radians} for switching from radians to degrees and backwards.
 
-The object \deff{rich-float} is a decorator of \ff{float} with the following additional attributes:
+The object \deff{number} is a decorator of \ff{int} and \ff{float} with the following additional attributes:
 
 \begin{itemize}
     \item \deff{abs}: absolute value of itself ($|\rho|$)
@@ -407,8 +407,6 @@ The object \deff{rich-float} is a decorator of \ff{float} with the following add
     \item \deff{signum}: the sign of itself
     \item \deff{sqrt}: square root of itself ($\sqrt\rho$)
 \end{itemize}
-
-The object \deff{rich-int} is a decorator of \ff{int} and has the same attributes as \ff{rich-float}.
 
 \section{Strings}\label{sec:strings}
 
