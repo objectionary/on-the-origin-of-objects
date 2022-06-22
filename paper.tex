@@ -1,6 +1,6 @@
 \documentclass[sigplan,11pt,nonacm,natbib=false]{acmart}
 \settopmatter{printfolios=false,printccs=false,printacmref=false}
-\usepackage[maxnames=1,minnames=1,maxbibnames=100,natbib=true,citestyle=authoryear,bibstyle=authoryear,doi=false,url=false,isbn=false,isbn=false,backend=biber]{biblatex}
+\usepackage[maxnames=1,minnames=1,maxbibnames=1,natbib=true,citestyle=authoryear,bibstyle=authoryear,doi=false,url=false,isbn=false,isbn=false,backend=biber]{biblatex}
 \addbibresource{main.bib}
 \ifnum\pdfshellescape=1
   \usepackage[finalizecache]{minted}
@@ -72,6 +72,7 @@ As a humble attempt to create such a common ground for the world of objects, we 
     \item I/O Streams (\cref{sec:streams})
     \item File System abstractions (\cref{sec:fs})
     \item Net Sockets (\cref{sec:sockets})
+    \item HTTP request and response (\cref{sec:http})
     \item Synchronization in multi-threading (\cref{sec:synchronization})
 \end{itemize}
 
@@ -645,6 +646,34 @@ s.close
 
 The attribute \adeff{close} terminates the connection and makes the
 closed \aff{socket} object impossible to use anymore.
+
+\newpage
+\section{HTTP}\label{sec:http}
+
+Here we define objects used for parsing and printing of HTTP requests and responses in accordance with \citet{rfc2616}.
+All objects presented in this Section belong to \ff{QQ.http} package.
+
+The objects \deff{http-request} and \deff{http-response} are abstractions of HTTP request and response respectively. They have attributes that help building them; they both have \deff{as-string} attribute to turn them into a \ff{string}:
+
+\begin{ffcode}
+http-request
+.with-method 'GET'
+.with-address '/index.html'
+.with-header 'Accept-Encoding' 'utf-8'
+.with-cookie 'Session-Id' '8F09A4E438C'
+.with-content-type 'plain/text'
+.as-string > r
+\end{ffcode}
+
+They both have \deff{from-string} attribute to create objects from a \ff{string}.
+They also have attributes that represent the pieces the request and response are built of:
+
+\begin{ffcode}
+http-response.from-string "..." > r
+r.status
+r.header 'Content-Type'
+r.cookie 'Session-Id'
+\end{ffcode}
 
 \section{Synchronization}\label{sec:synchronization}
 
