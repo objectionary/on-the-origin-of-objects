@@ -168,7 +168,7 @@ QQ.io.stdout
   QQ.txt.sprintf
     "Coin toss: %s"
     if.
-      random.gte 0.5
+      QQ.math.random.pseudo.gte 0.5
       "heads"
       "tail"
 \end{ffcode}
@@ -177,7 +177,7 @@ The attribute \adeff{while} is an iterating mechanism, expecting two attributes:
 
 \begin{ffcode}
 while.
-  random.gte 0.1
+  QQ.math.random.pseudo.gte 0.1
   [i]
     QQ.io.stdout > @
       QQ.txt.sprintf
@@ -387,7 +387,7 @@ seq
 Here we define objects that represent math functions and algorithms.
 All objects in this Section belong to \ff{QQ.math} package.
 
-The object \adeff{random} is a abstraction of a random \ff{float} between zero and one inclusively.
+The object \deff{random} is a abstraction of a random \ff{float} between zero and one inclusively. It has an additional attribute \adeff{pseudo} that makes \ff{random} with a pseudorandom seed.
 
 The object \deff{angle} is a decorator of \ff{float}. It assumes that the angle is in radians and has the following attributes for trigonometric functions:
 \deff{sine}, \deff{cosine}, and \deff{tangent}. There are attributes \deff{as-degrees} and \deff{as-radians} for switching from radians to degrees and backwards.
