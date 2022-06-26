@@ -92,11 +92,10 @@ conflicts with their exact definitions in Objectionary\footnote{\url{https://www
 We adhere to a few principles:
 
 \begin{itemize}
-    \item We tend to minimize the global scope, keeping the number of global objects to the absolute possible minimum.
-    \item Wherever possible, objects must be implemented in EO, instead of being atoms.
-    \item There should be no functionality implemented two or more times in the entire taxonomy.
-    \item Object names must not be abbreviated and must constitute an English sentence when being used through dot notation,
-    for example:
+  \item We tend to minimize the global scope, keeping the number of global objects to the absolute possible minimum.
+  \item Wherever possible, objects must be implemented in EO, instead of being atoms.
+  \item There should be no functionality implemented two or more times in the entire taxonomy.
+  \item Object names must not be abbreviated and must constitute an English sentence when being used through dot notation, for example:
 \begin{ffcode}
 x.times.y > z
 \end{ffcode}
@@ -121,7 +120,7 @@ The object \ff{bytes} has these four attributes, to turn itself into one of four
 \adeff{as-bool},
 \adeff{as-float},
 and
-\adeff{as-string}. The attribute \aff{as-int} expects the size of the sequence to be less or equal to eight. The attribute \aff{as-bool} expects exactly one byte to be in the sequence. The attribute \aff{as-float} expects exactly eight bytes.
+\adeff{as-string}. The attribute \aff{as-int} expects the size of the sequence to be less or equal to eight. The attribute \aff{as-bool} is \ff{FALSE} only if all bytes equal to zero. The attribute \aff{as-float} expects exactly eight bytes.
 
 There are also attributes for bitwise operations:
 \adeff{and},
