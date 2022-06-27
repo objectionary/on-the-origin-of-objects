@@ -22,10 +22,11 @@
 
 .SHELLFLAGS = -e -x -c
 .ONESHELL:
+SHELL=bash
 
 TLROOT=$$(kpsewhich -var-value TEXMFDIST)
 PACKAGES=ffcode to-be-determined href-ul
-REPO=yegor256/on-the-origin-of-objects
+REPO=objectionary/on-the-origin-of-objects
 
 zip: *.tex
 	rm -rf package
