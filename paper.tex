@@ -318,6 +318,18 @@ QQ.io.stdout
       "password is wrong"
 \end{ffcode}
 
+The object \deff{nop} encapsulates everything and always returns \ff{TRUE}:
+
+\begin{ffcode}
+QQ.nop
+  "str"
+  42
+  [] > obj
+  FALSE > @
+  QQ.io.stdout
+  "s"
+\end{ffcode}
+
 \section{Digits}\label{sec:digits}
 
 Here we define objects that represent numbers with smaller or larger bitwise width comparing with the default 64-bits convention.
