@@ -318,16 +318,12 @@ QQ.io.stdout
       "password is wrong"
 \end{ffcode}
 
-The object \deff{nop} encapsulates everything and always returns \ff{TRUE}:
+The object \deff{nop} (stands for No Operations) encapsulates everything, doesn't dataize it and is always\ff{TRUE}:
 
 \begin{ffcode}
-QQ.nop
-  "str"
-  42
-  [] > obj
-  FALSE > @
-  QQ.io.stdout
-  "s"
+eq.
+  QQ.nop "12" 42 FALSE
+  TRUE
 \end{ffcode}
 
 \section{Digits}\label{sec:digits}
