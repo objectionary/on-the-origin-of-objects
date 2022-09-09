@@ -137,7 +137,7 @@ The attribute \adeff{size} is the total number of bytes in the sequence.
 
 The attribute \adeff{slice} represents a sub-sequence inside the current one.
 
-The attribute \adeff{concatted} is a new sequence, which is a concatenation of two byte sequences: the current and the provided one.
+The attribute \adeff{chained} is a new sequence, which is a concatenation of two byte sequences: the current and the provided one.
 
 \subsection{Int}
 
@@ -226,7 +226,7 @@ The attribute \adeff{at} is the $i$-th element of the array.
 
 The attribute \adeff{length} is the total amount of elements in the array.
 
-The attribute \adeff{concat} is a new \ff{array}, which is a concatenation of two arrays: the current and the provided one.
+The attribute \adeff{chained} is a new \ff{array}, which is a concatenation of two arrays: the current and the provided one.
 
 All other manipulations with arrays can be implemented in their decorators. Some of them are explained in \cref{sec:collections}.
 
@@ -448,6 +448,7 @@ The object \deff{text} is a decorator of a \ff{string}, it has the following att
     \item \deff{ends-with}: checks whether it ends with $x$
     \item \deff{index-of}: finds the first occurence of a sub-string
     \item \deff{joined}: joins an array with this one as a glue
+    \item \deff{chained}: concatenates two strings
     \item \deff{low-cased}: makes it lower case
     \item \deff{last-index-of}: finds the last occurence of a sub-string
     \item \deff{left-trimmed}: removes leading spaces
