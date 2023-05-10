@@ -61,7 +61,7 @@ As a humble attempt to create such a common ground for the world of objects, we 
 
 \begin{itemize}
     \item Primitives (\cref{sec:primitives})
-    \item Array (\cref{sec:array})
+    \item Tuple (\cref{sec:tuple})
     \item Error handling (\cref{sec:errors})
     \item Flow control abstractions (\cref{sec:flow})
     \item Non-standard bit-width numbers (\cref{sec:digits})
@@ -208,10 +208,10 @@ Strings in other encodings, such as UTF-16 or CP1251, may be implemented through
 
 All other manipulations with strings are explained in \cref{sec:strings}.
 
-\section{Array}\label{sec:array}
+\section{Tuple}\label{sec:tuple}
 
-The object \deff{array} is an abstraction of an immutable sequence of objects.
-For example, this code represents a two-dimensional array \ff{x} of numbers and strings:
+The object \deff{tuple} is an abstraction of an immutable sequence of objects.
+For example, this code represents a two-dimensional tuple \ff{x} of numbers and strings:
 
 \begin{ffcode}
 * > x
@@ -220,15 +220,15 @@ For example, this code represents a two-dimensional array \ff{x} of numbers and 
   * "blue" 0x11C
 \end{ffcode}
 
-The attribute \adeff{with} is a new \ff{array} with all elements from the current array and a new element added to the end of it.
+The attribute \adeff{with} is a new \ff{tuple} with all elements from the current tuple and a new element added to the end of it.
 
-The attribute \adeff{at} is the element of the array with it's associated index number - positive one, zero indexed and starting from left, and the negative one starting at -1 from the right.
+The attribute \adeff{at} is the element of the tuple with it's associated index number - positive one, zero indexed and starting from left, and the negative one starting at -1 from the right.
 
-The attribute \adeff{length} is the total amount of elements in the array.
+The attribute \adeff{length} is the total amount of elements in the tuple.
 
-The attribute \adeff{chained} is a new \ff{array}, which is a concatenation of two arrays: the current and the provided one.
+The attribute \adeff{chained} is a new \ff{tuple}, which is a concatenation of two tuples: the current and the provided one.
 
-All other manipulations with arrays can be implemented in their decorators. Some of them are explained in \cref{sec:collections}.
+All other manipulations with tuples can be implemented in their decorators. Some of them are explained in \cref{sec:collections}.
 
 \section{Error Handling}\label{sec:errors}
 
@@ -422,7 +422,7 @@ The object \deff{number} is a decorator of \ff{int} and \ff{float} with the foll
 
 All objects presented in this Section belong to \ff{QQ.txt} package.
 
-The object \deff{sscanf} encapsulates a format \ff{string} and a content \ff{string}. It behaves like an array of scanned data objects. For example, this code parses a hexadecimal number from the console:
+The object \deff{sscanf} encapsulates a format \ff{string} and a content \ff{string}. It behaves like a tuple of scanned data objects. For example, this code parses a hexadecimal number from the console:
 
 \begin{ffcode}
 at.
@@ -447,14 +447,14 @@ The object \deff{text} is a decorator of a \ff{string}, it has the following att
     \item \deff{contains}: checks whether it contains $x$
     \item \deff{ends-with}: checks whether it ends with $x$
     \item \deff{index-of}: finds the first occurence of a sub-string
-    \item \deff{joined}: joins an array with this one as a glue
+    \item \deff{joined}: joins a tuple with this one as a glue
     \item \deff{chained}: concatenates two strings
     \item \deff{low-cased}: makes it lower case
     \item \deff{last-index-of}: finds the last occurence of a sub-string
     \item \deff{left-trimmed}: removes leading spaces
     \item \deff{replaced}: finds and replaces a sub-string
     \item \deff{right-trimmed}: removes trailing spaces
-    \item \deff{split}: breaks it into an array of strings
+    \item \deff{split}: breaks it into a tuple of strings
     \item \deff{starts-with}: checks whether it starts with $x$
     \item \deff{trimmed}: removes both leading and trailing spaces
     \item \deff{up-cased}: makes it upper case
@@ -498,33 +498,33 @@ Here we discuss abstractions of lists, maps, sets, and other ``collections.'' Al
 
 \subsection{List}
 
-The object \deff{list} is a decorator of \ff{array}.
+The object \deff{list} is a decorator of \ff{tuple}.
 
-The attribute \deff{is-empty} is \ff{TRUE} if the length of the array is zero.
+The attribute \deff{is-empty} is \ff{TRUE} if the length of the tuple is zero.
 
-The attribute \deff{eq} is \ff{TRUE} if each element of the array is equal to the corresponding element of another array and the lengths of both arrays are the same.
+The attribute \deff{eq} is \ff{TRUE} if each element of the tuple is equal to the corresponding element of another tuple and the lengths of both tuples are the same.
 
-The attribute \deff{without} is a new array with the $i$-th element removed.
+The attribute \deff{without} is a new tuple with the $i$-th element removed.
 
-The attributes \deff{each}, \deff{reduced}, \deff{found}, \deff{filtered}, and \deff{mapped} are respectively similar to \ff{forEach}, \ff{reduce}, \ff{find}, \ff{reduce}, and \ff{map} methods of \ff{Array} object in JavaScript~\citep{EcmaScript}. A few ``twin'' attributes \deff{eachi}, \deff{reducedi}, \deff{filteredi}, \deff{foundi}, and \deff{mappedi} are semantically the same, but with an extra \ff{int} argument as a counter of a cycle.
+The attributes \deff{each}, \deff{reduced}, \deff{found}, \deff{filtered}, and \deff{mapped} are respectively similar to \ff{forEach}, \ff{reduce}, \ff{find}, \ff{reduce}, and \ff{map} methods of \ff{Tuple} object in JavaScript~\citep{EcmaScript}. A few ``twin'' attributes \deff{eachi}, \deff{reducedi}, \deff{filteredi}, \deff{foundi}, and \deff{mappedi} are semantically the same, but with an extra \ff{int} argument as a counter of a cycle.
 
-The attribute \deff{slice} is a part of the array.
+The attribute \deff{slice} is a part of the tuple.
 
-The attribute \deff{sorted} is a new array with elements sorted using \ff{lt} attribute of the elements passed.
+The attribute \deff{sorted} is a new tuple with elements sorted using \ff{lt} attribute of the elements passed.
 
-The attribute \deff{reversed} is a new array with elements positioned in a reverse order.
+The attribute \deff{reversed} is a new tuple with elements positioned in a reverse order.
 
-The attribute \deff{concat} is a new array that concatenates the current array with the array provided as an argument.
+The attribute \deff{concat} is a new tuple that concatenates the current tuple with the tuple provided as an argument.
 
 \subsection{Map}
 
-The object \deff{map} is a decorator of \ff{array} of pairs $(k, v)$. The \ff{map} ensures that all $k$ are always unique. It is expected that each $k$ has \ff{as-hash} attribute that behaves as \ff{int}.
+The object \deff{map} is a decorator of \ff{tuple} of pairs $(k, v)$. The \ff{map} ensures that all $k$ are always unique. It is expected that each $k$ has \ff{as-hash} attribute that behaves as \ff{int}.
 
 The attributes \ff{with}, \ff{without}, \ff{found}, and \ff{foundi} are reimplemented in \ff{map}.
 
 \subsection{Set}
 
-The object \deff{set} is a decorator of \ff{array}. The \ff{set} ensures that all elements in the array are always unique. It is expected that each $k$ has \ff{as-hash} attribute that behaves as \ff{int}.
+The object \deff{set} is a decorator of \ff{tuple}. The \ff{set} ensures that all elements in the tuple are always unique. It is expected that each $k$ has \ff{as-hash} attribute that behaves as \ff{int}.
 
 The attributes \ff{with}, \ff{without}, \ff{found}, and \ff{foundi} are reimplemented in \ff{set}.
 
