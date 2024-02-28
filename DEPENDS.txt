@@ -44,3 +44,4 @@ hard transparent
 hard trimspaces
 hard wrapfig
 hard xstring
+hard upquote
