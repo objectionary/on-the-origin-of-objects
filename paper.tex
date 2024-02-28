@@ -2,20 +2,15 @@
 \settopmatter{printfolios=false,printccs=false,printacmref=false}
 \usepackage[maxnames=1,minnames=1,maxbibnames=1,natbib=true,citestyle=authoryear,bibstyle=authoryear,doi=false,url=false,isbn=false,isbn=false,backend=biber]{biblatex}
 \addbibresource{main.bib}
-\ifnum\pdfshellescape=1
-  \usepackage[finalizecache]{minted}
-\else
-  \usepackage[frozencache]{minted}
-\fi
 \usepackage{ffcode}
 \usepackage[capitalize]{cleveref}
 \usepackage{to-be-determined}
 
 \usepackage{csquotes}
+\usepackage[utf8]{inputenc}
 \usepackage[T2A]{fontenc}
 \usepackage[russian,english]{babel}
-\usepackage{substitutefont}
-  \substitutefont{T2A}{LinuxBiolinumT-TLF}{LibertinusSans-TLF}
+  \DeclareFontFamilySubstitution{T2A}{LinuxBiolinumT-TLF}{LibertinusSans-TLF}
   \renewcommand\ttdefault{cmtt}
 
 \setlength{\footskip}{13.0pt}
@@ -463,33 +458,33 @@ The object \deff{text} is a decorator of a \ff{string}, it has the following att
 The object \deff{regex} is an abstraction of a regular expression, in accordance with \citet[Part~2]{posix} (Extended Regular Expressions) and full support of Unicode. The attribute \deff{match} is a split of the \ff{string} into parts:
 
 \begin{ffcode}
-QQ.txt.regex "/(и([^ ]+))/i" > r
+QQ.txt.regex "/((*@и@*)([^ ]+))/i" > r
 r.match > m
-  "Из искры возгорится пламя"
+  "(*@Из искры возгорится пламя@*)"
 eq.
   m
   *
     *
-      "Из"
+      "(*@Из@*)"
       0
       *
-        "И"
-        * "з" 1 *
+        "(*@И@*)"
+        * "(*@з@*)" 1 *
     * " "
     *
-      "искры"
+      "(*@искры@*)"
       3
       *
-        "и"
-        * "скры" 4 *
-    * " возгор"
+        "(*@и@*)"
+        * "(*@скры@*)" 4 *
+    * " (*@возгор@*)"
     *
-      "ится"
+      "(*@ится@*)"
       15
       *
-        "и"
-        "тся" 16 *
-    * " пламя"
+        "(*@и@*)"
+        "(*@тся@*)" 16 *
+    * " (*@пламя@*)"
 \end{ffcode}
 
 \section{Collections}\label{sec:collections}
