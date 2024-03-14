@@ -1,5 +1,6 @@
 <img src="https://www.objectionary.com/cactus.svg" height="100px"/>
 
+[![arXiv](https://img.shields.io/badge/arXiv-2206.02585-green.svg)](https://arxiv.org/abs/2206.02585)
 [![make](https://github.com/objectionary/on-the-origin-of-objects/actions/workflows/latexmk.yml/badge.svg)](https://github.com/objectionary/on-the-origin-of-objects/actions/workflows/latexmk.yml)
 
 The paper is published [in arXiv](https://arxiv.org/abs/2206.02585).
