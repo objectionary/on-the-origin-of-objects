@@ -1,8 +1,8 @@
-\documentclass[sigplan,11pt,nonacm,natbib=false]{acmart}
+\documentclass[sigplan,11pt,nonacm]{acmart}
 \settopmatter{printfolios=false,printccs=false,printacmref=false}
-\usepackage[maxnames=1,minnames=1,maxbibnames=1,natbib=true,citestyle=authoryear,bibstyle=authoryear,doi=false,url=false,isbn=false,isbn=false,backend=biber]{biblatex}
-\addbibresource{main.bib}
 \usepackage{ffcode}
+\usepackage{natbib}
+\usepackage{doi}
 \usepackage[capitalize]{cleveref}
 \usepackage{to-be-determined}
 
@@ -688,8 +688,7 @@ The object \deff{semaphore} is a counting semaphore with two attributes: \adeff{
 
 The object \deff{atomic-memory} is a synchronized decorator of \ff{memory} with a binary \ff{semaphore} encapsulated.
 
-\printbibliography
-
-\clearpage
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{main}
 
 \end{document}
