@@ -7,6 +7,7 @@ hard biblatex
 hard cancel
 hard catchfile
 hard cjk
+hard doi
 hard cleveref
 hard cm-super
 hard comment
