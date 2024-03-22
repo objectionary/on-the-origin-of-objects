@@ -52,7 +52,8 @@ and so on.
 
 Each Standard Library (SL) freely defines its own principles of abstraction. For example, to get an absolute value of a numeric object \ff{x} in Java, one has to call a static method of another class \ff{Math.abs(x)}, while in Ruby it would be a property of the same object \ff{x.abs}. For example, in Java, an attempt to get a value from a hash map by a key will produce \ff{null} in case of its absence, while in C++ it will return an empty iterator. There are many similar examples demonstrating the absence of common ground between SLs.
 
-As a humble attempt to create such a common ground for the world of objects, we suggest our own taxonomy of objects for EO\footnote{\url{https://www.eolang.org}}, a strictly formal~\citep{kudasov2021} object-oriented programming language with an intentionally reduced feature set~\citep{bugayenko2021eolang}. All objects are grouped as such:
+Earlier, \citep{booch1990design} suggested their own components for OOP.
+We suggest our own taxonomy of objects for EO\footnote{\url{https://www.eolang.org}}, a strictly formal~\citep{kudasov2021} object-oriented programming language with an intentionally reduced feature set~\citep{bugayenko2021eolang}. All objects are grouped as such:
 
 \begin{itemize}
     \item Primitives (\cref{sec:primitives})
