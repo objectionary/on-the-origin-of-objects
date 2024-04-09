@@ -646,7 +646,8 @@ and waits. This code endlessly reads strings from the console and immediately
 prints them back:
 
 \begin{ffcode}
-TRUE.while
+while
+  TRUE
   [i]
     QQ.io.stdout > @
       QQ.io.stdin
