@@ -36,7 +36,11 @@
 \raggedbottom
 
 \begin{abstract}
-We introduce a taxonomy of objects for EO programming language. This taxonomy is designed with a few principles in mind: non-redundancy, simplicity, and so on. The taxonomy is supposed to be used as a navigation map by EO programmers. It may also be helpful as a guideline for designers of other object-oriented languages or libraries for them.
+We introduce a taxonomy of objects for EO programming language.
+This taxonomy is designed with a few principles in mind: non-redundancy,
+simplicity, and so on. The taxonomy is supposed to be used as a navigation map
+by EO programmers. It may also be helpful as a guideline for designers of
+other object-oriented languages or libraries for them.
 \end{abstract}
 
 \maketitle
@@ -44,16 +48,32 @@ We introduce a taxonomy of objects for EO programming language. This taxonomy is
 \section{Introduction}
 
 Each object-oriented programming language offers its own set of objects, classes, types, functions, constants, traits, templates, and so on, which programmers can use off-the-shelf to model their specific use cases:
-``Development Kit'' in Java,
-``Standard Library'' in C++, Python, Swift, Rust, and Ruby,
-``.NET Standard'' in C\#,
-``Built-in Objects'' in JavaScript,
+``Development Kit'' in Java~\citep{jdk2024,java2024},
+``Standard Library'' in
+  C++~\citep{cpp2024,cpp2012},
+  Python~\citep{python2024,python2017},
+  Swift~\citep{swift2024,swift2015},
+  Rust~\citep{rust2024,rust2021},
+  and
+  Ruby,
+``.NET Standard'' in C\#~\citep{net2023,net2005},
+``Built-in Objects'' in JavaScript~\citep{js2024,js2008},
 and so on.
 
-Each Standard Library (SL) freely defines its own principles of abstraction. For example, to get an absolute value of a numeric object \ff{x} in Java, one has to call a static method of another class \ff{Math.abs(x)}, while in Ruby it would be a property of the same object \ff{x.abs}. For example, in Java, an attempt to get a value from a hash map by a key will produce \ff{null} in case of its absence, while in C++ it will return an empty iterator. There are many similar examples demonstrating the absence of common ground between SLs.
+Each Standard Library (SL) freely defines its own principles of abstraction. For
+example, to get an absolute value of a numeric object \ff{x} in Java, one has
+to call a static method of another class \ff{Math.abs(x)}, while in Ruby it
+would be a property of the same object \ff{x.abs}. For example, in Java, an
+attempt to get a value from a hash map by a key will produce \ff{null} in case
+of its absence, while in C++ it will return an empty iterator. There are many
+similar examples demonstrating the absence of common ground between SLs.
 
-Earlier, \citep{booch1990design} suggested their own components for OOP.
-We suggest our own taxonomy of objects for EO\footnote{\url{https://www.eolang.org}}, a strictly formal~\citep{kudasov2021} object-oriented programming language with an intentionally reduced feature set~\citep{bugayenko2021eolang}. All objects are grouped as such:
+Earlier, \citep{booch1990design} suggested their own components for OOP. We
+suggest our own taxonomy of objects for
+EO\footnote{\url{https://www.eolang.org}},
+a strictly formal~\citep{kudasov2021} object-oriented programming language with an intentionally
+reduced feature set~\citep{bugayenko2021eolang}.
+All objects are grouped as such:
 
 \begin{itemize}
     \item Primitives (\cref{sec:primitives})
@@ -72,7 +92,10 @@ We suggest our own taxonomy of objects for EO\footnote{\url{https://www.eolang.o
     \item Synchronization in multi-threading (\cref{sec:synchronization})
 \end{itemize}
 
-An object in EO is either a composition of other objects or an atom, which is a foreign function interface to a lower-level runtime such as, for example, JVM or Assembly. In this paper, we denote atoms by a star, for example: \aff{times}.
+An object in EO is either a composition of other objects or an atom, which is a
+foreign function interface to a lower-level runtime such as, for example, JVM
+or Assembly. In this paper, we denote atoms by a star, for example:
+\aff{times}.
 
 Everywhere in the paper we use dark blue color to highlight an object when it's mentioned for the first time.
 
@@ -103,9 +126,12 @@ In case of any runtime error, an object is supposed to ``return'' an error objec
 
 \section{Primitives}\label{sec:primitives}
 
-There are five primitive data objects described below. All of them have \adeff{as-bytes} attribute, which is an abstraction of their representation as a sequence of bytes.
-All primitives also have \deff{as-hash} attribute, which, being an \ff{int}, is their own implementation of a hash function.
-They also have \deff{eq} attribute, which is \ff{TRUE} if the primitive is equal to another object, through the use of \ff{\^{}.as-bytes.eq}.
+There are five primitive data objects described below. All of them have \adeff
+{as-bytes} attribute, which is an abstraction of their representation as a
+sequence of bytes. All primitives also have \deff{as-hash} attribute, which,
+being an \ff{int}, is their own implementation of a hash function. They also
+have \deff{eq} attribute, which is \ff{TRUE} if the primitive is equal to
+another object, through the use of \ff{\^{}.as-bytes.eq}.
 
 \subsection{Bytes}
 
