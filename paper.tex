@@ -98,7 +98,7 @@ foreign function interface to a lower-level runtime such as, for example, JVM
 or Assembly. In this paper, we denote atoms by a star, for example:
 \aff{times}.
 
-Everywhere in the paper we use dark blue color to highlight an object when it's
+Everywhere in the paper we use dark blue color to highlight an object when it is
 mentioned for the first time.
 
 In this paper\footnote{%
@@ -187,29 +187,35 @@ The \deff{minus} attribute is a subtraction of another \ff{int} from this number
 The \adeff{times} attributes and \adeff{div} are a multiplication and a division of this number and another \ff{int}.
 The \deff{neg} attribute is the same number with a different sign.
 
-The \adeff{lt} attribute is a \ff{bool} object \ff{TRUE} if it's ``less than'' another \ff{int} and \ff{FALSE} otherwise. Attributes \deff{gt}, \deff{lte}, and \deff{gte} are ``greater than,'' ``less than or equal,'' and ``greater than or equal'' comparisons respectively.
+The \adeff{lt} attribute is a \ff{bool} object \ff{TRUE} if it is ``less than'' another \ff{int} and \ff{FALSE} otherwise. Attributes \deff{gt}, \deff{lte}, and \deff{gte} are ``greater than,'' ``less than or equal,'' and ``greater than or equal'' comparisons respectively.
 
 Integers with a different bit-width are explained in \cref{sec:digits}.
 All other manipulations with integers can be done in their decorators. Some of them are explained in \cref{sec:math}.
 
 \subsection{Bool}
 
-The \deff{bool} object is a one-bit abstraction of a Boolean value. Its \aff{as-bytes} is either \eohex{00-} or \eohex{01-}.
+The \deff{bool} object is a one-bit abstraction of a Boolean value. Its
+\aff{as-bytes} is either \eohex{00-} or \eohex{01-}.
 
 There are two pre-defined objects \deff{TRUE} and \deff{FALSE}.
 
-The \deff{not} attribute is a Boolean inversion. Attributes \deff{and}, \deff{or}, \deff{xor} are logical conjunction, disjunction, and exclusive disjunction of the object itself with an a array of other Boolean values; they use \aff{and}, \aff{or}, and \aff{xor} from \ff{\^{}.as-bytes} respectively.
+The \deff{not} attribute is a Boolean inversion. Attributes \deff{and},
+\deff{or}, \deff{xor} are logical conjunction, disjunction, and exclusive
+disjunction of the object itself with an a array of other Boolean values; they
+use \aff{and}, \aff{or}, and \aff{xor} from \ff{\^{}.as-bytes} respectively.
 
 \subsection{Float}
 
-The object \deff{float} is an abstraction of a floating point number, which takes eight bytes and fills them up according to the format suggested by \citet{ieee754}.
+The object \deff{float} is an abstraction of a floating point number, which
+takes eight bytes and fills them up according to the format suggested by
+\citet{ieee754}.
 
 The \adeff{plus} attribute is a summary of this number and another \ff{float}.
 The \deff{minus} attribute is a subtraction of another \ff{float} from this number.
 The \adeff{times} attributes and \adeff{div} are a multiplication and a division of this number and another \ff{float}.
 The \deff{neg} attribute is the same number with a different sign.
 
-The \adeff{lt} attribute is a \ff{bool} object \ff{TRUE} if it's ``less than'' another \ff{float} and \ff{FALSE} otherwise. Attributes \deff{gt}, \deff{lte}, and \deff{gte} are ``greater than,'' ``less than or equal,'' and ``greater than or equal'' comparisons respectively.
+The \adeff{lt} attribute is a \ff{bool} object \ff{TRUE} if it is ``less than'' another \ff{float} and \ff{FALSE} otherwise. Attributes \deff{gt}, \deff{lte}, and \deff{gte} are ``greater than,'' ``less than or equal,'' and ``greater than or equal'' comparisons respectively.
 
 Floating-point numbers with a different bit-width are explained in
 \cref{sec:digits}. All other manipulations with floating-point numbers can be done
@@ -245,7 +251,7 @@ The \adeff{with} attribute is a new \ff{tuple} with all elements
 from the current tuple and a new element added to the end of it.
 
 The \adeff{at} attribute is the element of the tuple with
-it's associated index number---positive one, zero indexed and starting
+it is associated index number---positive one, zero indexed and starting
 from left, and the negative one starting at -1 from the right.
 
 The \adeff{length} attribute is the total amount of elements in the tuple.
@@ -308,9 +314,8 @@ seq
 The \adeff{if} object is a branching mechanism, expecting three arguments: a
 condition as \ff{bool}, a ``positive'' object, and a ``negative'' object. When
 being dataized, the object \aff{if} first dataizes the condition and then,
-according to the result obtained, either dataizes the positive object or the
-negative one, returning the result as a result of its own dataization. Both
-positive and negative objects must be copies of the same abstract object. This
+according to the result obtained, either returns the positive object or the
+negative one. Both positive and negative objects must have the same form. This
 code give a title to a random number:
 
 \begin{ffcode}
@@ -324,11 +329,11 @@ QQ.io.stdout
 \end{ffcode}
 
 The \adeff{while} object is an iterating mechanism, expecting two attributes: a
-condition as \ff{bool} and an abstract object with one free attribute. When
-being dataized, the object \aff{while} first dataizes the condition and then
-either stops if it is \ff{FALSE} or dataizes the abstract object with an
-\ff{int} equal to the number of the iterating cycle. This code makes a few
-attempts to find a random number that is smaller than 0.1:
+condition as \ff{bool} and a body as an abstract object with one free
+attribute. When being dataized, the object \aff{while} dataizes the condition
+until it is \ff{FALSE}. In the end, it returns the body or \ff{FALSE} if no
+iterations happened. This code makes a few attempts to find a random number
+that is smaller than 0.1:
 
 \begin{ffcode}
 while
@@ -356,7 +361,8 @@ goto
           QQ.txt.sprintf "42/x = %d" y
 \end{ffcode}
 
-In this example, the number will be read from the console again, if it's equal to zero:
+In this example, the number will be read from the console again,
+if it is equal to zero:
 
 \begin{ffcode}
 goto
@@ -383,23 +389,15 @@ used if no other pairs match:
 QQ.io.stdout
   switch
     *
-      password.eq "swordfish"
-      "password is correct!"
-    *
-      password.eq ""
-      "empty password is not allowed"
-    *
-      FALSE
-      "password is wrong"
-\end{ffcode}
-
-The \deff{nop} object (stands for ``No Operations'') encapsulates everything,
-doesn't dataize it, and is always \ff{TRUE}:
-
-\begin{ffcode}
-eq.
-  QQ.nop "12" 42 FALSE
-  TRUE
+      *
+        password.eq "swordfish"
+        "password is correct!"
+      *
+        password.eq ""
+        "empty password is not allowed"
+      *
+        FALSE
+        "password is wrong"
 \end{ffcode}
 
 \section{Digits}\label{sec:digits}
@@ -408,10 +406,10 @@ Here we define objects that represent numbers with smaller or larger bitwise
 width comparing with the default 64-bits convention. All objects presented in
 this Section belong to the \ff{QQ.digits} package.
 
-Objects \deff{int8}, \deff{int16}, \deff{int32}, and \deff{int128} are decorators
+The \deff{int8}, \deff{int16}, \deff{int32}, and \deff{int128} objects are decorators
 of \ff{bytes} with a predefined size. They implement the same numeric operations
 as \ff{int}.
-Objects \deff{float16}, \deff{float32}, and \deff{float128} are
+The \deff{float16}, \deff{float32}, and \deff{float128} objects are
 also decorators of \ff{bytes}, implementing the same operations as \ff{float}.
 
 \section{Memory}\label{sec:memory}
@@ -422,6 +420,7 @@ The \adeff{memory} object is an abstraction of a read-write memory capable of
 storing one of five primitive data objects mentioned in
 \cref{sec:primitives}. The \adeff{write} attribute implements writing operation,
 while the \aff{memory} object itself decorates the data object stored in it.
+Before every writing to the memory, the \adeff{memory} dataizes the argument.
 This code writes a number into memory and then reads it back and prints:
 
 \begin{ffcode}
@@ -430,19 +429,21 @@ seq
   *
     m.write 42
     QQ.io.stdout
-      QQ.txt.sprintf "Memory contains %d" m
+      QQ.txt.sprintf
+        "Memory contains %d"
+        m.as-int
 \end{ffcode}
 
-The \adeff{cage} object is similar to \aff{memory}, but it can store any object,
-not only five primitives. The use of \aff{cage} is strongly discouraged. The
+The \adeff{cage} object is similar to the \aff{memory}, but it stores an object, not the result of its dataization.
+The use of \aff{cage} is strongly discouraged. The
 following code stores a ``book'' in a \aff{cage}, then retrieves it back, and
 prints one of its attribute:
 
 \begin{ffcode}
 [title author] > book
 book > ot
-  "Object Thinking" > title
-  "David West" > author
+  "Object Thinking"
+  "David West"
 (cage book).new > c
 seq
   *
@@ -453,8 +454,8 @@ seq
 \end{ffcode}
 
 The \deff{heap} object is an abstraction of a random-access memory of certain
-size. It behaves like \ff{bytes}, but has an additional attribute
-\adeff{write}. In this example, one kilobyte of memory with random data is allocated
+size. It behaves like the \ff{bytes}, but has an additional \adeff{write} attribute.
+In this example, one kilobyte of memory with random data is allocated
 when a copy of \ff{heap} is created, a non-copying slice \ff{s} of 13 bytes is
 made starting with the 200-th byte, data is written into it, then a non-copying
 sub-slice is created of only five bytes, and finally a string is read back
@@ -466,7 +467,7 @@ seq
   *
     write.
       r.slice 200 13 > s
-      "Hello, world!".as-bytes
+      "Hello, world!"
     QQ.io.stdout
       as-string.
         s.slice 0 5
@@ -475,16 +476,16 @@ seq
 \section{Math}\label{sec:math}
 
 Here we define objects that represent math functions and algorithms.
-All objects in this Section belong to \ff{QQ.math} package.
+All objects in this Section belong to the \ff{QQ.math} package.
 
-The object \deff{random} is a abstraction of a random \ff{float} between zero
+The \deff{random} object is a abstraction of a random \ff{float} between zero
 and one inclusively. It has an additional attribute \adeff{pseudo} that
 makes \ff{random} with a pseudorandom seed.
 
-The object \deff{angle} is a decorator of \ff{float}. It assumes that the angle
+The \deff{angle} object is a decorator of \ff{float}. It assumes that the angle
 is in radians and has the following attributes for trigonometric functions:
-\deff{sine}, \deff{cosine}, and \deff{tangent}. There are attributes \deff{as-degrees}
-and \deff{as-radians} for switching from radians to degrees and backwards.
+\deff{sine}, \deff{cosine}, and \deff{tangent}. There are \deff{as-degrees}
+and \deff{as-radians} attributes for switching from radians to degrees and backwards.
 
 The \deff{number} object is a decorator of \ff{int} and \ff{float} with the
 following additional attributes:
@@ -498,7 +499,7 @@ following additional attributes:
     \item \deff{max}: the greater of itself and another number
     \item \deff{min}: the smaller of itself and another number
     \item \deff{power}: itself raised to the power (\(\rho^x\))
-    \item \deff{signum}: the sign of itself
+    \item \deff{signum}: the sign of itself, as \ff{-1}, \ff{0}, or \ff{+1}
     \item \deff{sqrt}: square root of itself (\(\sqrt\rho\))
 \end{itemize}
 
