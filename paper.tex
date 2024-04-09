@@ -77,6 +77,7 @@ reduced feature set~\citep{bugayenko2021eolang}.
 All objects are grouped as such:
 
 \begin{itemize}
+    \item Primitives (\cref{sec:bytes})
     \item Primitives (\cref{sec:primitives})
     \item Tuple (\cref{sec:tuple})
     \item Error handling (\cref{sec:errors})
@@ -128,16 +129,7 @@ In case of any runtime error, an object is supposed to ``return'' an error
 object, with the \ff{message} attribute present (as a \ff{string}) and
 the \ff{@} attribute absent.
 
-\section{Primitives}\label{sec:primitives}
-
-There are five primitive data objects described below. All of them have
-\adeff{as-bytes} attribute, which is an abstraction of their representation as a
-sequence of bytes. All primitives also have \deff{as-hash} attribute, which,
-being an \ff{int}, is their own implementation of a hash function. They also
-have \deff{eq} attribute, which is \ff{TRUE} if the primitive is equal to
-another object, through the use of \ff{\^{}.as-bytes.eq}.
-
-\subsection{Bytes}
+\section{Bytes}\label{sec:bytes}
 
 The center of the taxonomy is the \deff{bytes} data object, which is an abstraction
 of a sequence of bytes. The sequence can either be empty or contain a
@@ -177,6 +169,15 @@ The \adeff{slice} attribute represents a sub-sequence inside the current one.
 
 The \adeff{chained} attribute is a new sequence, which is a concatenation
 of two byte sequences: the current and the provided one.
+
+\section{Primitives}\label{sec:primitives}
+
+There are four primitive data objects described below. All of them have
+\adeff{as-bytes} attribute, which is an abstraction of their representation as a
+sequence of bytes. All primitives also have \deff{as-hash} attribute, which,
+being an \ff{int}, is their own implementation of a hash function. They also
+have \deff{eq} attribute, which is \ff{TRUE} if the primitive is equal to
+another object, through the use of \ff{\^{}.as-bytes.eq}.
 
 \subsection{Int}
 
