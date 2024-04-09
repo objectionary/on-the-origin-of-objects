@@ -1,3 +1,4 @@
+hard eolang
 hard acmart
 hard algorithmicx
 hard algpseudocodex

@@ -3,6 +3,7 @@
 \usepackage{ffcode}
 \usepackage{natbib}
 \usepackage{doi}
+\usepackage{eolang}
 \usepackage[capitalize]{cleveref}
 \usepackage{to-be-determined}
 
@@ -36,10 +37,10 @@
 \raggedbottom
 
 \begin{abstract}
-We introduce a taxonomy of objects for EO programming language.
+We introduce a taxonomy of objects for \eolang{} programming language.
 This taxonomy is designed with a few principles in mind: non-redundancy,
 simplicity, and so on. The taxonomy is supposed to be used as a navigation map
-by EO programmers. It may also be helpful as a guideline for designers of
+by \eolang{} programmers. It may also be helpful as a guideline for designers of
 other object-oriented languages or libraries for them.
 \end{abstract}
 
@@ -92,19 +93,21 @@ All objects are grouped as such:
     \item Synchronization in multi-threading (\cref{sec:synchronization})
 \end{itemize}
 
-An object in EO is either a composition of other objects or an atom, which is a
+An object in \eolang{} is either a composition of other objects or an atom, which is a
 foreign function interface to a lower-level runtime such as, for example, JVM
 or Assembly. In this paper, we denote atoms by a star, for example:
 \aff{times}.
 
-Everywhere in the paper we use dark blue color to highlight an object when it's mentioned for the first time.
+Everywhere in the paper we use dark blue color to highlight an object when it's
+mentioned for the first time.
 
 In this paper\footnote{%
 \LaTeX{} sources of this paper are maintained in
 \href{https://github.com/REPOSITORY}{REPOSITORY} GitHub repository,
 the rendered version is \href{https://github.com/REPOSITORY/releases/tag/0.0.0}{\ff{0.0.0}}.}
 we don't provide exact specification of each object, in order to avoid
-conflicts with their exact definitions in Objectionary\footnote{\url{https://www.objectionary.com}}.
+conflicts with their exact definitions in the
+Objectionary\footnote{\url{https://www.objectionary.com}}.
 
 \section{Principles}
 
@@ -118,7 +121,7 @@ We adhere to a few principles:
 \begin{ffcode}
 x.times.y > z
 \end{ffcode}
-means ``$x$ times $y$ is $z$.''
+means ``\(x\) times \(y\) is \(z\).''
 There are a few exceptions though, like \ff{eq}, \ff{seq}, \ff{lt}, and a few others.
 \end{itemize}
 
@@ -135,7 +138,7 @@ another object, through the use of \ff{\^{}.as-bytes.eq}.
 
 \subsection{Bytes}
 
-The center of the taxonomy is \deff{bytes} data object, which is an abstraction of an sequence of bytes. The sequence can either be empty or contain an theoretically unlimited number of bytes. A byte is a unit of information that consists of eight adjacent binary digits (bits), each of which consists of a 0 or 1. In EO syntax a sequence of bytes is denoted as either \eohex{--} (double dash) for an empty one or as a concatenation of \eohex{xx-}, where \ff{xx} is a hexadecimal representation of a byte.
+The center of the taxonomy is \deff{bytes} data object, which is an abstraction of an sequence of bytes. The sequence can either be empty or contain an theoretically unlimited number of bytes. A byte is a unit of information that consists of eight adjacent binary digits (bits), each of which consists of a 0 or 1. In \eolang{} syntax a sequence of bytes is denoted as either \eohex{--} (double dash) for an empty one or as a concatenation of \eohex{xx-}, where \ff{xx} is a hexadecimal representation of a byte.
 
 The object \ff{bytes} has these four attributes, to turn itself into one of four primitive data objects:
 \adeff{as-int},
@@ -327,7 +330,7 @@ goto
             "Number %d is OK!" x
 \end{ffcode}
 
-The object \deff{switch} is an abstraction of a multi-case branching that encapsulates $(k, v)$ pairs and the dataization result is equal to $v$ of the first pair where $k$ is \ff{TRUE}, while the last pair is the one to be used if no other pairs match:
+The object \deff{switch} is an abstraction of a multi-case branching that encapsulates \((k, v)\) pairs and the dataization result is equal to \(v\) of the first pair where \(k\) is \ff{TRUE}, while the last pair is the one to be used if no other pairs match:
 
 \begin{ffcode}
 QQ.io.stdout
@@ -428,16 +431,16 @@ The object \deff{angle} is a decorator of \ff{float}. It assumes that the angle 
 The object \deff{number} is a decorator of \ff{int} and \ff{float} with the following additional attributes:
 
 \begin{itemize}
-    \item \deff{abs}: absolute value of itself ($|\rho|$)
+    \item \deff{abs}: absolute value of itself (|\rho|)
     \item \deff{ceil}: round itself up
     \item \deff{floor}: round itself down
-    \item \deff{ln}: natural logarithm ($\ln \rho$)
-    \item \deff{log}: logarithm ($\log_x \rho$)
+    \item \deff{ln}: natural logarithm (\(\ln \rho\))
+    \item \deff{log}: logarithm (\(\log_x \rho\))
     \item \deff{max}: the greater of itself and another number
     \item \deff{min}: the smaller of itself and another number
-    \item \deff{power}: itself raised to the power ($\rho^x$)
+    \item \deff{power}: itself raised to the power (\(\rho^x\))
     \item \deff{signum}: the sign of itself
-    \item \deff{sqrt}: square root of itself ($\sqrt\rho$)
+    \item \deff{sqrt}: square root of itself (\(\sqrt\rho\))
 \end{itemize}
 
 \section{Strings}\label{sec:strings}
