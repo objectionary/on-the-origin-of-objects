@@ -126,7 +126,7 @@ There are a few exceptions though, like \ff{eq}, \ff{seq}, \ff{lt}, and a few ot
 \end{enumerate}
 
 In case of any runtime error, an object is supposed to ``return'' an error
-object, with the \ff{message} attribute present (as a \ff{string}) and
+object, with the \ff{message} attribute present (attached to any object) and
 the \ff{@} attribute absent.
 
 \section{Bytes}\label{sec:bytes}
@@ -147,9 +147,10 @@ one of four primitive data objects:
 \adeff{as-float},
 and
 \adeff{as-string}.
-The attribute \aff{as-int} expects the size of the sequence to be less or
-equal to eight. The attribute \aff{as-bool} is \ff{FALSE} only if all bytes
-equal to zero. The attribute \aff{as-float} expects exactly eight bytes.
+The attribute \aff{as-int} expects the size of the sequence to be eight bytes.
+The attribute \aff{as-bool} expects exactly one byte in the sequence and is
+\ff{FALSE} only if the byte equals to zero.
+The attribute \aff{as-float} expects exactly eight bytes.
 
 There are also attributes for bitwise operations:
 \adeff{and},
@@ -167,7 +168,7 @@ The \adeff{size} attribute is the total number of bytes in the sequence.
 
 The \adeff{slice} attribute represents a sub-sequence inside the current one.
 
-The \adeff{chained} attribute is a new sequence, which is a concatenation
+The \adeff{concat} attribute is a new sequence, which is a concatenation
 of two byte sequences: the current and the provided one.
 
 \section{Primitives}\label{sec:primitives}
@@ -202,8 +203,7 @@ There are two pre-defined objects \deff{TRUE} and \deff{FALSE}.
 
 The \deff{not} attribute is a Boolean inversion. Attributes \deff{and},
 \deff{or}, \deff{xor} are logical conjunction, disjunction, and exclusive
-disjunction of the object itself with an a array of other Boolean values; they
-use \aff{and}, \aff{or}, and \aff{xor} from \ff{\^{}.as-bytes} respectively.
+disjunction of the object itself with an a array of other Boolean values.
 
 \subsection{Float}
 
@@ -256,9 +256,6 @@ it is associated index number---positive one, zero indexed and starting
 from left, and the negative one starting at -1 from the right.
 
 The \adeff{length} attribute is the total amount of elements in the tuple.
-
-The \adeff{chained} attribute is a new \ff{tuple}, which is
-a concatenation of two tuples: the current and the provided one.
 
 All other manipulations with tuples can be implemented in their
 decorators. Some of them are explained in \cref{sec:structs}.
@@ -347,12 +344,12 @@ while
         "Attempt #%d" i
 \end{ffcode}
 
-The \adeff{goto} object enables forward and backward ``jumps'' either
+The \adeff{go} object enables forward and backward ``jumps'' either
 immediately finishing dataization or restarting it. For example, this code
 won't print a message to the console if \ff{x} is equal to zero:
 
 \begin{ffcode}
-goto
+go.to
   [g]
     seq > @
       *
@@ -368,7 +365,7 @@ In this example, the number will be read from the console again,
 if it is equal to zero:
 
 \begin{ffcode}
-goto
+go.to
   [g]
     seq > @
       *
@@ -456,24 +453,20 @@ seq
         "Title is %s" c.title
 \end{ffcode}
 
-The \deff{heap} object is an abstraction of a random-access memory of certain
+The \deff{malloc} object is an abstraction of a random-access memory of certain
 size. It behaves like the \ff{bytes}, but has an additional \adeff{write} attribute.
 In this example, one kilobyte of memory with random data is allocated
-when a copy of \ff{heap} is created, a non-copying slice \ff{s} of 13 bytes is
-made starting with the 200-th byte, data is written into it, then a non-copying
-sub-slice is created of only five bytes, and finally a string is read back
-and \ff{"Hello"} is printed:
+when a copy of \ff{malloc} is created, six bytes are written starting with the
+200-th byte, and then a string is read back and \ff{"Hello!"} is printed:
 
 \begin{ffcode}
-heap 1024 > r
+(malloc 1024).pointer > p
 seq
   *
-    write.
-      r.slice 200 13 > s
-      "Hello, world!"
+    p.write 200 "Hello!"
     QQ.io.stdout
       as-string.
-        s.slice 0 5
+        p.read 200 6
 \end{ffcode}
 
 \section{Math}\label{sec:math}
