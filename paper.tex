@@ -320,11 +320,12 @@ negative one. Both positive and negative objects must have the same form. This
 code give a title to a random number:
 
 \begin{ffcode}
+QQ.math.random.pseudo > r
 QQ.io.stdout
   QQ.txt.sprintf
     "Coin toss: %s"
     if
-      QQ.math.random.pseudo.gte 0.5
+      r.gte 0.5
       "heads"
       "tail"
 \end{ffcode}
@@ -337,8 +338,9 @@ iterations happened. This code makes a few attempts to find a random number
 that is smaller than 0.1:
 
 \begin{ffcode}
+QQ.math.random.pseudo > r
 while
-  QQ.math.random.pseudo.gte 0.1
+  r.gte 0.1
   [i]
     QQ.io.stdout > @
       QQ.txt.sprintf
