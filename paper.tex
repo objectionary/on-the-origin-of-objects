@@ -85,7 +85,7 @@ All objects are grouped as such:
     \item Memory abstractions (\cref{sec:memory})
     \item Math functions and algorithms (\cref{sec:math})
     \item String manipulations (\cref{sec:strings})
-    \item Collections (\cref{sec:collections})
+    \item Structs (\cref{sec:structs})
     \item I/O Streams (\cref{sec:streams})
     \item File System abstractions (\cref{sec:fs})
     \item Net Sockets (\cref{sec:sockets})
@@ -175,7 +175,8 @@ The \adeff{size} attribute is the total number of bytes in the sequence.
 
 The \adeff{slice} attribute represents a sub-sequence inside the current one.
 
-The \adeff{chained} attribute is a new sequence, which is a concatenation of two byte sequences: the current and the provided one.
+The \adeff{chained} attribute is a new sequence, which is a concatenation
+of two byte sequences: the current and the provided one.
 
 \subsection{Int}
 
@@ -253,7 +254,7 @@ The \adeff{chained} attribute is a new \ff{tuple}, which is
 a concatenation of two tuples: the current and the provided one.
 
 All other manipulations with tuples can be implemented in their
-decorators. Some of them are explained in \cref{sec:collections}.
+decorators. Some of them are explained in \cref{sec:structs}.
 
 \section{Error Handling}\label{sec:errors}
 
@@ -298,9 +299,10 @@ the middle:
 
 \begin{ffcode}
 seq
-  QQ.io.stdout "Hello, world!
-  42.div 0
-  QQ.io.stdout "Bye!"
+  *
+    QQ.io.stdout "Hello, world!
+    42.div 0
+    QQ.io.stdout "Bye!"
 \end{ffcode}
 
 The \adeff{if} object is a branching mechanism, expecting three arguments: a
@@ -345,12 +347,13 @@ won't print a message to the console if \ff{x} is equal to zero:
 goto
   [g]
     seq > @
-      if > y
-        x.eq 0
-        g.forward 0
-        42.div x
-      QQ.io.stdout
-        QQ.txt.sprintf "42/x = %d" y
+      *
+        if > y
+          x.eq 0
+          g.forward 0
+          42.div x
+        QQ.io.stdout
+          QQ.txt.sprintf "42/x = %d" y
 \end{ffcode}
 
 In this example, the number will be read from the console again, if it's equal to zero:
@@ -359,15 +362,16 @@ In this example, the number will be read from the console again, if it's equal t
 goto
   [g]
     seq > @
-      as-int. > x
-        QQ.txt.parsed
-          QQ.io.stdin
-      if
-        x.eq 0
-        g.backward
-        QQ.io.stdout
-          QQ.txt.sprintf
-            "Number %d is OK!" x
+      *
+        as-int. > x
+          QQ.txt.parsed
+            QQ.io.stdin
+        if
+          x.eq 0
+          g.backward
+          QQ.io.stdout
+            QQ.txt.sprintf
+              "Number %d is OK!" x
 \end{ffcode}
 
 The \deff{switch} object is an abstraction of a multi-case branching that
@@ -423,9 +427,10 @@ This code writes a number into memory and then reads it back and prints:
 \begin{ffcode}
 (memory 0).alloc > m
 seq
-  m.write 42
-  QQ.io.stdout
-    QQ.txt.sprintf "Memory contains %d" m
+  *
+    m.write 42
+    QQ.io.stdout
+      QQ.txt.sprintf "Memory contains %d" m
 \end{ffcode}
 
 The \adeff{cage} object is similar to \aff{memory}, but it can store any object,
@@ -440,10 +445,11 @@ book > ot
   "David West" > author
 (cage book).new > c
 seq
-  c.encage ot
-  QQ.io.stdout
-    QQ.txt.sprintf
-      "Title is %s" c.title
+  *
+    c.encage ot
+    QQ.io.stdout
+      QQ.txt.sprintf
+        "Title is %s" c.title
 \end{ffcode}
 
 The \deff{heap} object is an abstraction of a random-access memory of certain
@@ -457,12 +463,13 @@ and \ff{"Hello"} is printed:
 \begin{ffcode}
 heap 1024 > r
 seq
-  write.
-    r.slice 200 13 > s
-    "Hello, world!".as-bytes
-  QQ.io.stdout
-    as-string.
-      s.slice 0 5
+  *
+    write.
+      r.slice 200 13 > s
+      "Hello, world!".as-bytes
+    QQ.io.stdout
+      as-string.
+        s.slice 0 5
 \end{ffcode}
 
 \section{Math}\label{sec:math}
@@ -499,8 +506,8 @@ following additional attributes:
 
 All objects presented in this Section belong to the \ff{QQ.txt} package.
 
-The \deff{sscanf} object encapsulates a format \ff{string} and
-a content \ff{string}. It behaves like a tuple of scanned data objects.
+The \deff{sscanf} object encapsulates two \ff{string} objects: a format and
+a content. It behaves like a tuple of scanned data objects.
 For example, this code parses a hexadecimal number from the console:
 
 \begin{ffcode}
@@ -524,8 +531,8 @@ QQ.txt.sprintf
 The object \deff{text} is a decorator of a \ff{string}, it has the following attributes:
 
 \begin{itemize}
-    \item \deff{contains}: checks whether it contains $x$
-    \item \deff{ends-with}: checks whether it ends with $x$
+    \item \deff{contains}: checks whether it contains \(x\)
+    \item \deff{ends-with}: checks whether it ends with \(x\)
     \item \deff{index-of}: finds the first occurence of a sub-string
     \item \deff{joined}: joins a tuple with this one as a glue
     \item \deff{chained}: concatenates two strings
@@ -535,7 +542,7 @@ The object \deff{text} is a decorator of a \ff{string}, it has the following att
     \item \deff{replaced}: finds and replaces a sub-string
     \item \deff{right-trimmed}: removes trailing spaces
     \item \deff{split}: breaks it into a tuple of strings
-    \item \deff{starts-with}: checks whether it starts with $x$
+    \item \deff{starts-with}: checks whether it starts with \(x\)
     \item \deff{trimmed}: removes both leading and trailing spaces
     \item \deff{up-cased}: makes it upper case
 \end{itemize}
@@ -574,10 +581,10 @@ eq.
     * " (*@пламя@*)"
 \end{ffcode}
 
-\section{Collections}\label{sec:collections}
+\section{Structs}\label{sec:structs}
 
-Here we discuss abstractions of lists, maps, sets, and other ``collections.''
-All objects presented in this Section belong to the \ff{QQ.collections} package.
+Here, we discuss abstractions of lists, maps, sets, and other ``structs.''
+All objects presented in this Section belong to the \ff{QQ.structs} package.
 
 \subsection{List}
 
@@ -720,11 +727,11 @@ The attribute \adeff{base-name} is the name of the file in the path.
 
 Here we define objects used for both server-side and client-side TCP sockets in
 accordance with \citet{posix}. All objects presented in this Section belong
-to \ff{QQ.net} package.
+to the \ff{QQ.net} package.
 
-The \deff{socket} object is an abstraction of a TCP socket. The attribute
-\adeff{connect} establishes a connection and makes a copy of the socket object. Then,
-its attributes \adeff{as-input} and \adeff{as-output} may be used for reading
+The \deff{socket} object is an abstraction of a TCP socket. The \adeff{connect} attribute
+establishes a connection and makes a copy of the socket object. Then,
+its \adeff{as-input} and \adeff{as-output} attributes may be used for reading
 from the socket and for writing to it. For example, this code opens a
 connection to the 80th TCP port of \ff{google.com} and then reads the entire
 stream as a Unicode string:
@@ -734,10 +741,12 @@ connect. > s
   QQ.net.socket
     "google.com"
     80
-QQ.io.stdout
-  QQ.io.content
-    s.as-input
-s.close
+seq
+  *
+    QQ.io.stdout
+      QQ.io.content
+        s.as-input
+    s.close
 \end{ffcode}
 
 The \adeff{listen} attribute makes a copy of the socket and establishes a server
@@ -763,7 +772,7 @@ closed \aff{socket} object impossible to use anymore.
 
 \section{HTTP}\label{sec:http}
 
-Here we define objects used for parsing and printing of HTTP requests and
+Here we define objects used for parsing and printing HTTP requests and
 responses in accordance with \citet{rfc2616}. All objects presented in this
 Section belong to the \ff{QQ.http} package.
 
