@@ -29,7 +29,7 @@
 \ccsdesc[100]{Object-Oriented Programming}
 \keywords{Object-Oriented Programming}
 
-\newcommand\aff[1]{\ff{\textcolor{gray}{$\star$}#1}}
+\newcommand\aff[1]{\ff{\textcolor{gray}{\(\star\)}#1}}
 \newcommand\deff[1]{\ff{\textcolor{blue!50!black}{\textbf{#1}}}}
 \newcommand\adeff[1]{\aff{\textcolor{blue!50!black}{\textbf{#1}}}}
 \newcommand\eohex[1]{\ff{#1}}
@@ -595,7 +595,7 @@ The attribute \deff{eq} is \ff{TRUE} if each element of the tuple is equal to
 the corresponding element of another tuple and the lengths of both tuples are
 the same.
 
-The attribute \deff{without} is a new tuple with the $i$-th element removed.
+The attribute \deff{without} is a new tuple with the \(i\)-th element removed.
 
 The attributes \deff{each}, \deff{reduced}, \deff{found}, \deff{filtered}, and \deff{mapped} are respectively similar to \ff{forEach}, \ff{reduce}, \ff{find}, \ff{reduce}, and \ff{map} methods of \ff{Tuple} object in JavaScript~\citep{EcmaScript}. A few ``twin'' attributes \deff{eachi}, \deff{reducedi}, \deff{filteredi}, \deff{foundi}, and \deff{mappedi} are semantically the same, but with an extra \ff{int} argument as a counter of a cycle.
 
@@ -609,13 +609,17 @@ The \deff{concat} attribute is a new tuple that concatenates the current tuple w
 
 \subsection{Map}
 
-The object \deff{map} is a decorator of \ff{tuple} of pairs $(k, v)$. The \ff{map} ensures that all $k$ are always unique. It is expected that each $k$ has \ff{as-hash} attribute that behaves as \ff{int}.
+The object \deff{map} is a decorator of \ff{tuple} of pairs \((k, v)\). The \ff{map}
+ensures that all \(k\) are always unique. It is expected that each \(k\)
+has \ff{as-hash} attribute that behaves as \ff{int}.
 
 The attributes \ff{with}, \ff{without}, \ff{found}, and \ff{foundi} are reimplemented in \ff{map}.
 
 \subsection{Set}
 
-The object \deff{set} is a decorator of \ff{tuple}. The \ff{set} ensures that all elements in the tuple are always unique. It is expected that each $k$ has \ff{as-hash} attribute that behaves as \ff{int}.
+The object \deff{set} is a decorator of \ff{tuple}. The \ff{set} ensures that
+all elements in the tuple are always unique. It is expected that each
+\(k\) has \ff{as-hash} attribute that behaves as \ff{int}.
 
 The attributes \ff{with}, \ff{without}, \ff{found}, and \ff{foundi} are reimplemented in \ff{set}.
 
