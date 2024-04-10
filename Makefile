@@ -25,7 +25,7 @@
 SHELL=bash
 
 TLROOT=$$(kpsewhich -var-value TEXMFDIST)
-PACKAGES=ffcode to-be-determined href-ul eolang
+PACKAGES=ffcode to-be-determined href-ul eolang iexec
 REPO=objectionary/on-the-origins-of-objects
 
 zip: *.tex
@@ -39,10 +39,10 @@ zip: *.tex
 	echo "Version is: $${version}"
 	gsed -i "s|0\.0\.0|$${version}|g" paper.tex
 	gsed -i "s|REPOSITORY|$(REPO)|g" paper.tex
-	pdflatex -shell-escape -halt-on-error paper.tex > /dev/null
-	biber paper
-	pdflatex -halt-on-error paper.tex > /dev/null
-	pdflatex -halt-on-error paper.tex > /dev/null
+	pdflatex -interaction=errorstopmode -halt-on-error -shell-escape paper.tex > /dev/null
+	bibtex paper
+	pdflatex -interaction=errorstopmode -halt-on-error paper.tex > /dev/null
+	pdflatex -interaction=errorstopmode -halt-on-error paper.tex > /dev/null
 	rm -rf *.aux *.bcf *.blg *.fdb_latexmk *.fls *.log *.run.xml *.out *.exc
 	zip -x paper.pdf -r paper-$${version}.zip *
 	mv paper-$${version}.zip ..
