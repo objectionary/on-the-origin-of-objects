@@ -1,3 +1,5 @@
+hard url
+hard breakurl
 hard eolang
 hard adjustbox
 hard acmart

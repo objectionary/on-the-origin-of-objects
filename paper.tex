@@ -12,6 +12,10 @@
 \usepackage[russian,english]{babel}
   \DeclareFontFamilySubstitution{T2A}{LinuxBiolinumT-TLF}{LibertinusSans-TLF}
   \renewcommand\ttdefault{cmtt}
+% see https://tex.stackexchange.com/a/256190/1449
+\usepackage{url}
+  \def\UrlBreaks{\do\/\do-}
+\usepackage{breakurl}
 
 \setlength{\footskip}{13.0pt}
 
@@ -34,6 +38,7 @@
 \newcommand\adeff[1]{\aff{\textcolor{blue!50!black}{\textbf{#1}}}}
 \newcommand\eohex[1]{\ff{#1}}
 
+\tolerance=2000
 \raggedbottom
 
 \begin{document}
