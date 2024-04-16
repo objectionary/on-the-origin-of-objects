@@ -26,7 +26,7 @@ SHELL=bash
 
 TLROOT=$$(kpsewhich -var-value TEXMFDIST)
 PACKAGES=ffcode to-be-determined href-ul eolang iexec
-REPO=objectionary/on-the-origins-of-objects
+REPO=objectionary/on-the-origin-of-objects
 
 zip: *.tex
 	rm -rf package
