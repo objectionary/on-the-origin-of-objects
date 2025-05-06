@@ -1,3 +1,7 @@
+_eolang/
+_minted-*
+.DS_Store
+.idea/
 *-SAVE-ERROR
 *.aux
 *.bbl
@@ -11,10 +15,6 @@
 *.run.xml
 *.synctex.gz
 *.zip
-.DS_Store
-.idea/
-_eolang/
-_minted-*
 iexec.ret
 node_modules/
 package/
