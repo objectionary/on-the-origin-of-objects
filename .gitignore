@@ -1,12 +1,9 @@
-_eolang/
-_minted-*
-.DS_Store
-.idea/
 *-SAVE-ERROR
 *.aux
 *.bbl
 *.bcf
 *.blg
+*.dvi
 *.fdb_latexmk
 *.fls
 *.log
@@ -14,7 +11,12 @@ _minted-*
 *.pyg
 *.run.xml
 *.synctex.gz
+*.xcp
 *.zip
+.DS_Store
+.idea/
+_eolang/
+_minted-*
 iexec.ret
 node_modules/
 package/

@@ -8,7 +8,7 @@ SHELL=bash
 
 all: paper.pdf zip
 
-paper.pdf:
+paper.pdf: paper.tex
 	latexmk paper
 
 zip: *.tex
