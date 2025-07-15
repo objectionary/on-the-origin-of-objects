@@ -338,14 +338,14 @@ For example, this code won't print a message to the console if \ff{x} is equal t
 go.to
   [g]
     seq * > @
-        if > y
-          x.eq 0
-          g.forward 0
-          42.div x
-        QQ.io.stdout
-          QQ.txt.sprintf *1
-            "42/x = %d"
-            y
+      if > y
+        x.eq 0
+        g.forward 0
+        42.div x
+      QQ.io.stdout
+        QQ.txt.sprintf *1
+          "42/x = %d"
+          y
 \end{ffcode}
 
 In this example, the number will be read from the console again, if it is equal to zero:
@@ -393,36 +393,20 @@ They implement the same numeric operations as \ff{number}.
 
 Here we define objects that manage memory.
 
-The \adeff{memory} object is an abstraction of a read-write memory capable of storing one of five primitive data objects mentioned in
-\cref{sec:primitives}.
-The \adeff{write} attribute implements writing operation, while the \aff{memory} object itself decorates the data object stored in it.
-Before every writing to the memory, the \adeff{memory} dataizes the argument.
-This code writes a number into memory and then reads it back and prints:
-
-\begin{ffcode}
-(memory 0).alloc > m
-seq *
-    m.write 42
-    QQ.io.stdout
-      QQ.txt.sprintf
-        "Memory contains %d"
-        m.as-int
-\end{ffcode}
-
-The \deff{malloc} object is an abstraction of a random-access memory of certain
-size. It behaves like the \ff{bytes}, but has an additional \adeff{write} attribute.
-In this example, one kilobyte of memory with random data is allocated
-when a copy of \ff{malloc} is created, six bytes are written starting with the
+The \deff{malloc} object is an abstraction of a random-access memory of certain size.
+It behaves like the \ff{bytes}, but has an additional \adeff{write} attribute.
+In this example, one kilobyte of memory with random data is allocated when a copy of \ff{malloc} is created, six bytes are written starting with the
 200-th byte, and then a string is read back and \ff{"Hello!"} is printed:
 
 \begin{ffcode}
-(malloc 1024).pointer > p
-seq
-  *
-    p.write 200 "Hello!"
-    QQ.io.stdout
-      as-string.
-        p.read 200 6
+malloc.of
+  1024
+  [m]
+    seq * >
+      m.write 200 "Hello!"
+      QQ.io.stdout
+        as-string.
+          m.read 200 6
 \end{ffcode}
 
 \section{Math}\label{sec:math}
@@ -430,17 +414,14 @@ seq
 Here we define objects that represent math functions and algorithms.
 All objects in this Section belong to the \ff{QQ.math} package.
 
-The \deff{random} object is a abstraction of a random \ff{number} between zero
-and one inclusively. It has an additional attribute \adeff{pseudo} that
-makes \ff{random} with a pseudorandom seed.
+The \deff{random} object is a abstraction of a random \ff{number} between zero and one inclusively.
+It has an additional attribute \adeff{pseudo} that makes \ff{random} with a pseudorandom seed.
 
-The \deff{angle} object is a decorator of \ff{number}. It assumes that the angle
-is in radians and has the following attributes for trigonometric functions:
-\deff{sine}, \deff{cosine}, and \deff{tangent}. There are \deff{as-degrees}
-and \deff{as-radians} attributes for switching from radians to degrees and backwards.
+The \deff{angle} object is a decorator of \ff{number}.
+It assumes that the angle is in radians and has the following attributes for trigonometric functions: \deff{sine}, \deff{cosine}, and \deff{tangent}.
+There are \deff{as-degrees} and \deff{as-radians} attributes for switching from radians to degrees and backwards.
 
-The \deff{number} object is a decorator of \ff{int} and \ff{number} with the
-following additional attributes:
+The \deff{real} object is a decorator of \ff{number} with the following additional attributes:
 
 \begin{itemize}
     \item \deff{abs}: absolute value of itself (|\rho|)
@@ -543,13 +524,12 @@ The object \deff{list} is a decorator of \ff{tuple}.
 
 The attribute \deff{is-empty} is \ff{TRUE} if the length of the tuple is zero.
 
-The attribute \deff{eq} is \ff{TRUE} if each element of the tuple is equal to
-the corresponding element of another tuple and the lengths of both tuples are
-the same.
+The attribute \deff{eq} is \ff{TRUE} if each element of the tuple is equal to the corresponding element of another tuple and the lengths of both tuples are the same.
 
 The attribute \deff{without} is a new tuple with the \(i\)-th element removed.
 
-The attributes \deff{each}, \deff{reduced}, \deff{found}, \deff{filtered}, and \deff{mapped} are respectively similar to \ff{forEach}, \ff{reduce}, \ff{find}, \ff{reduce}, and \ff{map} methods of \ff{Tuple} object in JavaScript~\citep{EcmaScript}. A few ``twin'' attributes \deff{eachi}, \deff{reducedi}, \deff{filteredi}, \deff{foundi}, and \deff{mappedi} are semantically the same, but with an extra \ff{int} argument as a counter of a cycle.
+The attributes \deff{each}, \deff{reduced}, \deff{found}, \deff{filtered}, and \deff{mapped} are respectively similar to \ff{forEach}, \ff{reduce}, \ff{find}, \ff{reduce}, and \ff{map} methods of \ff{Tuple} object in JavaScript~\citep{EcmaScript}.
+A few ``twin'' attributes \deff{eachi}, \deff{reducedi}, \deff{filteredi}, \deff{foundi}, and \deff{mappedi} are semantically the same, but with an extra \ff{int} argument as a counter of a cycle.
 
 The \deff{slice} attribute is a part of the tuple.
 
@@ -577,8 +557,8 @@ The attributes \ff{with}, \ff{without}, \ff{found}, and \ff{foundi} are reimplem
 
 \section{I/O Streams}\label{sec:streams}
 
-Here we define manipulations with input and output streams. All objects
-presented in this Section belong to the \ff{QQ.io} package.
+Here we define manipulations with input and output streams.
+All objects presented in this Section belong to the \ff{QQ.io} package.
 
 It is expected that an input stream has the following interface:
 
@@ -597,15 +577,11 @@ It is expected that an output stream has the following interface:
   [] > close
 \end{ffcode}
 
-The \adeff{stdout} object is an ``output'' that prints a \ff{string} to the
-standard output stream, while the \adeff{stderr} object is an ``output'' that
-prints to the standard error stream.
+The \adeff{stdout} object is an ``output'' that prints a \ff{string} to the standard output stream, while the \adeff{stderr} object is an ``output'' that prints to the standard error stream.
 
-The \adeff{stdin} object is an abstraction of a \ff{string} currently available
-in the standard input stream until the EOL character (\ff{\char`\\n}) and is an
-``input.'' If there is no string in the stream, the object blocks dataization
-and waits. This code endlessly reads strings from the console and immediately
-prints them back:
+The \adeff{stdin} object is an abstraction of a \ff{string} currently available in the standard input stream until the EOL character (\ff{\char`\\n}) and is an ``input.''
+If there is no string in the stream, the object blocks dataization and waits.
+This code endlessly reads strings from the console and immediately prints them back:
 
 \begin{ffcode}
 while
@@ -619,9 +595,8 @@ The object \adeff{bytes-as-input} is an ``input'' made from \ff{bytes}.
 
 The object \adeff{memory-as-output} is an ``output'' directed towards a copy of \ff{memory}.
 
-The object \adeff{copied} is channel between an ``input'' and an ``output,''
-which moves all available bytes from the former to the latter when being
-dataized. For example, this code write a text to a temporary file:
+The object \adeff{copied} is channel between an ``input'' and an ``output,'' which moves all available bytes from the former to the latter when being dataized.
+For example, this code write a text to a temporary file:
 
 \begin{ffcode}
 QQ.io.copied
@@ -680,61 +655,54 @@ The attribute \adeff{base-name} is the name of the file in the path.
 
 \section{Sockets}\label{sec:sockets}
 
-Here we define objects used for both server-side and client-side TCP sockets in
-accordance with \citet{posix}. All objects presented in this Section belong
-to the \ff{QQ.net} package.
+Here we define objects used for both server-side and client-side TCP sockets in accordance with \citet{posix}.
+All objects presented in this Section belong to the \ff{QQ.net} package.
 
-The \deff{socket} object is an abstraction of a TCP socket. The \adeff{connect} attribute
-establishes a connection and makes a copy of the socket object. Then,
-its \adeff{as-input} and \adeff{as-output} attributes may be used for reading
-from the socket and for writing to it. For example, this code opens a
-connection to the 80th TCP port of \ff{google.com} and then reads the entire
-stream as a Unicode string:
+The \deff{socket} object is an abstraction of a TCP socket.
+The \adeff{connect} attribute establishes a connection and makes a copy of the socket object.
+Then, its \adeff{as-input} and \adeff{as-output} attributes may be used for reading from the socket and for writing to it.
+For example, this code opens a connection to the 80th TCP port of \ff{google.com} and then reads the entire stream as a Unicode string:
 
 \begin{ffcode}
-connect. > s
-  QQ.net.socket
-    "google.com"
-    80
-seq
-  *
-    QQ.io.stdout
-      QQ.io.content
-        s.as-input
-    s.close
+QQ.net.socket
+  "google.com"
+  80
+.connect
+  [s]
+    seq * > @
+      QQ.io.stdout
+        QQ.io.content
+          s.as-input
+      s.close
 \end{ffcode}
 
-The \adeff{listen} attribute makes a copy of the socket and establishes a server
-connection. Then, the \adeff{accept} attribute can be used to wait for an
-incoming connection and then make a copy when it arrives. For example, this
-code binds to the 8080th port on a ``localhost'' and when a connection arrives,
-prints a message into it:
+The \adeff{listen} attribute makes a copy of the socket and establishes a server connection.
+Then, the \adeff{accept} attribute can be used to wait for an incoming connection and then make a copy when it arrives.
+For example, this code binds to the 8080th port on a ``localhost'' and when a connection arrives, prints a message into it:
 
 \begin{ffcode}
-listen. > s
-  QQ.net.socket
-    "127.0.0.1"
-    8080
-QQ.io.copied
-  QQ.io.bytes-as-input
-    "Hello, world!".as-bytes
-  s.accept.as-output
-s.close
+QQ.net.socket
+  "127.0.0.1"
+  8080
+.listen
+  [s]
+    seq * > @
+      QQ.io.copied
+        QQ.io.bytes-as-input
+          "Hello, world!".as-bytes
+        s.accept.as-output
+      s.close
 \end{ffcode}
 
-The attribute \adeff{close} terminates the connection and makes the
-closed \aff{socket} object impossible to use anymore.
+The attribute \adeff{close} terminates the connection and makes the closed \aff{socket} object impossible to use anymore.
 
 \section{HTTP}\label{sec:http}
 
-Here we define objects used for parsing and printing HTTP requests and
-responses in accordance with \citet{rfc2616}. All objects presented in this
-Section belong to the \ff{QQ.http} package.
+Here we define objects used for parsing and printing HTTP requests and responses in accordance with \citet{rfc2616}.
+All objects presented in this Section belong to the \ff{QQ.http} package.
 
-The objects \deff{http-request} and \deff{http-response} are abstractions of
-HTTP request and response respectively. They have attributes that help building
-them; they both have the \deff{as-string} attribute to turn them into a
-\ff{string}:
+The objects \deff{http-request} and \deff{http-response} are abstractions of HTTP request and response respectively.
+They have attributes that help building them; they both have the \deff{as-string} attribute to turn them into a \ff{string}:
 
 \begin{ffcode}
 http-request

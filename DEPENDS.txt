@@ -5,6 +5,7 @@ hard algpseudocodex
 hard anyfontsize
 hard babel-russian
 hard biblatex
+hard booktabs
 hard breakurl
 hard cancel
 hard catchfile
