@@ -160,16 +160,14 @@ or \ff{1}. In \eolang{} syntax, a sequence of bytes is denoted as either \eohex{
 a one-byte sequence, where the only byte equals to the number 42.
 
 The \ff{bytes} object has these four attributes, to turn itself into
-one of four primitive data objects:
-\adeff{as-int},
-\adeff{as-bool},
-\adeff{as-float},
+one of two primitive data objects:
+\adeff{as-number},
+\adeff{as-bool}
 and
 \adeff{as-string}.
-The attribute \aff{as-int} expects the size of the sequence to be eight bytes.
+The attribute \aff{as-number} expects the size of the sequence to be eight bytes.
 The attribute \aff{as-bool} expects exactly one byte in the sequence and is
 \ff{FALSE} only if the byte equals to zero.
-The attribute \aff{as-float} expects exactly eight bytes.
 
 There are also attributes for bitwise operations:
 \adeff{and},
@@ -192,66 +190,45 @@ of two byte sequences: the current and the provided one.
 
 \section{Primitives}\label{sec:primitives}
 
-There are four primitive data objects described below. All of them have
-\adeff{as-bytes} attribute, which is an abstraction of their representation as a
-sequence of bytes. All primitives also have \deff{as-hash} attribute, which,
-being an \ff{int}, is their own implementation of a hash function. They also
-have \deff{eq} attribute, which is \ff{TRUE} if the primitive is equal to
-another object, through the use of \ff{\^{}.as-bytes.eq}.
-
-\subsection{Int}
-
-The object \deff{int} is an eight-bytes abstraction of a two's complement signed integer in a big-endian order.
-
-The \adeff{plus} attribute is a summary of this number and another \ff{int}.
-The \deff{minus} attribute is a subtraction of another \ff{int} from this number.
-The \adeff{times} attributes and \adeff{div} are a multiplication and a division of this number and another \ff{int}.
-The \deff{neg} attribute is the same number with a different sign.
-
-The \adeff{lt} attribute is a \ff{bool} object \ff{TRUE} if it is ``less than'' another \ff{int} and \ff{FALSE} otherwise. Attributes \deff{gt}, \deff{lte}, and \deff{gte} are ``greater than,'' ``less than or equal,'' and ``greater than or equal'' comparisons respectively.
-
-Integers with a different bit-width are explained in \cref{sec:digits}.
-All other manipulations with integers can be done in their decorators. Some of them are explained in \cref{sec:math}.
+There are four primitive data objects described below.
+All of them have \adeff{as-bytes} attribute, which is an abstraction of their representation as a sequence of bytes.
+All primitives have \deff{eq} attribute, which is \ff{TRUE} if the primitive is equal to another object, through the use of \ff{\^{}.as-bytes.eq}.
 
 \subsection{Bool}
 
-The \deff{bool} object is a one-bit abstraction of a Boolean value. Its
-\aff{as-bytes} is either \eohex{00-} or \eohex{01-}.
+The \deff{bool} object is a one-bit abstraction of a Boolean value.
+Its \aff{as-bytes} is either \eohex{00-} or \eohex{01-}.
 
 There are two pre-defined objects \deff{TRUE} and \deff{FALSE}.
 
-The \deff{not} attribute is a Boolean inversion. Attributes \deff{and},
-\deff{or}, \deff{xor} are logical conjunction, disjunction, and exclusive
-disjunction of the object itself with an a array of other Boolean values.
+The \deff{not} attribute is a Boolean inversion.
+Attributes \deff{and}, \deff{or}, \deff{xor} are logical conjunction, disjunction, and exclusive disjunction of the object itself with an a array of other Boolean values.
 
-\subsection{Float}
+\subsection{Number}
 
-The object \deff{float} is an abstraction of a floating point number, which
-takes eight bytes and fills them up according to the format suggested by
-\citet{ieee754}.
+The object \deff{number} is an abstraction of a floating point number, which takes eight bytes and fills them up according to the format suggested by \citet{ieee754}.
 
-The \adeff{plus} attribute is a summary of this number and another \ff{float}.
-The \deff{minus} attribute is a subtraction of another \ff{float} from this number.
-The \adeff{times} attributes and \adeff{div} are a multiplication and a division of this number and another \ff{float}.
+The \adeff{plus} attribute is a summary of this number and another \ff{number}.
+The \deff{minus} attribute is a subtraction of another \ff{number} from this number.
+The \adeff{times} attributes and \adeff{div} are a multiplication and a division of this number and another \ff{number}.
 The \deff{neg} attribute is the same number with a different sign.
 
-The \adeff{lt} attribute is a \ff{bool} object \ff{TRUE} if it is ``less than'' another \ff{float} and \ff{FALSE} otherwise. Attributes \deff{gt}, \deff{lte}, and \deff{gte} are ``greater than,'' ``less than or equal,'' and ``greater than or equal'' comparisons respectively.
+The \adeff{lt} attribute is a \ff{bool} object \ff{TRUE} if it is ``less than'' another \ff{number} and \ff{FALSE} otherwise.
+Attributes \deff{gt}, \deff{lte}, and \deff{gte} are ``greater than,'' ``less than or equal,'' and ``greater than or equal'' comparisons respectively.
 
-Floating-point numbers with a different bit-width are explained in
-\cref{sec:digits}. All other manipulations with floating-point numbers can be done
-in their decorators. Some of them are explained in \cref{sec:math}.
+Floating-point numbers with a different bit-width are explained in \cref{sec:digits}.
+All other manipulations with floating-point numbers can be done in their decorators.
+Some of them are explained in \cref{sec:math}.
 
 \subsection{String}
 
-The \deff{string} object is an abstraction of a piece of Unicode text in UTF-8
-encoding, according to \citet{unicode}. UTF-8 uses one byte for the first 128
-code points, and up to 4 bytes for other characters.
+The \deff{string} object is an abstraction of a piece of Unicode text in UTF-8 encoding, according to \citet{unicode}.
+UTF-8 uses one byte for the first 128 code points, and up to 4 bytes for other characters.
 
 The \adeff{slice} attribute takes a piece of a string as another \ff{string}.
 The \adeff{length} attribute is a total count of characters in the string.
 
-Strings in other encodings, such as UTF-16 or CP1251, may be implemented
-through direct manipulations with \ff{bytes}.
+Strings in other encodings, such as UTF-16 or CP1251, may be implemented through direct manipulations with \ff{bytes}.
 
 All other manipulations with strings are explained in \cref{sec:strings}.
 
@@ -267,12 +244,9 @@ For example, this code represents a two-dimensional tuple \ff{x} of numbers and 
   * "blue" 0x11C
 \end{ffcode}
 
-The \adeff{with} attribute is a new \ff{tuple} with all elements
-from the current tuple and a new element added to the end of it.
+The \adeff{with} attribute is a new \ff{tuple} with all elements from the current tuple and a new element added to the end of it.
 
-The \adeff{at} attribute is the element of the tuple with
-it is associated index number---positive one, zero indexed and starting
-from left, and the negative one starting at -1 from the right.
+The \adeff{at} attribute is the element of the tuple with it is associated index number---positive one, zero indexed and starting from left, and the negative one starting at -1 from the right.
 
 The \adeff{length} attribute is the total amount of elements in the tuple.
 
@@ -283,21 +257,19 @@ decorators. Some of them are explained in \cref{sec:structs}.
 
 Here we define objects that help handle errors and exceptional situations.
 
-The \adeff{error} object causes program termination at the first attempt to
-dataize it. It encapsulates any other object, which can play the role of an
-exception that is floating to the upper level:
+The \adeff{error} object causes program termination at the first attempt to dataize it.
+It encapsulates any other object, which can play the role of an exception that is floating to the upper level:
 
 \begin{ffcode}
 [x] > d
-  if
+  if > @
     x.eq 0
     error "Can't divide by zero"
     42.div x
 \end{ffcode}
 
-The \adeff{try} object enables catching of \aff{error} objects and extracting
-exceptions from them. For example, the following code prints "division by zero"
-and then "finally":
+The \adeff{try} object enables catching of \aff{error} objects and extracting exceptions from them.
+For example, the following code prints ``division by zero'' and then ``finally'':
 
 \begin{ffcode}
 try
@@ -315,17 +287,14 @@ try
 
 Here we define objects that help control dataization flow.
 
-The \adeff{seq} object is an abstraction of sequence of objects to be dataized
-sequentially. For example, this code prints one message to the console and then
-terminates the program due to the inability to dataize the division by zero in
-the middle:
+The \adeff{seq} object is an abstraction of sequence of objects to be dataized sequentially.
+For example, this code prints one message to the console and then terminates the program due to the inability to dataize the division by zero in the middle:
 
 \begin{ffcode}
-seq
-  *
-    QQ.io.stdout "Hello, world!
-    42.div 0
-    QQ.io.stdout "Bye!"
+seq *
+  QQ.io.stdout "Hello, world!
+  42.div 0
+  QQ.io.stdout "Bye!"
 \end{ffcode}
 
 The \adeff{if} object is a branching mechanism, expecting three arguments: a
@@ -338,7 +307,7 @@ code give a title to a random number:
 \begin{ffcode}
 QQ.math.random.pseudo > r
 QQ.io.stdout
-  QQ.txt.sprintf
+  QQ.txt.sprintf *1
     "Coin toss: %s"
     if
       r.gte 0.5
@@ -346,12 +315,10 @@ QQ.io.stdout
       "tail"
 \end{ffcode}
 
-The \adeff{while} object is an iterating mechanism, expecting two attributes: a
-condition as \ff{bool} and a body as an abstract object with one free
-attribute. When being dataized, the object \aff{while} dataizes the condition
-until it is \ff{FALSE}. In the end, it returns the body or \ff{FALSE} if no
-iterations happened. This code makes a few attempts to find a random number
-that is smaller than 0.1:
+The \adeff{while} object is an iterating mechanism, expecting two attributes: a condition as \ff{bool} and a body as an abstract object with one free attribute.
+When being dataized, the object \aff{while} dataizes the condition until it is \ff{FALSE}.
+In the end, it returns the body or \ff{FALSE} if no iterations happened.
+This code makes a few attempts to find a random number that is smaller than 0.1:
 
 \begin{ffcode}
 QQ.math.random.pseudo > r
@@ -359,117 +326,87 @@ while
   r.gte 0.1
   [i]
     QQ.io.stdout > @
-      QQ.txt.sprintf
-        "Attempt #%d" i
+      QQ.txt.sprintf *1
+        "Attempt #%d"
+        i
 \end{ffcode}
 
-The \adeff{go} object enables forward and backward ``jumps'' either
-immediately finishing dataization or restarting it. For example, this code
-won't print a message to the console if \ff{x} is equal to zero:
+The \adeff{go} object enables forward and backward ``jumps'' either immediately finishing dataization or restarting it.
+For example, this code won't print a message to the console if \ff{x} is equal to zero:
 
 \begin{ffcode}
 go.to
   [g]
-    seq > @
-      *
+    seq * > @
         if > y
           x.eq 0
           g.forward 0
           42.div x
         QQ.io.stdout
-          QQ.txt.sprintf "42/x = %d" y
+          QQ.txt.sprintf *1
+            "42/x = %d"
+            y
 \end{ffcode}
 
-In this example, the number will be read from the console again,
-if it is equal to zero:
+In this example, the number will be read from the console again, if it is equal to zero:
 
 \begin{ffcode}
 go.to
   [g]
-    seq > @
-      *
-        as-int. > x
-          QQ.txt.parsed
-            QQ.io.stdin
-        if
-          x.eq 0
-          g.backward
-          QQ.io.stdout
-            QQ.txt.sprintf
-              "Number %d is OK!" x
+    seq * > @
+      as-int. > x
+        QQ.txt.parsed
+          QQ.io.stdin
+      if
+        x.eq 0
+        g.backward
+        QQ.io.stdout
+          QQ.txt.sprintf *1
+            "Number %d is OK!"
+            x
 \end{ffcode}
 
-The \deff{switch} object is an abstraction of a multi-case branching that
-encapsulates \((k, v)\) pairs and the dataization result is equal to \(v\) of
-the first pair where \(k\) is \ff{TRUE}, while the last pair is the one to be
-used if no other pairs match:
+The \deff{switch} object is an abstraction of a multi-case branching that encapsulates \((k, v)\) pairs and the dataization result is equal to \(v\) of the first pair where \(k\) is \ff{TRUE}, while the last pair is the one to be used if no other pairs match:
 
 \begin{ffcode}
 QQ.io.stdout
-  switch
+  switch *
     *
-      *
-        password.eq "swordfish"
-        "password is correct!"
-      *
-        password.eq ""
-        "empty password is not allowed"
-      *
-        FALSE
-        "password is wrong"
+      password.eq "swordfish"
+      "password is correct!"
+    *
+      password.eq ""
+      "empty password is not allowed"
+    *
+      FALSE
+      "password is wrong"
 \end{ffcode}
 
 \section{Digits}\label{sec:digits}
 
-Here we define objects that represent numbers with smaller or larger bitwise
-width comparing with the default 64-bits convention. All objects presented in
-this Section belong to the \ff{QQ.digits} package.
+Here we define objects that represent numbers with smaller or larger bitwise width comparing with the default 64-bits convention.
 
-The \deff{int8}, \deff{int16}, \deff{int32}, and \deff{int128} objects are decorators
-of \ff{bytes} with a predefined size. They implement the same numeric operations
-as \ff{int}.
-The \deff{float16}, \deff{float32}, and \deff{float128} objects are
-also decorators of \ff{bytes}, implementing the same operations as \ff{float}.
+The \deff{i16}, \deff{i32}, and \deff{i64} objects are decorators of \ff{bytes} with a predefined size.
+They implement the same numeric operations as \ff{number}.
 
 \section{Memory}\label{sec:memory}
 
 Here we define objects that manage memory.
 
-The \adeff{memory} object is an abstraction of a read-write memory capable of
-storing one of five primitive data objects mentioned in
-\cref{sec:primitives}. The \adeff{write} attribute implements writing operation,
-while the \aff{memory} object itself decorates the data object stored in it.
+The \adeff{memory} object is an abstraction of a read-write memory capable of storing one of five primitive data objects mentioned in
+\cref{sec:primitives}.
+The \adeff{write} attribute implements writing operation, while the \aff{memory} object itself decorates the data object stored in it.
 Before every writing to the memory, the \adeff{memory} dataizes the argument.
 This code writes a number into memory and then reads it back and prints:
 
 \begin{ffcode}
 (memory 0).alloc > m
-seq
-  *
+seq *
     m.write 42
     QQ.io.stdout
       QQ.txt.sprintf
         "Memory contains %d"
         m.as-int
-\end{ffcode}
-
-The \adeff{cage} object is similar to the \aff{memory}, but it stores an object, not the result of its dataization.
-The use of \aff{cage} is strongly discouraged. The
-following code stores a ``book'' in a \aff{cage}, then retrieves it back, and
-prints one of its attribute:
-
-\begin{ffcode}
-[title author] > book
-book > ot
-  "Object Thinking"
-  "David West"
-(cage book).new > c
-seq
-  *
-    c.encage ot
-    QQ.io.stdout
-      QQ.txt.sprintf
-        "Title is %s" c.title
 \end{ffcode}
 
 The \deff{malloc} object is an abstraction of a random-access memory of certain
@@ -493,16 +430,16 @@ seq
 Here we define objects that represent math functions and algorithms.
 All objects in this Section belong to the \ff{QQ.math} package.
 
-The \deff{random} object is a abstraction of a random \ff{float} between zero
+The \deff{random} object is a abstraction of a random \ff{number} between zero
 and one inclusively. It has an additional attribute \adeff{pseudo} that
 makes \ff{random} with a pseudorandom seed.
 
-The \deff{angle} object is a decorator of \ff{float}. It assumes that the angle
+The \deff{angle} object is a decorator of \ff{number}. It assumes that the angle
 is in radians and has the following attributes for trigonometric functions:
 \deff{sine}, \deff{cosine}, and \deff{tangent}. There are \deff{as-degrees}
 and \deff{as-radians} attributes for switching from radians to degrees and backwards.
 
-The \deff{number} object is a decorator of \ff{int} and \ff{float} with the
+The \deff{number} object is a decorator of \ff{int} and \ff{number} with the
 following additional attributes:
 
 \begin{itemize}
@@ -522,8 +459,8 @@ following additional attributes:
 
 All objects presented in this Section belong to the \ff{QQ.txt} package.
 
-The \deff{sscanf} object encapsulates two \ff{string} objects: a format and
-a content. It behaves like a tuple of scanned data objects.
+The \deff{sscanf} object encapsulates two \ff{string} objects: a format and a content.
+It behaves like a tuple of scanned data objects.
 For example, this code parses a hexadecimal number from the console:
 
 \begin{ffcode}
@@ -534,11 +471,10 @@ at.
   0
 \end{ffcode}
 
-The \deff{sprintf} object builds a string according to the format provided and
-compliant with \citet[Chapter 5]{posix}, for example:
+The \deff{sprintf} object builds a string according to the format provided and compliant with \citet[Chapter 5]{posix}, for example:
 
 \begin{ffcode}
-QQ.txt.sprintf
+QQ.txt.sprintf *1
   "Hi, %s! The weight is %0.2f."
   "Jeff"
   3.14
@@ -549,11 +485,11 @@ The object \deff{text} is a decorator of a \ff{string}, it has the following att
 \begin{itemize}
     \item \deff{contains}: checks whether it contains \(x\)
     \item \deff{ends-with}: checks whether it ends with \(x\)
-    \item \deff{index-of}: finds the first occurence of a sub-string
+    \item \deff{index-of}: finds the first occurrence of a sub-string
     \item \deff{joined}: joins a tuple with this one as a glue
     \item \deff{chained}: concatenates two strings
     \item \deff{low-cased}: makes it lower case
-    \item \deff{last-index-of}: finds the last occurence of a sub-string
+    \item \deff{last-index-of}: finds the last occurrence of a sub-string
     \item \deff{left-trimmed}: removes leading spaces
     \item \deff{replaced}: finds and replaces a sub-string
     \item \deff{right-trimmed}: removes trailing spaces
@@ -563,9 +499,8 @@ The object \deff{text} is a decorator of a \ff{string}, it has the following att
     \item \deff{up-cased}: makes it upper case
 \end{itemize}
 
-The \deff{regex} object is an abstraction of a regular expression, in accordance
-with \citet[Part~2]{posix} (Extended Regular Expressions) and full support of
-Unicode. The \deff{match} attribute is a split of the \ff{string} into parts:
+The \deff{regex} object is an abstraction of a regular expression, in accordance with \citet[Part~2]{posix} (Extended Regular Expressions) and full support of Unicode.
+The \deff{match} attribute is a split of the \ff{string} into parts:
 
 \begin{ffcode}
 QQ.txt.regex "/((*@и@*)([^ ]+))/i" > r
@@ -626,17 +561,17 @@ The \deff{concat} attribute is a new tuple that concatenates the current tuple w
 
 \subsection{Map}
 
-The object \deff{map} is a decorator of \ff{tuple} of pairs \((k, v)\). The \ff{map}
-ensures that all \(k\) are always unique. It is expected that each \(k\)
-has \ff{as-hash} attribute that behaves as \ff{int}.
+The object \deff{map} is a decorator of \ff{tuple} of pairs \((k, v)\).
+The \ff{map} ensures that all \(k\) are always unique.
+It is expected that each \(k\) has \ff{as-hash} attribute that behaves as \ff{int}.
 
 The attributes \ff{with}, \ff{without}, \ff{found}, and \ff{foundi} are reimplemented in \ff{map}.
 
 \subsection{Set}
 
-The object \deff{set} is a decorator of \ff{tuple}. The \ff{set} ensures that
-all elements in the tuple are always unique. It is expected that each
-\(k\) has \ff{as-hash} attribute that behaves as \ff{int}.
+The object \deff{set} is a decorator of \ff{tuple}.
+The \ff{set} ensures that all elements in the tuple are always unique.
+It is expected that each \(k\) has \ff{as-hash} attribute that behaves as \ff{int}.
 
 The attributes \ff{with}, \ff{without}, \ff{found}, and \ff{foundi} are reimplemented in \ff{set}.
 
