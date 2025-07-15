@@ -9,7 +9,7 @@ SHELL=bash
 all: paper.pdf zip
 
 paper.pdf: paper.tex
-	latexmk paper
+	latexmk -pdf -latexoption=-interaction=errorstopmode -latexoption=-halt-on-error paper
 
 zip: *.tex
 	./zip-it.sh
