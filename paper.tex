@@ -166,7 +166,7 @@ and
 \adeff{as-string}.
 The attribute \aff{as-number} expects the size of the sequence to be exactly eight bytes.
 The attribute \aff{as-bool} expects exactly one byte in the sequence and is
-\ff{FALSE} only if the byte equals zero.
+\ff{false} only if the byte equals zero.
 
 There are also attributes for bitwise operations:
 \adeff{and},
@@ -191,14 +191,14 @@ of two byte sequences: the current and the provided one.
 
 There are four primitive data objects described below.
 All of them have an \adeff{as-bytes} attribute, which is an abstraction of their representation as a sequence of bytes.
-All primitives have an \deff{eq} attribute, which is \ff{TRUE} if the primitive is equal to another object, through the use of \ff{\^{}.as-bytes.eq}.
+All primitives have an \deff{eq} attribute, which is \ff{true} if the primitive is equal to another object, through the use of \ff{\^{}.as-bytes.eq}.
 
 \subsection{Bool}
 
 The \deff{bool} object is a one-bit abstraction of a Boolean value.
 Its \aff{as-bytes} is either \eohex{00-} or \eohex{01-}.
 
-There are two pre-defined objects \deff{TRUE} and \deff{FALSE}.
+There are two pre-defined objects \deff{true} and \deff{false}.
 
 The \deff{not} attribute is a Boolean inversion.
 Attributes \deff{and}, \deff{or}, \deff{xor} are logical conjunction, disjunction, and exclusive disjunction of the object itself with an array of other Boolean values.
@@ -212,7 +212,7 @@ The \deff{minus} attribute is the subtraction of another \ff{number} from this n
 The \adeff{times} attribute and \adeff{div} are multiplication and division of this number and another \ff{number}.
 The \deff{neg} attribute is the same number with a different sign.
 
-The \adeff{lt} attribute is a \ff{bool} object \ff{TRUE} if it is ``less than'' another \ff{number} and \ff{FALSE} otherwise.
+The \adeff{lt} attribute is a \ff{bool} object \ff{true} if it is ``less than'' another \ff{number} and \ff{false} otherwise.
 Attributes \deff{gt}, \deff{lte}, and \deff{gte} are ``greater than,'' ``less than or equal,'' and ``greater than or equal'' comparisons respectively.
 
 Floating-point numbers with a different bit-width are explained in \cref{sec:digits}.
@@ -315,8 +315,8 @@ QQ.io.stdout
 \end{ffcode}
 
 The \adeff{while} object is an iterating mechanism, expecting two attributes: a condition as \ff{bool} and a body as an abstract object with one free attribute.
-When being dataized, the object \aff{while} dataizes the condition until it is \ff{FALSE}.
-In the end, it returns the body or \ff{FALSE} if no iterations happened.
+When being dataized, the object \aff{while} dataizes the condition until it is \ff{false}.
+In the end, it returns the body or \ff{false} if no iterations happened.
 This code makes a few attempts to find a random number that is smaller than 0.1:
 
 \begin{ffcode}
@@ -365,7 +365,7 @@ go.to
             x
 \end{ffcode}
 
-The \deff{switch} object is an abstraction of multi-case branching that encapsulates \((k, v)\) pairs and the dataization result is equal to \(v\) of the first pair where \(k\) is \ff{TRUE}, while the last pair is the one to be used if no other pairs match:
+The \deff{switch} object is an abstraction of multi-case branching that encapsulates \((k, v)\) pairs and the dataization result is equal to \(v\) of the first pair where \(k\) is \ff{true}, while the last pair is the one to be used if no other pairs match:
 
 \begin{ffcode}
 QQ.io.stdout
@@ -377,7 +377,7 @@ QQ.io.stdout
       password.eq ""
       "empty password is not allowed"
     *
-      FALSE
+      false
       "password is wrong"
 \end{ffcode}
 
@@ -521,9 +521,9 @@ All objects presented in this Section belong to the \ff{QQ.structs} package.
 
 The object \deff{list} is a decorator of \ff{tuple}.
 
-The attribute \deff{is-empty} is \ff{TRUE} if the length of the tuple is zero.
+The attribute \deff{is-empty} is \ff{true} if the length of the tuple is zero.
 
-The attribute \deff{eq} is \ff{TRUE} if each element of the tuple is equal to the corresponding element of another tuple and the lengths of both tuples are the same.
+The attribute \deff{eq} is \ff{true} if each element of the tuple is equal to the corresponding element of another tuple and the lengths of both tuples are the same.
 
 The attribute \deff{without} is a new tuple with the \(i\)-th element removed.
 
@@ -584,7 +584,7 @@ This code endlessly reads strings from the console and immediately prints them b
 
 \begin{ffcode}
 while
-  TRUE
+  true
   [i]
     QQ.io.stdout > @
       QQ.io.stdin
@@ -616,9 +616,9 @@ All objects presented in this Section belong to \ff{QQ.fs} package.
 
 The object \deff{file} is an abstraction of a file and is a decorator of \ff{string}, which is the path of the file.
 %
-The attribute \adeff{exists} is \ff{TRUE} if the file exists.
+The attribute \adeff{exists} is \ff{true} if the file exists.
 %
-The attribute \adeff{is-dir} is \ff{TRUE} if the file is a directory.
+The attribute \adeff{is-dir} is \ff{true} if the file is a directory.
 %
 The attribute \adeff{touch} makes sure the file exists.
 %
