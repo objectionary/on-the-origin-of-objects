@@ -39,6 +39,7 @@ hard lastpage
 hard lh
 hard libertine
 hard makecell
+hard mathtools
 hard microtype
 hard ncctools
 hard paralist
