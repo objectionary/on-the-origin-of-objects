@@ -8,6 +8,7 @@ hard biblatex
 hard booktabs
 hard breakurl
 hard cancel
+hard caption
 hard catchfile
 hard cjk
 hard cleveref
