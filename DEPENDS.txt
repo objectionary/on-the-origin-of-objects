@@ -12,6 +12,7 @@ hard catchfile
 hard cjk
 hard cleveref
 hard cm-super
+hard cmap
 hard comment
 hard csquotes
 hard currfile
