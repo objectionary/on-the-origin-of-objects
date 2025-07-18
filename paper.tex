@@ -171,15 +171,12 @@ There are two primitive data objects described below.
 All of them have an \adeff{as-bytes} attribute, which is an abstraction of their representation as a sequence of bytes.
 All primitives have an \deff{eq} attribute, which is \ff{true} if the primitive is equal to another object, through the use of \ff{\^{}.as-bytes.eq}.
 
-\subsection{Bool}
+\subsection{Boolean}
 
-The \deff{bool} object is a one-bit abstraction of a Boolean value.
-Its \aff{as-bytes} is either \eohex{00-} or \eohex{01-}.
-
-There are two pre-defined objects \deff{true} and \deff{false}.
+There are two pre-defined objects \deff{true} and \deff{false} which decorate \eohex{01-} and \eohex{00-} accordingly.
 
 The \deff{not} attribute is a Boolean inversion.
-Attributes \deff{and}, \deff{or}, \deff{xor} are logical conjunction, disjunction, and exclusive disjunction of the object itself with an array of other Boolean values.
+Attributes \deff{and}, \deff{or} are logical conjunction, disjunction of the object itself with other object.
 
 \subsection{Number}
 
