@@ -141,18 +141,10 @@ The center of the taxonomy is the \deff{bytes} data object, which is an abstract
 of a sequence of bytes. The sequence can either be empty or contain a
 theoretically unlimited number of bytes. A byte is a unit of information that
 consists of eight adjacent binary digits (bits), each of which consists of a \ff{0}
-or \ff{1}. In \eolang{} syntax, a sequence of bytes is denoted as either \eohex{--}
+or \ff{1}. In \eolang{} syntax, a sequence of bytes is denoted as either \eohex{---}
 (double dash) for an empty one or as a concatenation of \eohex{xx-}, where
 \ff{xx} is a hexadecimal representation of a byte. For example, the \ff{2A-} is
 a one-byte sequence, where the only byte equals to the number 42.
-
-The \ff{bytes} object has these three attributes, to turn itself into one of the primitive data objects:
-\adeff{as-number},
-\adeff{as-bool},
-and
-\adeff{as-string}.
-The attribute \aff{as-number} expects the size of the sequence to be exactly eight bytes.
-The attribute \aff{as-bool} expects exactly one byte in the sequence and is \ff{false} only if the byte equals zero.
 
 There are also attributes for bitwise operations:
 \adeff{and},
@@ -175,7 +167,7 @@ of two byte sequences: the current and the provided one.
 
 \section{Primitives}\label{sec:primitives}
 
-There are four primitive data objects described below.
+There are two primitive data objects described below.
 All of them have an \adeff{as-bytes} attribute, which is an abstraction of their representation as a sequence of bytes.
 All primitives have an \deff{eq} attribute, which is \ff{true} if the primitive is equal to another object, through the use of \ff{\^{}.as-bytes.eq}.
 
