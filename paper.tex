@@ -387,7 +387,7 @@ malloc.of
           m.read 200 6
 \end{ffcode}
 
-The \ff{malloc} object is also support resizing via \adeff{resized} attribute and copying the data withing
+The \ff{malloc} object is also support resizing via \adeff{resized} attribute and copying the data within
 the allocated memory block via \deff{copy} attribute. In the next example \ff{malloc} is allocated and filled with
 5 bytes, then resized to 10 bytes and its content duplicated. The result block contains \ff{"hellohello"}.
 
@@ -463,7 +463,7 @@ The object \deff{text} is a decorator of a \ff{string}. It has the following att
     \item \deff{trimmed-left}: removes leading spaces
     \item \deff{trimmed-right}: removes trailing spaces
     \item \deff{joined}: joins a tuple with this one as a glue
-    \item \deff{repeated}: repeates itself given amount of \(times\)
+    \item \deff{repeated}: repeats itself given amount of \(times\)
     \item \deff{contains}: checks whether it contains \(x\)
     \item \deff{starts-with}: checks whether it starts with \(x\)
     \item \deff{ends-with}: checks whether it ends with \(x\)
@@ -548,7 +548,7 @@ The \deff{concat} attribute is a new tuple that concatenates the current tuple w
 
 \subsection{Map}
 
-The object \deff{map} is a decorator of \ff{tuple} of \deff{map.enty} objects which are pairs \((k, v)\).
+The object \deff{map} is a decorator of \ff{tuple} of \deff{map.entry} objects which are pairs \((k, v)\).
 The \ff{map} ensures that all \(k\) are always unique.
 It's expected that each \(k\) is dataizable so it's possible to calculate \deff{hash-code-of} it.
 %
@@ -615,7 +615,7 @@ The \deff{stdout} object is an ``output'' that prints a \ff{string} to the stand
 %
 The \deff{stdin} object is an ``input'' and an abstraction of a \ff{string} currently available in the standard input stream.
 The attribute \deff{next-line} reads line until the EOL character (\ff{\char`\\n}).
-The atribute \deff{all-lines} reads all lines until it's possible.
+The attribute \deff{all-lines} reads all lines until it's possible.
 If there is no string in the stream, the object blocks dataization and waits.
 This code endlessly reads strings from the console and immediately prints them back:
 
@@ -714,7 +714,7 @@ The attribute \deff{tmpfile} is a temporary file in the directory.
 
 The object \adeff{tmpdir} is a system \ff{directory} of temporary files.
 
-The object \deff{tmpdir} is an abstraction of temprorary directory and is decorator of \deff{dir}.
+The object \deff{tmpdir} is an abstraction of temporary directory and is decorator of \deff{dir}.
 
 In the next example a temporary file is created and filled up with \ff{"Hello, world"}.
 Then the data is read from file and written to \ff{malloc}.
@@ -749,7 +749,7 @@ The socket descriptor has the following attributes:
 
 \begin{itemize}
     \item \deff{send}: send message to the socket
-    \item \deff{recv}: recieve \(x\) amount of bytes from socket
+    \item \deff{recv}: receive \(x\) amount of bytes from socket
     \item \ff{as-input}: make ``input'' form socket
     \item \ff{as-output}: make ``output'' form socket
 \end{itemize}
