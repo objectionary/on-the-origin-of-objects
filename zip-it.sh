@@ -26,7 +26,7 @@ pdflatex -interaction=errorstopmode -halt-on-error -shell-escape paper.tex > /de
 bibtex paper
 pdflatex -interaction=errorstopmode -halt-on-error paper.tex > /dev/null
 pdflatex -interaction=errorstopmode -halt-on-error paper.tex > /dev/null
-rm -rf ./*.aux ./*.bcf ./*.blg ./*.fdb_latexmk ./*.fls ./*.log ./*.run.xml ./*.out ./*.exc
+rm -rf ./*.aux ./*.bcf ./*.blg ./*.fdb_latexmk ./*.fls ./*.log ./*.run.xml ./*.out ./*.exc ./*.pdf
 rm -rf ./bibliography
 rm -rf ./iexec.ret
 rm -rf ./_eolang
