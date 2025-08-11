@@ -22,7 +22,10 @@ version=$(curl --silent -H "Accept: application/vnd.github.v3+json" "https://api
 echo "Version is: ${version}"
 gsed -i "s|0\.0\.0|${version}|g" paper.tex
 gsed -i "s|REPOSITORY|${REPO}|g" paper.tex
-pdflatex -interaction=errorstopmode -halt-on-error -shell-escape paper.tex > /dev/null
+eo_version=$(curl --silent -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/objectionary/eo/releases/latest" | jq -r '.tag_name')
+echo "EO version is: ${eo_version}"
+gsed -i "s|9\.9\.9|${eo_version}|g" paper.tex
+pdflatex -interaction=errorstopmode -halt-on-error -shell-escape paper.tex
 bibtex paper
 pdflatex -interaction=errorstopmode -halt-on-error paper.tex > /dev/null
 pdflatex -interaction=errorstopmode -halt-on-error paper.tex > /dev/null
