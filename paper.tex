@@ -81,7 +81,7 @@ and ``Built-in Objects'' in JavaScript~\citep{js2024,crockford2008js}.
 Each standard library (SL) freely defines its own principles of abstraction.
 For example, to get the absolute value of a numeric object \ff{x} in Java, one has to call a static method of another class \ff{Math.abs(x)}, while in Ruby it would be a property of the same object \ff{x.abs}.
 For example, in Java, an attempt to get a value from a hash map by a key will produce \ff{null} in case of its absence, while in C++ it will return an empty iterator.
-There are many similar examples demonstrating the absence of common ground between SLs.
+There are many similar examples demonstrating the absence of a common ground between SLs.
 
 Earlier, \citet{booch1990design} suggested their own components for OOP.
 We suggest our own taxonomy of objects for \eolang{}\footnote{\url{https://www.eolang.org}}, a strictly formal~\citep{kudasov2022formalizing} object-oriented programming language with an intentionally reduced feature set~\citep{bugayenko2021eolang}.
@@ -269,10 +269,10 @@ seq *
   QQ.io.stdout "Bye!"
 \end{ffcode}
 
-The objects \ff{true} and \ff{false} both have attribute \deff{if} which is a branching mechanism, 
+The objects \ff{true} and \ff{false} both have an attribute \deff{if} which is a branching mechanism, 
 expecting two arguments: a ``positive'' object, and a ``negative'' object. When
-being dataized, the object \ff{true.if} always return ``positive'' object,
-the object \ff{false.if} always return ``negative'' object.
+being dataized, the object \ff{true.if} always returns the ``positive'' object,
+the object \ff{false.if} always returns the ``negative'' object.
 This code gives a title to a random number:
 
 \begin{ffcode}
@@ -288,7 +288,7 @@ QQ.io.stdout
 
 The \deff{while} object is an iterating mechanism, expecting two arguments.
 Both are abstract objects with one free attribute for current iteration index.
-The first argument is a condition, the second one is body.
+The first argument is a condition, the second one is the body.
 When being dataized, the object \ff{while} repeatedly dataizes the body while the condition is \ff{true}.
 In the end, it returns the body or \ff{false} if no iterations happened.
 This code makes a few attempts to find a random number that is smaller than 0.1:
@@ -387,9 +387,9 @@ malloc.of
           m.read 200 6
 \end{ffcode}
 
-The \ff{malloc} object is also support resizing via \adeff{resized} attribute and copying the data within
-the allocated memory block via \deff{copy} attribute. In the next example \ff{malloc} is allocated and filled with
-5 bytes, then resized to 10 bytes and its content duplicated. The result block contains \ff{"hellohello"}.
+The \ff{malloc} object also supports resizing via the \adeff{resized} attribute and copying the data within
+the allocated memory block via the \deff{copy} attribute. In the next example, \ff{malloc} is allocated and filled with
+5 bytes, then resized to 10 bytes and its content is duplicated. The result block contains \ff{"hellohello"}.
 
 \begin{ffcode}
 malloc.of
@@ -401,8 +401,8 @@ malloc.of
       m.copy 0 5 5
 \end{ffcode}
 
-The result if dataization of \ff{malloc} is the result of dataization of its second argument, which is the scope
-where memory block is allocated and cleared automatically when dataization has happened.
+The result of dataization of \ff{malloc} is the result of dataization of its second argument, which is the scope
+where the memory block is allocated and cleared automatically when dataization has happened.
 
 \section{Math}\label{sec:math}
 
@@ -414,14 +414,14 @@ It has an additional attribute \deff{pseudo} that provides a pseudorandom number
 
 The \deff{angle} object is a decorator of \ff{number}.
 It assumes that the angle is in radians and has the following attributes for trigonometric functions: \adeff{sin}, 
-\adeff{cos}, \deff{tan} and \deff{ctan}
-There are \deff{in-degrees} and \deff{int-radians} attributes for converting from radians to degrees and vice versa.
+\adeff{cos}, \deff{tan} and \deff{ctan}.
+There are \deff{in-degrees} and \deff{in-radians} attributes for converting from radians to degrees and vice versa.
 
 The \deff{real} object is a decorator of \ff{number} with the following additional attributes:
 
 \begin{itemize}
     \item \deff{exp}: Euler's number raised to the power of \ff{real}
-    \item \deff{mod}: module from division of itself to another number
+    \item \deff{mod}: modulo from division of itself by another number
     \item \deff{abs}: absolute value of itself (\(\rho\))
     \item \adeff{sqrt}: square root of itself (\(\sqrt{\rho}\))
     \item \adeff{pow}: itself raised to the power (\(\rho^x\))
@@ -463,7 +463,7 @@ The object \deff{text} is a decorator of a \ff{string}. It has the following att
     \item \deff{trimmed-left}: removes leading spaces
     \item \deff{trimmed-right}: removes trailing spaces
     \item \deff{joined}: joins a tuple with this one as a glue
-    \item \deff{repeated}: repeats itself given amount of \(times\)
+    \item \deff{repeated}: repeats itself a given number of times
     \item \deff{contains}: checks whether it contains \(x\)
     \item \deff{starts-with}: checks whether it starts with \(x\)
     \item \deff{ends-with}: checks whether it ends with \(x\)
@@ -480,8 +480,8 @@ The object \deff{text} is a decorator of a \ff{string}. It has the following att
 
 The \deff{regex} object is an abstraction of a regular expression, in accordance with \citet[Part~2]{posix}
 (Extended Regular Expressions) and full support of Unicode.
-The \deff{match} attribute is a split of the \ff{string} into parts:
-The \deff{matches} attribute is a \ff{true} if given text matches against given regex pattern.
+The \deff{match} attribute is a split of the \ff{string} into parts.
+The \deff{matches} attribute is \ff{true} if the given text matches against the given regex pattern.
 
 \begin{ffcode}
 QQ.txt.regex "/((*@и@*)([^ ]+))/i" > r
@@ -528,9 +528,9 @@ The attribute \deff{eq} is \ff{true} if each element of the tuple is equal to th
 %
 The attribute \deff{with} is a new tuple with new element appended to the end of the list.
 %
-The attribute \deff{withi} is a new tuple with new \(i\)-th element appended. 
+The attribute \deff{withi} is a new tuple with a new \(i\)-th element appended. 
 %
-The attribute \deff{without} is a new tuple with all elements equal to given \(item\) removed.
+The attribute \deff{without} is a new tuple with all elements equal to the given \(item\) removed.
 %
 The attribute \deff{withouti} is a new tuple with the \(i\)-th element removed.
 %
@@ -538,9 +538,9 @@ The attributes \deff{each}, \deff{reduced}, \deff{contains}, \deff{filtered}, an
 \ff{find}, \ff{filter}, and \ff{map} methods of \ff{Array} object in JavaScript~\citep{EcmaScript}.
 A few ``twin'' attributes \deff{eachi}, \deff{reducedi}, \deff{filteredi} and \deff{mappedi} are semantically the same, but with an extra \ff{number} argument as a counter of a cycle.
 %
-The \deff{head} attribute is a first \(N\) items of the list.
+The \deff{head} attribute is the first \(N\) items of the list.
 %
-The \deff{tail} attribute is a last \(N\) items of the list.
+The \deff{tail} attribute is the last \(N\) items of the list.
 %
 The \deff{sorted} attribute is a new tuple with elements sorted using the \ff{lt} attribute of the elements passed.
 %
@@ -554,9 +554,9 @@ It's expected that each \(k\) is dataizable so it's possible to calculate \deff{
 %
 The attributes \ff{with} and \ff{without} are reimplemented in \ff{map}.
 %
-The \ff{found} attribute tries to find object in map by given key. The returned
-object has two attributes: \deff{exists} which is \ff{true} if object was found;
-and \deff{get} which is found object or \ff{error}.
+The \ff{found} attribute tries to find an object in the map by the given key. The returned
+object has two attributes: \deff{exists} which is \ff{true} if the object was found;
+and \deff{get} which is the found object or \ff{error}.
 %
 The \deff{keys} attribute is the \ff{list} of map keys.
 %
@@ -564,7 +564,7 @@ The \deff{values} attribute is the \ff{list} of map values.
 %
 The \deff{size} attribute is the \ff{size} of the map.
 %
-The \deff{has} attribute is \ff{true} if map contains given \(key\).
+The \deff{has} attribute is \ff{true} if the map contains the given \(key\).
 
 \subsection{Set}
 
@@ -576,19 +576,19 @@ The attributes \ff{with}, \ff{without} are reimplemented in \ff{set}.
 
 \subsection{Hash code}
 
-The object \ff{hash-code-of} is the pseudo-unique float numeric representation of an object.
-It's expected the given object is dataizable.
+The object \ff{hash-code-of} is the pseudo-unique floating-point numeric representation of an object.
+It's expected that the given object is dataizable.
 
 \subsection{Ranges}
 
 The object \deff{range} is a \ff{list} that contains a range of elements. It accepts two attributes:
-\deff{start} and \deff{end}. The attribute \ff{start} must be a abstract object that must have an 
-attribute \ff{next} to get next element and attribute \ff{lt} to compare with the \ff{end} object.
-Every next element also must have an attributes \ff{next} and \ff{lt}.
+\deff{start} and \deff{end}. The attribute \ff{start} must be an abstract object that must have an 
+attribute \ff{next} to get the next element and an attribute \ff{lt} to compare with the \ff{end} object.
+Every next element also must have attributes \ff{next} and \ff{lt}.
 The first object in the chain must have a default value.
 
-The object \deff{range-of-ints} is \ff{range} of integer numbers from \ff{start} to \ff{end} (soft border) with step = \(1\).
-It also accepts two void attributes \ff{start} and \ff{end} which must be integer \ff{number}s. If they're not - an \ff{error} is returned
+The object \deff{range-of-ints} is a \ff{range} of integer numbers from \ff{start} to \ff{end} (soft border) with step = \(1\).
+It also accepts two void attributes \ff{start} and \ff{end} which must be integer \ff{number}s. If they're not, an \ff{error} is returned.
 
 \section{I/O Streams}\label{sec:streams}
 
@@ -609,13 +609,13 @@ It is expected that an output stream has the following interface:
   [bytes] > write /true
 \end{ffcode}
 
-The \deff{console} object is basic I/O object that allows to interact with operation system console. It behaves as ``input'' and ``output.''
+The \deff{console} object is a basic I/O object that allows interaction with the operating system console. It behaves as ``input'' and ``output.''
 %
 The \deff{stdout} object is an ``output'' that prints a \ff{string} to the standard output stream.
 %
 The \deff{stdin} object is an ``input'' and an abstraction of a \ff{string} currently available in the standard input stream.
-The attribute \deff{next-line} reads line until the EOL character (\ff{\char`\\n}).
-The attribute \deff{all-lines} reads all lines until it's possible.
+The attribute \deff{next-line} reads a line until the EOL character (\ff{\char`\\n}).
+The attribute \deff{all-lines} reads all lines as long as possible.
 If there is no string in the stream, the object blocks dataization and waits.
 This code endlessly reads strings from the console and immediately prints them back:
 
@@ -631,7 +631,7 @@ The object \adeff{bytes-as-input} is an ``input'' created from \ff{bytes}.
 %
 The object \adeff{malloc-as-output} is an ``output'' directed towards a copy of \ff{malloc}.
 %
-The object \adeff{tee-input} is an ``input'' and channel between an ``input'' and an ``output,'' which moves all 
+The object \adeff{tee-input} is an ``input'' and a channel between an ``input'' and an ``output,'' which moves all 
 available bytes from the former to the latter when being dataized.
 %
 For example, this code writes text to a temporary file:
@@ -645,7 +645,7 @@ For example, this code writes text to a temporary file:
       f
 \end{ffcode}
 
-The object \deff{input-length} is an object which reads all the bytes from provided ``input'' and returns its length.
+The object \deff{input-length} is an object which reads all the bytes from the provided ``input'' and returns its length.
 %
 The objects \deff{dead-input} and \deff{dead-output} are stubs which read from and write to nothing.
 
@@ -658,14 +658,14 @@ The object \deff{path} is an abstraction of file path and is a decorator of \ff{
 %
 The attribute \deff{separator} is a system-dependent default name-separator character.
 %
-The attribute \deff{joined} is an utility object that joins given \ff{tuple} of paths with current OS separator
-and normalizes result path.
+The attribute \deff{joined} is a utility object that joins the given \ff{tuple} of paths with the current OS separator
+and normalizes the result path.
 %
 The attribute \deff{as-file} is a \deff{file} created from the path itself.
 %
 The attribute \deff{as-dir} is a \deff{dir} created from the path itself.
 %
-The attribute \deff{is-absolute} is a \ff{true} if path is absolute and \ff{false} otherwise.
+The attribute \deff{is-absolute} is \ff{true} if the path is absolute and \ff{false} otherwise.
 %
 The attribute \deff{normalized} is a new \ff{path} with normalized \(uri\). Normalization includes
 converting multiple slashes into a single slash and resolving ``.'' (current directory) and ``..'' 
@@ -696,9 +696,9 @@ The attribute \adeff{size} is the size of the file in bytes.
 The attribute \deff{moved} renames or moves the file to a new place.
 %
 The attribute \deff{open} opens the file. The \ff{open} object accepts two attributes: file open mode
-which is \ff{string} and file scope. The file scope attribute must be an abstract object
+which is a \ff{string} and file scope. The file scope attribute must be an abstract object
 with one void attribute which is \deff{file-stream}. It has the attributes \ff{read} and \ff{write}
-which allows to work with file as ``input'' and ``output''. The result of dataization of \ff{file.open} is
+which allow working with the file as ``input'' and ``output''. The result of dataization of \ff{file.open} is
 the result of dataization of its second argument ``scope''. The file descriptor is closed automatically
 when the scope is dataized.
 
@@ -712,12 +712,12 @@ The attribute \deff{walk} finds files in the directory using glob pattern matchi
 %
 The attribute \deff{tmpfile} is a temporary file in the directory.
 
-The object \adeff{tmpdir} is a system \ff{directory} of temporary files.
+The object \adeff{tmpdir} is a system \ff{directory} for temporary files.
 
-The object \deff{tmpdir} is an abstraction of temporary directory and is decorator of \deff{dir}.
+The object \deff{tmpdir} is an abstraction of a temporary directory and is a decorator of \deff{dir}.
 
-In the next example a temporary file is created and filled up with \ff{"Hello, world"}.
-Then the data is read from file and written to \ff{malloc}.
+In the next example, a temporary file is created and filled up with \ff{"Hello, world"}.
+Then the data is read from the file and written to \ff{malloc}.
 
 \begin{ffcode}
 QQ.malloc.of
@@ -744,19 +744,19 @@ Here we define objects used for both server-side and client-side TCP sockets in 
 All objects presented in this Section belong to the \ff{QQ.net} package.
 
 The \deff{socket} object is an abstraction of a TCP socket.
-The \deff{connect} attribute establishes a connection. It accepts abstract object with one void attribute which is socket descriptor.
+The \deff{connect} attribute establishes a connection. It accepts an abstract object with one void attribute which is the socket descriptor.
 The socket descriptor has the following attributes:
 
 \begin{itemize}
-    \item \deff{send}: send message to the socket
-    \item \deff{recv}: receive \(x\) amount of bytes from socket
-    \item \ff{as-input}: make ``input'' form socket
-    \item \ff{as-output}: make ``output'' form socket
+    \item \deff{send}: send a message to the socket
+    \item \deff{recv}: receive \(x\) amount of bytes from the socket
+    \item \ff{as-input}: make ``input'' from socket
+    \item \ff{as-output}: make ``output'' from socket
 \end{itemize}
 
-When you dataize \ff{socket.connect}, it creates new socket, connects to the given
-IP on given port, dataizes provided scope, closes the socket and returns bytes
-retrieved from scope dataization. The \ff{error} is returned is any of the described steps failed.
+When you dataize \ff{socket.connect}, it creates a new socket, connects to the given
+IP on the given port, dataizes the provided scope, closes the socket and returns bytes
+retrieved from scope dataization. An \ff{error} is returned if any of the described steps failed.
 
 This code opens a connection to TCP port 80 of \ff{localhost} and then reads the entire stream as a Unicode string:
 
@@ -768,13 +768,13 @@ This code opens a connection to TCP port 80 of \ff{localhost} and then reads the
       QQ.io.console
 \end{ffcode}
 
-The \adeff{listen} attribute allows you to listen to the incoming connections as server.
-It accepts abstract object with one void attribute which is socket descriptor. The current socket descriptor has the
-same attributes as descriptor from \ff{socket.connect} and also one extra attribute \deff{accept}. This attribute is
-used to wait for an incoming connection. It also accepts abstract object with one void attribute which is client socket descriptor,
+The \adeff{listen} attribute allows you to listen to incoming connections as a server.
+It accepts an abstract object with one void attribute which is the socket descriptor. The current socket descriptor has the
+same attributes as the descriptor from \ff{socket.connect} and also one extra attribute \deff{accept}. This attribute is
+used to wait for an incoming connection. It also accepts an abstract object with one void attribute which is the client socket descriptor,
 which was connected to your server.
 
-This code emulates a server on TCP port 8080 of \ff{localhost}, then it accepts incoming connection and send \ff{"Hello, world"} to it:
+This code emulates a server on TCP port 8080 of \ff{localhost}, then it accepts an incoming connection and sends \ff{"Hello, world"} to it:
 
 \begin{ffcode}
 (QQ.net.socket "127.0.0.1" 8080).listen
