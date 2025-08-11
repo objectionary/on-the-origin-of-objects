@@ -259,7 +259,7 @@ try
 Here we define objects that help control dataization flow.
 
 The \deff{seq} object is an abstraction of sequence of objects to be dataized sequentially.
-For example, this code prints one message to the console and then terminates the program due to 
+For example, this code prints one message to the console and then terminates the program due to
 the inability to dataize the division by zero in the middle:
 
 \begin{ffcode}
@@ -269,7 +269,7 @@ seq *
   QQ.io.stdout "Bye!"
 \end{ffcode}
 
-The objects \ff{true} and \ff{false} both have an attribute \deff{if} which is a branching mechanism, 
+The objects \ff{true} and \ff{false} both have an attribute \deff{if} which is a branching mechanism,
 expecting two arguments: a ``positive'' object, and a ``negative'' object. When
 being dataized, the object \ff{true.if} always returns the ``positive'' object,
 the object \ff{false.if} always returns the ``negative'' object.
@@ -342,8 +342,8 @@ go.to
             * x
 \end{ffcode}
 
-The \deff{switch} object is an abstraction of multi-case branching that encapsulates \((k, v)\) pairs and the 
-dataization result is equal to \(v\) of the first pair where \(k\) is \ff{true}, while the last pair is the one 
+The \deff{switch} object is an abstraction of multi-case branching that encapsulates \((k, v)\) pairs and the
+dataization result is equal to \(v\) of the first pair where \(k\) is \ff{true}, while the last pair is the one
 to be used if no other pairs match:
 
 \begin{ffcode}
@@ -413,7 +413,7 @@ The \deff{random} object is an abstraction of a random \ff{number} between zero 
 It has an additional attribute \deff{pseudo} that provides a pseudorandom number generator with a seed.
 
 The \deff{angle} object is a decorator of \ff{number}.
-It assumes that the angle is in radians and has the following attributes for trigonometric functions: \adeff{sin}, 
+It assumes that the angle is in radians and has the following attributes for trigonometric functions: \adeff{sin},
 \adeff{cos}, \deff{tan} and \deff{ctan}.
 There are \deff{in-degrees} and \deff{in-radians} attributes for converting from radians to degrees and vice versa.
 
@@ -528,13 +528,13 @@ The attribute \deff{eq} is \ff{true} if each element of the tuple is equal to th
 %
 The attribute \deff{with} is a new tuple with new element appended to the end of the list.
 %
-The attribute \deff{withi} is a new tuple with a new \(i\)-th element appended. 
+The attribute \deff{withi} is a new tuple with a new \(i\)-th element appended.
 %
 The attribute \deff{without} is a new tuple with all elements equal to the given \(item\) removed.
 %
 The attribute \deff{withouti} is a new tuple with the \(i\)-th element removed.
 %
-The attributes \deff{each}, \deff{reduced}, \deff{contains}, \deff{filtered}, and \deff{mapped} are respectively similar to \ff{forEach}, \ff{reduce}, 
+The attributes \deff{each}, \deff{reduced}, \deff{contains}, \deff{filtered}, and \deff{mapped} are respectively similar to \ff{forEach}, \ff{reduce},
 \ff{find}, \ff{filter}, and \ff{map} methods of \ff{Array} object in JavaScript~\citep{EcmaScript}.
 A few ``twin'' attributes \deff{eachi}, \deff{reducedi}, \deff{filteredi} and \deff{mappedi} are semantically the same, but with an extra \ff{number} argument as a counter of a cycle.
 %
@@ -582,7 +582,7 @@ It's expected that the given object is dataizable.
 \subsection{Ranges}
 
 The object \deff{range} is a \ff{list} that contains a range of elements. It accepts two attributes:
-\deff{start} and \deff{end}. The attribute \ff{start} must be an abstract object that must have an 
+\deff{start} and \deff{end}. The attribute \ff{start} must be an abstract object that must have an
 attribute \ff{next} to get the next element and an attribute \ff{lt} to compare with the \ff{end} object.
 Every next element also must have attributes \ff{next} and \ff{lt}.
 The first object in the chain must have a default value.
@@ -631,7 +631,7 @@ The object \adeff{bytes-as-input} is an ``input'' created from \ff{bytes}.
 %
 The object \adeff{malloc-as-output} is an ``output'' directed towards a copy of \ff{malloc}.
 %
-The object \adeff{tee-input} is an ``input'' and a channel between an ``input'' and an ``output,'' which moves all 
+The object \adeff{tee-input} is an ``input'' and a channel between an ``input'' and an ``output,'' which moves all
 available bytes from the former to the latter when being dataized.
 %
 For example, this code writes text to a temporary file:
@@ -668,7 +668,7 @@ The attribute \deff{as-dir} is a \deff{dir} created from the path itself.
 The attribute \deff{is-absolute} is \ff{true} if the path is absolute and \ff{false} otherwise.
 %
 The attribute \deff{normalized} is a new \ff{path} with normalized \(uri\). Normalization includes
-converting multiple slashes into a single slash and resolving ``.'' (current directory) and ``..'' 
+converting multiple slashes into a single slash and resolving ``.'' (current directory) and ``..''
 (parent directory) segments.
 %
 The attribute \deff{resolved} is a new \ff{path} with a suffix appended to the current one.
