@@ -654,29 +654,59 @@ The objects \deff{dead-input} and \deff{dead-output} are stubs which read from a
 Here we define manipulations with files and directories.
 All objects presented in this Section belong to \ff{QQ.fs} package.
 
-The object \
+The object \deff{path} is an abstraction of file path and is a decorator of \ff{string}.
+%
+The attribute \deff{separator} is a system-dependent default name-separator character.
+%
+The attribute \deff{joined} is an utility object that joins given \ff{tuple} of paths with current OS separator
+and normalizes result path.
+%
+The attribute \deff{as-file} is a \deff{file} created from the path itself.
+%
+The attribute \deff{as-dir} is a \deff{dir} created from the path itself.
+%
+The attribute \deff{is-absolute} is a \ff{true} if path is absolute and \ff{false} otherwise.
+%
+The attribute \deff{normalized} is a new \ff{path} with normalized \(uri\). Normalization includes
+converting multiple slashes into a single slash and resolving ``.'' (current directory) and ``..'' 
+(parent directory) segments.
+%
+The attribute \deff{resolved} is a new \ff{path} with a suffix appended to the current one.
+%
+The attribute \deff{basename} is the name of the file in the path.
+%
+The attribute \deff{extname} is the extension in the path.
+%
+The attribute \adeff{dirname} is the name of the directory in the path.
 
-The object \deff{file} is an abstraction of a file and is a decorator of \ff{string}, which is the path of the file.
+The object \deff{file} is an abstraction of a file and is a decorator of \ff{path}, which is the path of the file.
+%
+The attribute \deff{as-path} is a \ff{path} of the file.
+%
+The attribute \adeff{is-directory} is \ff{true} if the file is a directory.
 %
 The attribute \adeff{exists} is \ff{true} if the file exists.
 %
-The attribute \adeff{is-dir} is \ff{true} if the file is a directory.
+The attribute \deff{touched} makes sure the file exists.
 %
-The attribute \adeff{touch} makes sure the file exists.
-%
-The attribute \adeff{rm} removes the file.
-%
-The attribute \adeff{mv} renames or moves the file to a new place.
+The attribute \deff{deleted} removes the file.
 %
 The attribute \adeff{size} is the size of the file in bytes.
 %
-The attribute \adeff{as-output} is an output stream for this file, while the attribute \adeff{as-input} is an input stream.
+The attribute \deff{moved} renames or moves the file to a new place.
+%
+The attribute \deff{open} opens the file. The \ff{open} object accepts two attributes: file open mode
+which is \ff{string} and file scope. The file scope attribute must be an abstract object
+with one void attribute which is \deff{file-stream}. It has the attributes \ff{read} and \ff{write}
+which allows to work with file as ``input'' and ``output''. The result of dataization of \ff{file.open} is
+the result of dataization of its second argument ``scope''. The file descriptor is closed automatically
+when the scope is dataized.
 
-The object \deff{directory} is an abstraction of a directory.
+The object \deff{dir} is an abstraction of a directory.
 %
-The attribute \deff{mkdir} creates the directory with all its parent directories.
+The attribute \deff{made} creates the directory with all its parent directories.
 %
-The attribute \deff{rm-rf} deletes the directory recursively with all its subdirectories.
+The attribute \deff{deleted} deletes the directory recursively with all its subdirectories.
 %
 The attribute \deff{walk} finds files in the directory using glob pattern matching.
 %
@@ -684,95 +714,75 @@ The attribute \deff{tmpfile} is a temporary file in the directory.
 
 The object \adeff{tmpdir} is a system \ff{directory} of temporary files.
 
-The object \deff{path} is a decorator of a \ff{string} and is a path of a file.
-%
-The attribute \adeff{resolve} is a new path with a suffix appended to the current one.
-%
-The attribute \adeff{dir-name} is the name of the directory in the path.
-%
-The attribute \adeff{ext-name} is the extension in the path.
-%
-The attribute \adeff{base-name} is the name of the file in the path.
+The object \deff{tmpdir} is an abstraction of temprorary directory and is decorator of \deff{dir}.
 
-\section{Sockets}\label{sec:sockets}
+In the next example a temporary file is created and filled up with \ff{"Hello, world"}.
+Then the data is read from file and written to \ff{malloc}.
+
+\begin{ffcode}
+QQ.malloc.of
+  12
+  [m]
+    seq > @
+      *
+        tmpdir
+        .tmpfile
+        .open
+          "w"
+          f.write "Hello, world" > [f]
+        .open
+          "r"
+          [f] >>
+            m.put > @
+              f.read 12
+        m
+\end{ffcode}
+
+\section{Net}\label{sec:sockets}
 
 Here we define objects used for both server-side and client-side TCP sockets in accordance with \citet{posix}.
 All objects presented in this Section belong to the \ff{QQ.net} package.
 
 The \deff{socket} object is an abstraction of a TCP socket.
-The \adeff{connect} attribute establishes a connection and returns a copy of the socket object.
-Then, its \adeff{as-input} and \adeff{as-output} attributes may be used for reading from the socket and for writing to it.
-For example, this code opens a connection to TCP port 80 of \ff{google.com} and then reads the entire stream as a Unicode string:
+The \deff{connect} attribute establishes a connection. It accepts abstract object with one void attribute which is socket descriptor.
+The socket descriptor has the following attributes:
+
+\begin{itemize}
+    \item \deff{send}: send message to the socket
+    \item \deff{recv}: recieve \(x\) amount of bytes from socket
+    \item \ff{as-input}: make ``input'' form socket
+    \item \ff{as-output}: make ``output'' form socket
+\end{itemize}
+
+When you dataize \ff{socket.connect}, it creates new socket, connects to the given
+IP on given port, dataizes provided scope, closes the socket and returns bytes
+retrieved from scope dataization. The \ff{error} is returned is any of the described steps failed.
+
+This code opens a connection to TCP port 80 of \ff{localhost} and then reads the entire stream as a Unicode string:
 
 \begin{ffcode}
-QQ.net.socket
-  "google.com"
-  80
-.connect
+(QQ.net.socket "127.0.0.1" 80).connect
   [s]
-    seq * > @
-      QQ.io.stdout
-        QQ.io.content
-          s.as-input
-      s.close
+    QQ.io.tee-input > @
+      s.as-input
+      QQ.io.console
 \end{ffcode}
 
-The \adeff{listen} attribute returns a copy of the socket and establishes a server connection.
-Then, the \adeff{accept} attribute can be used to wait for an incoming connection and then make a copy when it arrives.
-For example, this code binds to port 8080 on ``localhost'' and when a connection arrives, prints a message into it:
+The \adeff{listen} attribute allows you to listen to the incoming connections as server.
+It accepts abstract object with one void attribute which is socket descriptor. The current socket descriptor has the
+same attributes as descriptor from \ff{socket.connect} and also one extra attribute \deff{accept}. This attribute is
+used to wait for an incoming connection. It also accepts abstract object with one void attribute which is client socket descriptor,
+which was connected to your server.
+
+This code emulates a server on TCP port 8080 of \ff{localhost}, then it accepts incoming connection and send \ff{"Hello, world"} to it:
 
 \begin{ffcode}
-QQ.net.socket
-  "127.0.0.1"
-  8080
-.listen
+(QQ.net.socket "127.0.0.1" 8080).listen
   [s]
-    seq * > @
-      QQ.io.copied
-        QQ.io.bytes-as-input
-          "Hello, world!".as-bytes
-        s.accept.as-output
-      s.close
+    s.accept > @
+      [client]
+        client.send "Hello, world" > @
 \end{ffcode}
-
-The attribute \adeff{close} terminates the connection and makes the closed \aff{socket} object impossible to use anymore.
-
-\section{HTTP}\label{sec:http}
-
-Here we define objects used for parsing and printing HTTP requests and responses in accordance with \citet{rfc2616}.
-All objects presented in this Section belong to the \ff{QQ.http} package.
-
-The objects \deff{http-request} and \deff{http-response} are abstractions of HTTP request and response respectively.
-They have attributes that help building them; they both have the \deff{as-string} attribute to turn them into a \ff{string}:
-
-\begin{ffcode}
-http-request
-.with-method 'GET'
-.with-address '/index.html'
-.with-header 'Accept-Encoding' 'utf-8'
-.with-cookie 'Session-Id' '8F09A4E438C'
-.with-content-type 'plain/text'
-.as-string > r
-\end{ffcode}
-
-They both have the \deff{from-string} attribute to create objects from a \ff{string}.
-They also have attributes that represent the pieces, which request and response are built of:
-
-\begin{ffcode}
-http-response.from-string "..." > r
-r.status
-r.header 'Content-Type'
-r.cookie 'Session-Id'
-\end{ffcode}
-
-\section{Synchronization}\label{sec:synchronization}
-
-Here we define objects used for explicit synchronization between threads.
-All objects presented in this Section belong to the \ff{QQ.sync} package.
-
-The \deff{semaphore} object is a counting semaphore with two attributes: \adeff{capture} and \adeff{release}.
-
-The \deff{atomic-memory} object is a synchronized decorator of \ff{memory} with a binary \ff{semaphore} encapsulated.
 
 \raggedright
 \bibliographystyle{ACM-Reference-Format}
