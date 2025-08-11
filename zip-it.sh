@@ -29,7 +29,6 @@ pdflatex -interaction=errorstopmode -halt-on-error paper.tex > /dev/null
 rm -rf ./*.aux ./*.bcf ./*.blg ./*.fdb_latexmk ./*.fls ./*.log ./*.run.xml ./*.out ./*.exc ./*.pdf
 rm -rf ./bibliography
 rm -rf ./iexec.ret
-rm -rf ./_eolang
 zip -x paper.pdf -r "paper-${version}.zip" ./*
 mv "paper-${version}.zip" ..
 cd ..
