@@ -151,9 +151,9 @@ There are also attributes for bitwise operations:
 \adeff{or},
 \adeff{xor},
 \adeff{not},
-\adeff{left},
+\adeff{right}
 and
-\adeff{right}.
+\deff{left}.
 
 The object also has the \adeff{eq} attribute for byte-by-byte comparing
 itself with another sequence of bytes.
@@ -167,7 +167,7 @@ of two byte sequences: the current and the provided one.
 
 \section{Primitives}\label{sec:primitives}
 
-There are two primitive data objects described below.
+There are four primitive data objects described below.
 All of them have an \adeff{as-bytes} attribute, which is an abstraction of their representation as a sequence of bytes.
 All primitives have an \deff{eq} attribute, which is \ff{true} if the primitive is equal to another object, through the use of \ff{\^{}.as-bytes.eq}.
 
@@ -186,9 +186,10 @@ The \adeff{plus} attribute is a sum of this number and another \ff{number}.
 The \deff{minus} attribute is the subtraction of another \ff{number} from this number.
 The \adeff{times} attribute and \adeff{div} are multiplication and division of this number and another \ff{number}.
 The \deff{neg} attribute is the same number with a different sign.
+The \deff{floor} attribute is a rounded down \ff{number}.
 
-The \adeff{lt} attribute is a \ff{bool} object \ff{true} if it is ``less than'' another \ff{number} and \ff{false} otherwise.
-Attributes \deff{gt}, \deff{lte}, and \deff{gte} are ``greater than,'' ``less than or equal,'' and ``greater than or equal'' comparisons respectively.
+The \adeff{gt} attribute is a boolean object \ff{true} if it is ``greater than'' another \ff{number} and \ff{false} otherwise.
+Attributes \deff{lt}, \deff{lte}, and \deff{gte} are ``greater than,'' ``less than or equal,'' and ``greater than or equal'' comparisons respectively.
 
 Floating-point numbers with a different bit-width are explained in \cref{sec:digits}.
 Other manipulations with floating-point numbers can be done in their decorators.
@@ -218,11 +219,11 @@ For example, this code represents a tuple \ff{x} of numbers and strings:
   * "blue" 0x11C
 \end{ffcode}
 
-The \adeff{with} attribute is a new \ff{tuple} with all elements from the current tuple and a new element added to the end of it.
-
-The \adeff{at} attribute is the element of the tuple at the specified index---positive indices are zero-based starting from the left, and negative indices start at -1 from the right.
-
-The \adeff{length} attribute is the total number of elements in the tuple.
+The \deff{with} attribute is a new \ff{tuple} with all elements from the current tuple and a new element added to the end of it.
+%
+The \deff{at} attribute is the element of the tuple at the specified index---positive indices are zero-based starting from the left, and negative indices start at -1 from the right.
+%
+The \deff{length} attribute is the total number of elements in the tuple.
 
 Other manipulations with tuples can be implemented in their
 decorators. Some of them are explained in \cref{sec:structs}.
@@ -236,7 +237,7 @@ It encapsulates any other object, which can play the role of an exception that i
 
 \begin{ffcode}
 [x] > d
-  if > @
+  if. > @
     x.eq 0
     error "Can't divide by zero"
     42.div x
@@ -247,22 +248,19 @@ For example, the following code prints ``division by zero'' and then ``finally''
 
 \begin{ffcode}
 try
+  42.div 0
+  QQ.io.stdout e > [e]
   []
-    42.div 0 > @
-  [e]
-    QQ.io.stdout > @
-      e
-  []
-    QQ.io.stdout > @
-      "finally"
+    QQ.io.stdout "finally" > @
 \end{ffcode}
 
 \section{Flow Control}\label{sec:flow}
 
 Here we define objects that help control dataization flow.
 
-The \adeff{seq} object is an abstraction of sequence of objects to be dataized sequentially.
-For example, this code prints one message to the console and then terminates the program due to the inability to dataize the division by zero in the middle:
+The \deff{seq} object is an abstraction of sequence of objects to be dataized sequentially.
+For example, this code prints one message to the console and then terminates the program due to 
+the inability to dataize the division by zero in the middle:
 
 \begin{ffcode}
 seq *
@@ -271,33 +269,35 @@ seq *
   QQ.io.stdout "Bye!"
 \end{ffcode}
 
-The \adeff{if} object is a branching mechanism, expecting three arguments: a
-condition as \ff{bool}, a ``positive'' object, and a ``negative'' object. When
-being dataized, the object \aff{if} first dataizes the condition and then,
-according to the result obtained, either returns the positive object or the
-negative one. Both positive and negative objects must have the same form. This
-code gives a title to a random number:
+The objects \ff{true} and \ff{false} both have attribute \deff{if} which is a branching mechanism, 
+expecting two arguments: a ``positive'' object, and a ``negative'' object. When
+being dataized, the object \ff{true.if} always return ``positive'' object,
+the object \ff{false.if} always return ``negative'' object.
+This code gives a title to a random number:
 
 \begin{ffcode}
 QQ.math.random.pseudo > r
 QQ.io.stdout
   QQ.txt.sprintf *1
     "Coin toss: %s"
-    if
+    if.
       r.gte 0.5
       "heads"
       "tails"
 \end{ffcode}
 
-The \adeff{while} object is an iterating mechanism, expecting two attributes: a condition as \ff{bool} and a body as an abstract object with one free attribute.
-When being dataized, the object \aff{while} repeatedly dataizes the body while the condition is \ff{true}.
+The \deff{while} object is an iterating mechanism, expecting two arguments.
+Both are abstract objects with one free attribute for current iteration index.
+The first argument is a condition, the second one is body.
+When being dataized, the object \ff{while} repeatedly dataizes the body while the condition is \ff{true}.
 In the end, it returns the body or \ff{false} if no iterations happened.
 This code makes a few attempts to find a random number that is smaller than 0.1:
 
 \begin{ffcode}
 QQ.math.random.pseudo > r
 while
-  r.gte 0.1
+  [i] >>
+    r.gte 0.1 > @
   [i]
     QQ.io.stdout > @
       QQ.txt.sprintf *1
@@ -305,7 +305,7 @@ while
         i
 \end{ffcode}
 
-The \adeff{go} object enables forward and backward ``jumps'' either immediately finishing dataization or restarting it.
+The \deff{go} object enables forward and backward ``jumps'' either immediately finishing dataization or restarting it.
 For example, this code won't print a message to the console if \ff{x} is equal to zero:
 
 \begin{ffcode}
@@ -328,19 +328,23 @@ In this example, the number will be read from the console again, if it is equal 
 go.to
   [g]
     seq * > @
-      as-int. > x
-        QQ.txt.parsed
-          QQ.io.stdin
+      at. > x
+        QQ.txt.sscanf
+          "%d"
+          QQ.io.stdin.next-line
+        0
       if
         x.eq 0
         g.backward
         QQ.io.stdout
-          QQ.txt.sprintf *1
+          QQ.txt.sprintf
             "Number %d is OK!"
-            x
+            * x
 \end{ffcode}
 
-The \deff{switch} object is an abstraction of multi-case branching that encapsulates \((k, v)\) pairs and the dataization result is equal to \(v\) of the first pair where \(k\) is \ff{true}, while the last pair is the one to be used if no other pairs match:
+The \deff{switch} object is an abstraction of multi-case branching that encapsulates \((k, v)\) pairs and the 
+dataization result is equal to \(v\) of the first pair where \(k\) is \ff{true}, while the last pair is the one 
+to be used if no other pairs match:
 
 \begin{ffcode}
 QQ.io.stdout
@@ -369,7 +373,8 @@ Here we define objects that manage memory.
 
 The \deff{malloc} object is an abstraction of a random-access memory of certain size.
 It behaves like the \ff{bytes}, but has an additional \adeff{write} attribute.
-In this example, one kilobyte of memory with random data is allocated when a copy of \ff{malloc} is created, six bytes are written starting at the 200th byte, and then a string is read back and \ff{"Hello!"} is printed:
+In this example, one kilobyte of memory with random data is allocated when a copy of \ff{malloc} is created,
+six bytes are written starting at the 200th byte, and then a string is read back and \ff{"Hello!"} is printed:
 
 \begin{ffcode}
 malloc.of
@@ -382,31 +387,48 @@ malloc.of
           m.read 200 6
 \end{ffcode}
 
+The \ff{malloc} object is also support resizing via \adeff{resized} attribute and copying the data withing
+the allocated memory block via \deff{copy} attribute. In the next example \ff{malloc} is allocated and filled with
+5 bytes, then resized to 10 bytes and its content duplicated. The result block contains \ff{"hellohello"}.
+
+\begin{ffcode}
+malloc.of
+  5
+  [m]
+    seq * > @
+      m.write 5 "hello"
+      m.resized 10
+      m.copy 0 5 5
+\end{ffcode}
+
+The result if dataization of \ff{malloc} is the result of dataization of its second argument, which is the scope
+where memory block is allocated and cleared automatically when dataization has happened.
+
 \section{Math}\label{sec:math}
 
 Here we define objects that represent math functions and algorithms.
 All objects in this Section belong to the \ff{QQ.math} package.
-
+%
 The \deff{random} object is an abstraction of a random \ff{number} between zero and one inclusive.
-It has an additional attribute \adeff{pseudo} that provides a pseudorandom number generator with a seed.
+It has an additional attribute \deff{pseudo} that provides a pseudorandom number generator with a seed.
 
 The \deff{angle} object is a decorator of \ff{number}.
-It assumes that the angle is in radians and has the following attributes for trigonometric functions: \deff{sine}, \deff{cosine}, and \deff{tangent}.
-There are \deff{as-degrees} and \deff{as-radians} attributes for converting from radians to degrees and vice versa.
+It assumes that the angle is in radians and has the following attributes for trigonometric functions: \adeff{sin}, 
+\adeff{cos}, \deff{tan} and \deff{ctan}
+There are \deff{in-degrees} and \deff{int-radians} attributes for converting from radians to degrees and vice versa.
 
 The \deff{real} object is a decorator of \ff{number} with the following additional attributes:
 
 \begin{itemize}
+    \item \deff{exp}: Euler's number raised to the power of \ff{real}
+    \item \deff{mod}: module from division of itself to another number
     \item \deff{abs}: absolute value of itself (\(\rho\))
-    \item \deff{ceil}: round itself up
-    \item \deff{floor}: round itself down
-    \item \deff{ln}: natural logarithm (\(\ln \rho\))
-    \item \deff{log}: logarithm (\(\log_x \rho\))
-    \item \deff{max}: the greater of itself and another number
-    \item \deff{min}: the smaller of itself and another number
-    \item \deff{power}: itself raised to the power (\(\rho^x\))
-    \item \deff{signum}: the sign of itself, as \ff{-1}, \ff{0}, or \ff{+1}
-    \item \deff{sqrt}: square root of itself (\(\sqrt{\rho}\))
+    \item \adeff{sqrt}: square root of itself (\(\sqrt{\rho}\))
+    \item \adeff{pow}: itself raised to the power (\(\rho^x\))
+    \item \adeff{ln}: natural logarithm (\(\ln \rho\))
+    \item \adeff{acos}: arccosine of itself
+    \item \adeff{asin}: arcsine of itself
+
 \end{itemize}
 
 \section{Strings}\label{sec:strings}
@@ -437,24 +459,29 @@ QQ.txt.sprintf *1
 The object \deff{text} is a decorator of a \ff{string}. It has the following attributes:
 
 \begin{itemize}
+    \item \deff{trimmed}: removes both leading and trailing spaces
+    \item \deff{trimmed-left}: removes leading spaces
+    \item \deff{trimmed-right}: removes trailing spaces
+    \item \deff{joined}: joins a tuple with this one as a glue
+    \item \deff{repeated}: repeates itself given amount of \(times\)
     \item \deff{contains}: checks whether it contains \(x\)
+    \item \deff{starts-with}: checks whether it starts with \(x\)
     \item \deff{ends-with}: checks whether it ends with \(x\)
     \item \deff{index-of}: finds the first occurrence of a substring
-    \item \deff{joined}: joins a tuple with this one as a glue
-    \item \deff{chained}: concatenates two strings
-    \item \deff{low-cased}: makes it lower case
     \item \deff{last-index-of}: finds the last occurrence of a substring
-    \item \deff{left-trimmed}: removes leading spaces
-    \item \deff{replaced}: finds and replaces a substring
-    \item \deff{right-trimmed}: removes trailing spaces
-    \item \deff{split}: breaks it into a tuple of strings
-    \item \deff{starts-with}: checks whether it starts with \(x\)
-    \item \deff{trimmed}: removes both leading and trailing spaces
     \item \deff{up-cased}: makes it upper case
+    \item \deff{low-cased}: makes it lower case
+    \item \deff{at}: retrieves symbol by given index
+    \item \deff{replaced}: finds and replaces a substring
+    \item \deff{as-number}: converts itself to \ff{number}
+    \item \deff{split}: breaks it into a tuple of strings
+    \item \deff{chained}: concatenates two strings
 \end{itemize}
 
-The \deff{regex} object is an abstraction of a regular expression, in accordance with \citet[Part~2]{posix} (Extended Regular Expressions) and full support of Unicode.
+The \deff{regex} object is an abstraction of a regular expression, in accordance with \citet[Part~2]{posix}
+(Extended Regular Expressions) and full support of Unicode.
 The \deff{match} attribute is a split of the \ff{string} into parts:
+The \deff{matches} attribute is a \ff{true} if given text matches against given regex pattern.
 
 \begin{ffcode}
 QQ.txt.regex "/((*@и@*)([^ ]+))/i" > r
@@ -494,39 +521,74 @@ All objects presented in this Section belong to the \ff{QQ.structs} package.
 \subsection{List}
 
 The object \deff{list} is a decorator of \ff{tuple}.
-
+%
 The attribute \deff{is-empty} is \ff{true} if the length of the tuple is zero.
-
+%
 The attribute \deff{eq} is \ff{true} if each element of the tuple is equal to the corresponding element of another tuple and the lengths of both tuples are the same.
-
-The attribute \deff{without} is a new tuple with the \(i\)-th element removed.
-
-The attributes \deff{each}, \deff{reduced}, \deff{found}, \deff{filtered}, and \deff{mapped} are respectively similar to \ff{forEach}, \ff{reduce}, \ff{find}, \ff{filter}, and \ff{map} methods of \ff{Array} object in JavaScript~\citep{EcmaScript}.
-A few ``twin'' attributes \deff{eachi}, \deff{reducedi}, \deff{filteredi}, \deff{foundi}, and \deff{mappedi} are semantically the same, but with an extra \ff{number} argument as a counter of a cycle.
-
-The \deff{slice} attribute is a part of the tuple.
-
+%
+The attribute \deff{with} is a new tuple with new element appended to the end of the list.
+%
+The attribute \deff{withi} is a new tuple with new \(i\)-th element appended. 
+%
+The attribute \deff{without} is a new tuple with all elements equal to given \(item\) removed.
+%
+The attribute \deff{withouti} is a new tuple with the \(i\)-th element removed.
+%
+The attributes \deff{each}, \deff{reduced}, \deff{contains}, \deff{filtered}, and \deff{mapped} are respectively similar to \ff{forEach}, \ff{reduce}, 
+\ff{find}, \ff{filter}, and \ff{map} methods of \ff{Array} object in JavaScript~\citep{EcmaScript}.
+A few ``twin'' attributes \deff{eachi}, \deff{reducedi}, \deff{filteredi} and \deff{mappedi} are semantically the same, but with an extra \ff{number} argument as a counter of a cycle.
+%
+The \deff{head} attribute is a first \(N\) items of the list.
+%
+The \deff{tail} attribute is a last \(N\) items of the list.
+%
 The \deff{sorted} attribute is a new tuple with elements sorted using the \ff{lt} attribute of the elements passed.
-
-The \deff{reversed} attribute is a new tuple with elements positioned in a reverse order.
-
+%
 The \deff{concat} attribute is a new tuple that concatenates the current tuple with the tuple provided as an argument.
 
 \subsection{Map}
 
-The object \deff{map} is a decorator of \ff{tuple} of pairs \((k, v)\).
+The object \deff{map} is a decorator of \ff{tuple} of \deff{map.enty} objects which are pairs \((k, v)\).
 The \ff{map} ensures that all \(k\) are always unique.
-It is expected that each \(k\) has an \ff{as-hash} attribute that behaves as \ff{number}.
-
-The attributes \ff{with}, \ff{without}, \ff{found}, and \ff{foundi} are reimplemented in \ff{map}.
+It's expected that each \(k\) is dataizable so it's possible to calculate \deff{hash-code-of} it.
+%
+The attributes \ff{with} and \ff{without} are reimplemented in \ff{map}.
+%
+The \ff{found} attribute tries to find object in map by given key. The returned
+object has two attributes: \deff{exists} which is \ff{true} if object was found;
+and \deff{get} which is found object or \ff{error}.
+%
+The \deff{keys} attribute is the \ff{list} of map keys.
+%
+The \deff{values} attribute is the \ff{list} of map values.
+%
+The \deff{size} attribute is the \ff{size} of the map.
+%
+The \deff{has} attribute is \ff{true} if map contains given \(key\).
 
 \subsection{Set}
 
-The object \deff{set} is a decorator of \ff{tuple}.
-The \ff{set} ensures that all elements in the tuple are always unique.
-It is expected that each element has an \ff{as-hash} attribute that behaves as \ff{number}.
+The object \deff{set} is a decorator of \ff{list}.
+The \ff{set} ensures that all elements in the list are always unique.
+It's expected that each element is dataizable so it's possible to calculate \deff{hash-code-of} it.
+%
+The attributes \ff{with}, \ff{without} are reimplemented in \ff{set}.
 
-The attributes \ff{with}, \ff{without}, \ff{found}, and \ff{foundi} are reimplemented in \ff{set}.
+\subsection{Hash code}
+
+The object \ff{hash-code-of} is the pseudo-unique float numeric representation of an object.
+It's expected the given object is dataizable.
+
+\subsection{Ranges}
+
+The object \deff{range} is a \ff{list} that contains a range of elements. It accepts two attributes:
+\deff{start} and \deff{end}. The attribute \ff{start} must be a abstract object that must have an 
+attribute \ff{next} to get next element and attribute \ff{lt} to compare with the \ff{end} object.
+Every next element also must have an attributes \ff{next} and \ff{lt}.
+The first object in the chain must have a default value.
+
+The object \deff{range-of-ints} is \ff{range} of integer numbers from \ff{start} to \ff{end} (soft border) with step = \(1\).
+It also accepts two void attributes \ff{start} and \ff{end} which must be integer \ff{number}s. If they're not - an \ff{error} is returned
 
 \section{I/O Streams}\label{sec:streams}
 
@@ -537,56 +599,62 @@ It is expected that an input stream has the following interface:
 
 \begin{ffcode}
 [] > input
-  data > @
-  [max-count] > read /input
-  [] > close
+  [size] > read /bytes
 \end{ffcode}
 
 It is expected that an output stream has the following interface:
 
 \begin{ffcode}
 [] > output
-  [bytes-to-write] > write /input
-  [] > close
+  [bytes] > write /true
 \end{ffcode}
 
-The \adeff{stdout} object is an ``output'' that prints a \ff{string} to the standard output stream, while the \adeff{stderr} object is an ``output'' that prints to the standard error stream.
-
-The \adeff{stdin} object is an abstraction of a \ff{string} currently available in the standard input stream until the EOL character (\ff{\char`\\n}) and is an ``input.''
+The \deff{console} object is basic I/O object that allows to interact with operation system console. It behaves as ``input'' and ``output.''
+%
+The \deff{stdout} object is an ``output'' that prints a \ff{string} to the standard output stream.
+%
+The \deff{stdin} object is an ``input'' and an abstraction of a \ff{string} currently available in the standard input stream.
+The attribute \deff{next-line} reads line until the EOL character (\ff{\char`\\n}).
+The atribute \deff{all-lines} reads all lines until it's possible.
 If there is no string in the stream, the object blocks dataization and waits.
 This code endlessly reads strings from the console and immediately prints them back:
 
 \begin{ffcode}
 while
-  true
+  true > [i]
   [i]
     QQ.io.stdout > @
-      QQ.io.stdin
+      QQ.io.stdin.next-line
 \end{ffcode}
 
 The object \adeff{bytes-as-input} is an ``input'' created from \ff{bytes}.
-
-The object \adeff{memory-as-output} is an ``output'' directed towards a copy of \ff{memory}.
-
-The object \adeff{copied} is a channel between an ``input'' and an ``output,'' which moves all available bytes from the former to the latter when being dataized.
+%
+The object \adeff{malloc-as-output} is an ``output'' directed towards a copy of \ff{malloc}.
+%
+The object \adeff{tee-input} is an ``input'' and channel between an ``input'' and an ``output,'' which moves all 
+available bytes from the former to the latter when being dataized.
+%
 For example, this code writes text to a temporary file:
 
 \begin{ffcode}
-QQ.io.copied
-  QQ.io.bytes-as-input
-    as-bytes.
-      "Hello, world!"
-  as-output.
-    QQ.fs.file "/tmp/foo.txt"
-    "w+"
+(QQ.fs.file "/tmp/foo.txt").open
+  [f]
+    QQ.io.tee-input
+      QQ.io.bytes-as-input
+        "Hello, world!".as-bytes
+      f
 \end{ffcode}
 
-The object \deff{content} is a \ff{string} representation of the entire contents of an ``input.''
+The object \deff{input-length} is an object which reads all the bytes from provided ``input'' and returns its length.
+%
+The objects \deff{dead-input} and \deff{dead-output} are stubs which read from and write to nothing.
 
 \section{File System}\label{sec:fs}
 
 Here we define manipulations with files and directories.
 All objects presented in this Section belong to \ff{QQ.fs} package.
+
+The object \
 
 The object \deff{file} is an abstraction of a file and is a decorator of \ff{string}, which is the path of the file.
 %
