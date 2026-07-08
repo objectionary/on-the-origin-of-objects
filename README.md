@@ -3,7 +3,8 @@
 [![arXiv](https://img.shields.io/badge/arXiv-2206.02585-green.svg)](https://arxiv.org/abs/2206.02585)
 [![make](https://github.com/objectionary/on-the-origin-of-objects/actions/workflows/latexmk.yml/badge.svg)](https://github.com/objectionary/on-the-origin-of-objects/actions/workflows/latexmk.yml)
 
-The paper is published [in arXiv](https://arxiv.org/abs/2206.02585).
+The paper is published [in arXiv](https://arxiv.org/abs/2206.02585)
+([read in PDF][pdf]).
 
 To build it, just run:
 
@@ -22,3 +23,5 @@ installed.
 
 Once compiled and packaged,
 upload zip archive to [arXiv](https://arxiv.org/abs/2206.02585).
+
+[pdf]: https://github.com/objectionary/on-the-origin-of-objects/blob/gh-pages/paper.pdf
