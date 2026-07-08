@@ -57,8 +57,14 @@
 \newcommand\adeff[1]{\aff{\textcolor{blue!50!black}{\textbf{#1}}}}
 \newcommand\eohex[1]{\ff{#1}}
 
-\tolerance=2000
+\tolerance=1500
+\exhyphenpenalty=10000% to avoid line breaks before and after mdash
+\widowpenalty=5000% to have less widows
+\clubpenalty=5000% to have less orphans
+\interfootnotelinepenalty=10000% to format footnotes better
 \raggedbottom
+\setlength\footskip{13.0pt}
+\setlength\headheight{21pt}
 
 \begin{document}
 
