@@ -173,6 +173,22 @@ We therefore select global objects carefully,
 
 Wherever possible, objects must be implemented in \eolang{},
   instead of being atoms.
+An atom is a function implemented by the runtime beneath \eolang{},
+  by the virtual machine or the CPU itself,
+  and therefore runs genuinely faster than its \eolang{} counterpart.
+An atom is also opaque, though:
+  neither the \eolang{} compiler nor any static analyzer
+  can look inside it, reason about it, or optimize it.
+A program saturated with atoms looks like a solid brick to these tools---
+  it either works as it happens to work,
+  or nothing can be done about it.
+We instead want as many objects as possible to stay transparent to the compiler,
+  which we expect to reason about them more powerfully
+  than the programmers of atoms ever could.
+Eventually, we expect an OO program written in \eolang{},
+  resting on only a handful of atoms,
+  to be optimized down to highly efficient assembly code.
+We therefore favor transparency over speed.
 
 There should be no functionality implemented
   two or more times in the entire taxonomy.
