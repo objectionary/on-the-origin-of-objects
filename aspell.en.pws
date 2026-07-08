@@ -1,18 +1,19 @@
-personal_ws-1.1 en 752 utf-8
-Yegor
+personal_ws-1.1 en 20 utf-8
+AddToHook
+bitwise
 Bugayenko
-Huawei
-runtime
-Objectionary
+DisplayStyle
+encodings
 http
-Trunnikov
+Huawei
+Objectionary
+polymorphism
 POSIX
 posix
-bitwise
-subsequence
 reusability
-encodings
+runtime
 structs
 Structs
-AddToHook
-DisplayStyle
+subsequence
+Trunnikov
+Yegor
