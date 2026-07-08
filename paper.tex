@@ -423,6 +423,14 @@ The \deff{i16}, \deff{i32}, and \deff{i64} objects are decorators
   of \deff{bytes} with a predefined size.
 They implement the same numeric operations as \deff{number},
   and can be converted to \deff{number} through the \adeff{as-number} attribute.
+For example, the number \(42\) as a 64-bit integer always occupies
+  exactly eight bytes, regardless of its value:
+
+\begin{ffcode}
+42.as-i64.as-bytes
+\end{ffcode}
+
+The result is \eohex{00-00-00-00-00-00-00-2A}.
 
 \section{Memory}\label{sec:memory}
 
@@ -496,6 +504,16 @@ The \deff{numbers} object decorates a \deff{tuple} of numbers and provides
 %
 The \deff{integral} object calculates the definite integral of a function
   between two limits.
+For example, this code approximates the integral of \(f(x) = x\)
+  from one to ten with fifteen partitions, yielding approximately \(49.5\):
+
+\begin{ffcode}
+ms.integral
+  x > [x]
+  1
+  10
+  15
+\end{ffcode}
 
 A few more decorators of \deff{number}:
 
@@ -570,6 +588,14 @@ A few more decorators of \deff{string}:
 
 The \deff{string-buffer} object allows building a string incrementally,
   appending pieces through its \deff{with} attribute.
+For example, this code builds the string \ff{"Hello, Jeff"}
+  and afterwards behaves as a plain \deff{string}:
+
+\begin{ffcode}
+tt.string-buffer "Hello"
+  .with ", "
+  .with "Jeff"
+\end{ffcode}
 
 The \deff{regex} object is an abstraction of a regular expression
   in Perl-compatible format, with full support of Unicode.
@@ -633,6 +659,20 @@ The \deff{contains}, \deff{index-of}, and \deff{last-index-of} objects
   the \(i\)-th element removed.
 The \deff{bytes-as-array} object represents a sequence of \deff{bytes}
   as a \deff{tuple} of one-byte sequences.
+For example, this code doubles every element of a list,
+  keeps the ones greater than four,
+  and sums the survivors, resulting in \(14\):
+
+\begin{ffcode}
+ss.reduced
+  ss.filtered
+    ss.mapped
+      ss.list (* 1 2 3 4)
+      x.times 2 > [x]
+    x.gt 4 > [x]
+  0
+  a.plus x > [a x]
+\end{ffcode}
 
 The object \deff{map} is a hash map built from a \deff{tuple} of \deff{map.entry}
   objects which are pairs \((k, v)\).
@@ -654,6 +694,16 @@ The \deff{values} attribute is the \deff{list} of map values.
 The \deff{size} attribute is the \deff{size} of the map.
 %
 The \deff{has} attribute is \deff{true} if the map contains the given \(key\).
+For example, this code builds a map of two entries
+  and reads the value \(2\) back through its key:
+
+\begin{ffcode}
+ss.map > m
+  *
+    ss.map.entry "one" 1
+    ss.map.entry "two" 2
+(m.found "two").get
+\end{ffcode}
 
 The object \deff{set} is an unordered collection of unique objects,
   built on top of \deff{map}.
@@ -678,6 +728,8 @@ The object \deff{range-of-numbers} is a \deff{range} of integer numbers
   from \deff{start} to \deff{end} (soft border) with step = \(1\).
 It accepts two void attributes \deff{start} and \deff{end} which must be integer \deff{number}s.
 If they're not, an \adeff{error} is returned.
+For example, \ff{ss.range-of-numbers 1 10} is the list
+  \ff{* 1 2 3 4 5 6 7 8 9}, since the upper bound is excluded.
 
 \section{I/O Streams}\label{sec:streams}
 

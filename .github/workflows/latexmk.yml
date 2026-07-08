@@ -21,6 +21,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v7
+        with:
+          submodules: true
       - uses: yegor256/latexmk-action@0.20.0
         with:
           opts: -pdf
