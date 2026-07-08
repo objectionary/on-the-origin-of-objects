@@ -158,6 +158,18 @@ In this paper%
 
 We tend to minimize the global scope, keeping the number
   of global objects to the absolute possible minimum.
+We treat objects as the words of an OOP prose:
+  the objects that reside at the top level of the root package
+  and its sub-packages are the nouns of its vocabulary.
+The more concise this vocabulary is and the less ambiguous,
+  the cleaner the prose written with it.
+Synonyms are especially harmful here,
+  since two names for the same meaning make the prose more artistic
+  but less strict, forcing the reader to guess which one carries the intent.
+We therefore select global objects carefully,
+  making sure that none of them duplicate each other,
+  and that each delivers a clear and distinct meaning,
+  favoring preciseness over expressiveness.
 
 Wherever possible, objects must be implemented in \eolang{},
   instead of being atoms.
