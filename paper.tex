@@ -163,8 +163,6 @@ In this paper%
 
 \section{Principles}
 
-We tend to minimize the global scope, keeping the number
-  of global objects to the absolute possible minimum.
 We treat objects as the words of an OOP prose:
   the objects that reside at the top level of the root package
   and its sub-packages are the nouns of its vocabulary.
@@ -178,8 +176,6 @@ We therefore select global objects carefully,
   and that each delivers a clear and distinct meaning,
   favoring \textbf{preciseness over expressiveness}.
 
-Wherever possible, objects must be implemented in \eolang{},
-  instead of being atoms.
 An atom is a function implemented by the runtime beneath \eolang{},
   by the virtual machine or the CPU itself,
   and therefore runs genuinely faster than its \eolang{} counterpart.
@@ -197,8 +193,6 @@ Eventually, we expect an OO program written in \eolang{},
   to be optimized down to highly efficient assembly code.
 We therefore favor \textbf{transparency over speed}.
 
-There should be no functionality implemented
-  two or more times in the entire taxonomy.
 We treat our objects as the building blocks of larger OOP systems,
   and we want every block to be used and to be known to the \eolang{} compiler.
 A programmer who reaches for them should never need to reinvent the wheel:
