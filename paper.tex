@@ -4,7 +4,7 @@
 \documentclass[acmsmall,nonacm,11pt]{acmart}
 \settopmatter{printfolios=false,printccs=false,printacmref=false}
 \makeatletter\let\@authorsaddresses\@empty\makeatother
-\usepackage[noframes,nobars,nonumbers]{ffcode}
+\usepackage[noframes,nonumbers]{ffcode}
 % listings emits \vspace around each display, which acmart warns about;
 % restore the original \vspace while a listing is typeset
 \makeatletter
@@ -251,12 +251,6 @@ Special values are provided as separate objects: \deff{nan} for
   \deff{negative-infinity}, also available as the short constants
   \deff{pinf} and \deff{ninf}.
 
-Floating-point numbers with a different bit-width
-  are explained in \cref{sec:digits}.
-Other manipulations with floating-point numbers
-  can be done in their decorators.
-Some of them are explained in \cref{sec:math}.
-
 \section{String}\label{sec:string}
 
 The \deff{string} object is an abstraction of a piece of
@@ -270,8 +264,6 @@ The \deff{length} attribute is a total count of characters in the string.
 
 Strings in other encodings, such as UTF-16 or CP1251,
   may be implemented through direct manipulations with \deff{bytes}.
-
-Other manipulations with strings are explained in \cref{sec:strings}.
 
 \section{Tuple}\label{sec:tuple}
 
@@ -290,9 +282,6 @@ The \deff{at} attribute is the element of the tuple at the specified
   and negative indices start at -1 from the right.
 %
 The \deff{length} attribute is the total number of elements in the tuple.
-
-Other manipulations with tuples can be implemented in their decorators.
-Some of them are explained in \cref{sec:structs}.
 
 \section{Error Handling}\label{sec:errors}
 
