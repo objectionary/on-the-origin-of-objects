@@ -501,8 +501,8 @@ The \deff{i16}, \deff{i32}, and \deff{i64} objects are decorators
   of \deff{bytes} with a predefined size.
 They implement the same numeric operations as \deff{number},
   and can be converted to \deff{number} through the \adeff{as-number} attribute.
-For example, the number \(42\) as a 64-bit integer always occupies
-  exactly eight bytes, regardless of its value:
+For example, the number \(42\) as a 32-bit integer always occupies
+  exactly four bytes, regardless of its value:
 
 \begin{ffcode}
 42.as-i32.as-bytes
