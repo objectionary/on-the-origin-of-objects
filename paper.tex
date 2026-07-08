@@ -17,16 +17,22 @@
 \normalem
 \usepackage[capitalize]{cleveref}
 \usepackage{to-be-determined}
-\usepackage{csquotes}
 \usepackage[utf8]{inputenc}
 \usepackage[T2A]{fontenc}
 \usepackage[russian,english]{babel}
   \DeclareFontFamilySubstitution{T2A}{LinuxBiolinumT-TLF}{LibertinusSans-TLF}
   \renewcommand\ttdefault{cmtt}
+% stmaryrd (loaded by eolang) lacks a 5.5pt design size for scriptscript math
+\DeclareFontFamily{U}{stmry}{}
+\DeclareFontShape{U}{stmry}{m}{n}{%
+  <5><6><7><8><9><10>gen*stmary%
+  <5.5>stmary5%
+  <10.95><12><14.4><17.28><20.74><24.88>stmary10%
+}{}
+\usepackage{csquotes}
 % see https://tex.stackexchange.com/a/256190/1449
 \usepackage{url}
   \def\UrlBreaks{\do\/\do-}
-\usepackage{breakurl}
 
 \setlength{\footskip}{13.0pt}
 
@@ -60,6 +66,7 @@
 \newcommand\eohex[1]{\ff{#1}}
 
 \tolerance=1500
+\hbadness=1500% dont report underfull boxes within the accepted tolerance
 \exhyphenpenalty=10000% to avoid line breaks before and after mdash
 \widowpenalty=5000% to have less widows
 \clubpenalty=5000% to have less orphans
