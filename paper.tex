@@ -578,15 +578,19 @@ The attributes \deff{each}, \deff{reduced}, \deff{contains}, \deff{filtered},
   and \deff{mapped} are respectively similar to \ff{forEach()}, \ff{reduce()},
   \ff{find()}, \ff{filter()}, and \ff{map()} methods of \ff{Array} object
   in JavaScript~\citep{EcmaScript}.
-A few ``twin'' attributes \deff{eachi}, \deff{reducedi}, \deff{filteredi} and \deff{mappedi} are semantically the same, but with an extra \ff{number} argument as a counter of a cycle.
+A few ``twin'' attributes \deff{eachi}, \deff{reducedi}, \deff{filteredi}
+  and \deff{mappedi} are semantically the same,
+  but with an extra \ff{number} argument as a counter of a cycle.
 %
 The \deff{head} attribute is the first \(N\) items of the list.
 %
 The \deff{tail} attribute is the last \(N\) items of the list.
 %
-The \deff{sorted} attribute is a new tuple with elements sorted using the \ff{lt} attribute of the elements passed.
+The \deff{sorted} attribute is a new tuple with elements sorted using
+  the \ff{lt} attribute of the elements passed.
 %
-The \deff{concat} attribute is a new tuple that concatenates the current tuple with the tuple provided as an argument.
+The \deff{concat} attribute is a new tuple that concatenates
+  the current tuple with the tuple provided as an argument.
 
 The object \deff{map} is a decorator of \ff{tuple} of \deff{map.entry} objects which are pairs \((k, v)\).
 The \ff{map} ensures that all \(k\) are always unique.
@@ -626,7 +630,6 @@ It also accepts two void attributes \ff{start} and \ff{end} which must be intege
 
 \section{I/O Streams}\label{sec:streams}
 
-Here we define manipulations with input and output streams.
 All objects presented in this Section belong to the \ff{io} package.
 
 It is expected that an input stream has the following interface:
@@ -661,11 +664,11 @@ while
       io.stdin.next-line
 \end{ffcode}
 
-The object \adeff{bytes-as-input} is an ``input'' created from \ff{bytes}.
+The object \deff{bytes-as-input} is an ``input'' created from \ff{bytes}.
 %
-The object \adeff{malloc-as-output} is an ``output'' directed towards a copy of \ff{malloc}.
+The object \deff{malloc-as-output} is an ``output'' directed towards a copy of \ff{malloc}.
 %
-The object \adeff{tee-input} is an ``input'' and a channel between an ``input'' and an ``output,'' which moves all
+The object \deff{tee-input} is an ``input'' and a channel between an ``input'' and an ``output,'' which moves all
 available bytes from the former to the latter when being dataized.
 %
 For example, this code writes text to a temporary file:
@@ -774,11 +777,13 @@ malloc.of
 
 \section{Net}\label{sec:sockets}
 
-Here we define objects used for both server-side and client-side TCP sockets in accordance with \citet{posix}.
+Objects used for both server-side and client-side TCP sockets
+  work in accordance with \citet{posix}.
 All objects presented in this Section belong to the \ff{nt} package.
 
 The \deff{socket} object is an abstraction of a TCP socket.
-The \deff{connect} attribute establishes a connection. It accepts an abstract object with one void attribute which is the socket descriptor.
+The \deff{connect} attribute establishes a connection.
+It accepts an abstract object with one void attribute which is the socket descriptor.
 The socket descriptor has the following attributes:
 
 \begin{itemize}
@@ -789,10 +794,12 @@ The socket descriptor has the following attributes:
 \end{itemize}
 
 When you dataize \ff{socket.connect}, it creates a new socket, connects to the given
-IP on the given port, dataizes the provided scope, closes the socket and returns bytes
-retrieved from scope dataization. An \ff{error} is returned if any of the described steps failed.
+IP on the given port, dataizes the provided scope,
+  closes the socket and returns bytes retrieved from scope dataization.
+An \ff{error} is returned if any of the described steps failed.
 
-This code opens a connection to TCP port 80 of \ff{localhost} and then reads the entire stream as a Unicode string:
+This code opens a connection to TCP port 80 of \ff{localhost} and
+  then reads the entire stream as a Unicode string:
 
 \begin{ffcode}
 (nt.socket "127.0.0.1" 80).connect
