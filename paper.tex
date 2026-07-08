@@ -169,7 +169,7 @@ Synonyms are especially harmful here,
 We therefore select global objects carefully,
   making sure that none of them duplicate each other,
   and that each delivers a clear and distinct meaning,
-  favoring preciseness over expressiveness.
+  favoring \textbf{preciseness over expressiveness}.
 
 Wherever possible, objects must be implemented in \eolang{},
   instead of being atoms.
@@ -188,10 +188,24 @@ We instead want as many objects as possible to stay transparent to the compiler,
 Eventually, we expect an OO program written in \eolang{},
   resting on only a handful of atoms,
   to be optimized down to highly efficient assembly code.
-We therefore favor transparency over speed.
+We therefore favor \textbf{transparency over speed}.
 
 There should be no functionality implemented
   two or more times in the entire taxonomy.
+We treat our objects as the building blocks of larger OOP systems,
+  and we want every block to be used and to be known to the \eolang{} compiler.
+A programmer who reaches for them should never need to reinvent the wheel:
+  we intend to supply everything,
+  from array sorters and regular expression processors
+  to file readers and writers.
+The more reusable each object is, the weaker the temptation
+  to implement something ``better'' elsewhere,
+  and the fewer the private duplicates scattered across programs.
+We accept that a few of our objects may grow complex,
+  or carry functionality that feels redundant, and that is fine.
+Later, once the \eolang{} compiler becomes powerful enough,
+  it will know how to reduce that complexity and optimize it away at compile time.
+We therefore favor \textbf{reusability over complexity}.
 
 Object names must not be abbreviated and must constitute
     an English sentence when being used through dot notation, for example:
