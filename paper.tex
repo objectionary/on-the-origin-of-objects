@@ -1041,6 +1041,15 @@ The \deff{system-clock} object is a wall-clock time source backed by the
 The \deff{posix} object makes a Unix system call by name through the POSIX
   interface, while the \deff{win32} object makes a \ff{kernel32.dll}
   function call by name; both accept a \deff{tuple} of arguments.
+The call returns an object whose \deff{code} attribute is the numeric
+  return code of the syscall and whose \deff{output} attribute is its output.
+For example, this code invokes the \ff{getpid} syscall with an empty
+  \deff{tuple} of arguments and reads back the identifier
+  of the currently running process:
+
+\begin{ffcode}
+(sm.posix "getpid" tuple.empty).code
+\end{ffcode}
 
 \raggedright
 \bibliographystyle{ACM-Reference-Format}
