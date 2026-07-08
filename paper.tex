@@ -163,6 +163,8 @@ In this paper%
 
 \section{Principles}
 
+\subsection{Preciseness Over Expressiveness}
+
 We treat objects as the words of an OOP prose:
   the objects that reside at the top level of the root package
   and its sub-packages are the nouns of its vocabulary.
@@ -173,8 +175,9 @@ Synonyms are especially harmful here,
   but less strict, forcing the reader to guess which one carries the intent.
 We therefore select global objects carefully,
   making sure that none of them duplicate each other,
-  and that each delivers a clear and distinct meaning,
-  favoring \textbf{preciseness over expressiveness}.
+  and that each delivers a clear and distinct meaning.
+
+\subsection{Transparency Over Speed}
 
 An atom is a function implemented by the runtime beneath \eolang{},
   by the virtual machine or the CPU itself,
@@ -191,7 +194,8 @@ We instead want as many objects as possible to stay transparent to the compiler,
 Eventually, we expect an OO program written in \eolang{},
   resting on only a handful of atoms,
   to be optimized down to highly efficient assembly code.
-We therefore favor \textbf{transparency over speed}.
+
+\subsection{Reusability Over Complexity}
 
 We treat our objects as the building blocks of larger OOP systems,
   and we want every block to be used and to be known to the \eolang{} compiler.
@@ -206,7 +210,18 @@ We accept that a few of our objects may grow complex,
   or carry functionality that feels redundant, and that is fine.
 Later, once the \eolang{} compiler becomes powerful enough,
   it will know how to reduce that complexity and optimize it away at compile time.
-We therefore favor \textbf{reusability over complexity}.
+
+\subsection{Decoration Over Composition}
+
+Decoration is our primary method of extending functionality.
+When an object lacks a feature,
+  we expect the programmer to build a new object that looks like the original one,
+  keeping the same interface but behaving differently.
+Wrapping objects into composites with new interfaces and more powerful features,
+  as the Adapter and Facade patterns suggest~\citep{gamma1994design},
+  is another way to extend what already exists, and we discourage it:
+  a new interface hides the original object from its users and from the compiler,
+  while a decorator stays interchangeable with the object it decorates.
 
 \section{Bytes}\label{sec:bytes}
 
