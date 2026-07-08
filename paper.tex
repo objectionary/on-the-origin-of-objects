@@ -223,6 +223,37 @@ Wrapping objects into composites with new interfaces and more powerful features,
   a new interface hides the original object from its users and from the compiler,
   while a decorator stays interchangeable with the object it decorates.
 
+\subsection{Currying Over Polymorphism}
+
+Suppose an object \ff{books} must tell whether it contains a given title.
+The traditional object-oriented answer is polymorphism:
+  \ff{books} exposes a \ff{contains} attribute
+  and the caller writes \ff{books.contains "Foo"}.
+Different kinds of \ff{books} implement it differently---
+  an in-memory list scans its elements,
+  while a database-backed one runs a \ff{SELECT} query.
+The algorithm stays under the control of \ff{books},
+  which is the strength of polymorphism,
+  but every such feature enlarges the interface of \ff{books},
+  and that interface keeps bloating as the code base grows.
+
+The opposite answer moves \ff{contains} out of \ff{books}
+  and makes it a free object that takes \ff{books} as an argument,
+  so the caller writes \ff{contains books "Foo"}.
+Now \ff{books} stays small,
+  but polymorphism is lost:
+  \ff{books} no longer decides how the search is performed.
+
+We suggest a third answer that keeps both benefits.
+The searching object is handed to the caller already bound to its collection,
+  as a partially applied object,
+  and the caller only completes it, as \ff{contains "Foo"}.
+The interface of \ff{books} stays minimal,
+  yet the concrete algorithm is still chosen by whoever assembled \ff{contains}.
+This is currying, or partial application~\citep{barendregt2012},
+  familiar from functional languages such as Haskell,
+  brought into an object-oriented setting.
+
 \section{Bytes}\label{sec:bytes}
 
 The center of the taxonomy is the \deff{bytes} object,
