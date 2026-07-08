@@ -1,9 +1,15 @@
 % SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
 % SPDX-License-Identifier: MIT
 
-\documentclass[sigplan,nonacm]{acmart}
+\documentclass[acmsmall,nonacm,11pt]{acmart}
 \settopmatter{printfolios=false,printccs=false,printacmref=false}
+\makeatletter\let\@authorsaddresses\@empty\makeatother
 \usepackage[noframes,nobars,nonumbers]{ffcode}
+% listings emits \vspace around each display, which acmart warns about;
+% restore the original \vspace while a listing is typeset
+\makeatletter
+\lst@AddToHook{DisplayStyle}{\let\@vspace\@vspace@orig\let\@vspacer\@vspacer@orig}
+\makeatother
 \usepackage{natbib}
 \usepackage{doi}
 \usepackage{eolang}
