@@ -397,44 +397,6 @@ while
       i
 \end{ffcode}
 
-The \deff{go} object enables forward and backward ``jumps''
-  either immediately finishing dataization or restarting it.
-For example, this code won't print a message to the console
-  if \ff{x} is equal to zero:
-
-\begin{ffcode}
-go.to
-  seq * > [g]
-    if > y
-      x.eq 0
-      g.forward 0
-      42.div x
-    io.stdout
-      tt.sprintf *1
-        "42/x = %d"
-        y
-\end{ffcode}
-
-In this example, the number is read from the console again,
-  if it is equal to zero:
-
-\begin{ffcode}
-go.to
-  seq * > [g]
-    at. > x
-      tt.sscanf
-        "%d"
-        io.stdin.next-line
-      0
-    if
-      x.eq 0
-      g.backward
-      io.stdout
-        tt.sprintf
-          "Number %d is OK!"
-          * x
-\end{ffcode}
-
 The \deff{switch} object is an abstraction of multi-case
   branching that encapsulates a \deff{tuple} of \((k, v)\) pairs;
   the dataization result is equal to \(v\) of the first pair where
