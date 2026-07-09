@@ -344,28 +344,6 @@ The \deff{at} attribute is the element of the tuple at the specified
 %
 The \deff{length} attribute is the total number of elements in the tuple.
 
-\section{Error Handling}\label{sec:errors}
-
-The \adeff{error} object terminates the program with an error.
-A copy is made with an encapsulated object as the error message;
-  the first attempt to dataize it leads to a runtime error and
-  program termination.
-
-The \adeff{try} object is the only mechanism able to catch such an error.
-It expects three arguments: \deff{main}, \deff{catch}, and \deff{finally}.
-When dataized, it first attempts to dataize \deff{main}; if an error
-  occurs, the error is caught and \deff{catch} is dataized instead,
-  receiving the error as its only argument; the \deff{finally} object is
-  dataized afterwards in either case.
-This code prints a message instead of crashing on the division by zero:
-
-\begin{ffcode}
-try
-  10.div 0
-  io.stdout "cannot divide" > [e]
-  true
-\end{ffcode}
-
 \section{Flow Control}\label{sec:flow}
 
 The \deff{seq} object is an abstraction of sequence of objects
