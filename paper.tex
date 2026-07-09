@@ -309,9 +309,8 @@ The \deff{is-nan}, \deff{is-finite}, and \deff{is-integer} attributes
   and \deff{as-i16} convert it to fixed-width integers.
 
 Special values are provided as separate objects: \deff{nan} for
-  ``not a number,'' together with \deff{positive-infinity} and
-  \deff{negative-infinity}, also available as the short constants
-  \deff{pinf} and \deff{ninf}.
+  ``not a number,'' together with \deff{pinf} (stands for ``positive infinity'')
+  and \deff{ninf} (stands for ``negative infinity'').
 
 \section{String}\label{sec:string}
 
@@ -1030,7 +1029,7 @@ The \adeff{name} attribute is its name, while \deff{is-windows},
 The \deff{getenv} object reads an environment variable as a \deff{string};
   an empty string means the variable does not exist.
 
-The \deff{eol} object, also available as \deff{line-separator}, is the
+The \deff{eol} object is the
   system-dependent line separator: \ff{\char`\\n} on UNIX
   and \ff{\char`\\r\char`\\n} on Windows.
 
