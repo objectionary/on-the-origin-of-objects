@@ -850,9 +850,29 @@ while
 \end{ffcode}
 
 The object \deff{bytes-as-input} is an ``input'' created from \deff{bytes}.
-%
+Reading from it returns the requested number of bytes taken from the wrapped block.
+For example, this code wraps a string and reads its first five bytes,
+  which decode back to \ff{"Hello"}:
+
+\begin{ffcode}
+(io.bytes-as-input "Hello, world!".as-bytes).read 5
+\end{ffcode}
+
 The object \deff{malloc-as-output} is an ``output'' directed towards a copy of \deff{malloc}.
-%
+Bytes written to it are stored in the memory block, from where they may be read back.
+For example, this code writes a string to the output and then prints
+  the content of the block as \ff{"Hello!"}:
+
+\begin{ffcode}
+malloc.of
+  6
+  seq * > [m]
+    (io.malloc-as-output m).write
+      "Hello!".as-bytes
+    io.stdout
+      string m
+\end{ffcode}
+
 The object \deff{tee-input} is an ``input'' and a channel between an ``input''
   and an ``output,'' which moves all available bytes from the former to the
   latter when being dataized.
