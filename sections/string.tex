@@ -10,7 +10,17 @@ UTF-8 uses one byte for the first 128 code points,
 The text is encapsulated as the \deff{as-bytes} attribute.
 
 The \deff{slice} attribute takes a piece of a string as another \deff{string}.
-The \deff{length} attribute is a total count of characters in the string.
+
+The \deff{length} attribute counts characters,
+  not bytes, and the two rarely coincide
+  outside the ASCII range.
+For example, the Chinese greeting ``ni hao'' holds two characters,
+  yet occupies six bytes \eohex{E4-BD-A0-E5-A5-BD} in UTF-8:
+
+\begin{ffcode}
+"\u4F60\u597D".as-bytes.size.eq 6
+"\u4F60\u597D".length.eq 2
+\end{ffcode}
 
 Strings in other encodings, such as UTF-16 or CP1251,
   may be implemented through direct manipulations with \deff{bytes}.
