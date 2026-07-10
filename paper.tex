@@ -22,6 +22,7 @@
 \usepackage[russian,english]{babel}
   \DeclareFontFamilySubstitution{T2A}{LinuxBiolinumT-TLF}{LibertinusSans-TLF}
   \renewcommand\ttdefault{cmtt}
+\usepackage{CJKutf8}
 % stmaryrd (loaded by eolang) lacks a 5.5pt design size for scriptscript math
 \DeclareFontFamily{U}{stmry}{}
 \DeclareFontShape{U}{stmry}{m}{n}{%
@@ -63,6 +64,8 @@
 \newcommand\deff[1]{\ff{\textcolor{blue!50!black}{#1}}}
 \newcommand\adeff[1]{\ff{\textcolor{orange}{#1}}}
 \newcommand\eohex[1]{\ff{#1}}
+\newcommand\zh[1]{\begin{CJK*}{UTF8}{gbsn}#1\end{CJK*}}
+\newcommand\ru[1]{\foreignlanguage{russian}{#1}}
 
 \tolerance=1500
 \hbadness=1500% dont report underfull boxes within the accepted tolerance
