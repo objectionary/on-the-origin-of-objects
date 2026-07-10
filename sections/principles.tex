@@ -1,0 +1,95 @@
+% SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
+% SPDX-License-Identifier: MIT
+
+\section{Principles}
+
+\subsection{Preciseness Over Expressiveness}
+
+We treat objects as the words of an OOP prose:
+  the objects that reside at the top level of the root package
+  and its sub-packages are the nouns of its vocabulary.
+The more concise this vocabulary is and the less ambiguous,
+  the cleaner the prose written with it.
+Synonyms are especially harmful here,
+  since two names for the same meaning make the prose more artistic
+  but less strict, forcing the reader to guess which one carries the intent.
+We therefore select global objects carefully,
+  making sure that none of them duplicate each other,
+  and that each delivers a clear and distinct meaning.
+
+\subsection{Transparency Over Speed}
+
+An atom is a function implemented by the runtime beneath \eolang{},
+  by the virtual machine or the CPU itself,
+  and therefore runs genuinely faster than its \eolang{} counterpart.
+An atom is also opaque, though:
+  neither the \eolang{} compiler nor any static analyzer
+  can look inside it, reason about it, or optimize it.
+A program saturated with atoms looks like a solid brick to these tools---
+  it either works as it happens to work,
+  or nothing can be done about it.
+We instead want as many objects as possible to stay transparent to the compiler,
+  which we expect to reason about them more powerfully
+  than the programmers of atoms ever could.
+Eventually, we expect an OO program written in \eolang{},
+  resting on only a handful of atoms,
+  to be optimized down to highly efficient assembly code.
+
+\subsection{Reusability Over Complexity}
+
+We treat our objects as the building blocks of larger OOP systems,
+  and we want every block to be used and to be known to the \eolang{} compiler.
+A programmer who reaches for them should never need to reinvent the wheel:
+  we intend to supply everything,
+  from array sorters and regular expression processors
+  to file readers and writers.
+The more reusable each object is, the weaker the temptation
+  to implement something ``better'' elsewhere,
+  and the fewer the private duplicates scattered across programs.
+We accept that a few of our objects may grow complex,
+  or carry functionality that feels redundant, and that is fine.
+Later, once the \eolang{} compiler becomes powerful enough,
+  it will know how to reduce that complexity and optimize it away at compile time.
+
+\subsection{Decoration Over Composition}
+
+Decoration is our primary method of extending functionality.
+When an object lacks a feature,
+  we expect the programmer to build a new object that looks like the original one,
+  keeping the same interface but behaving differently.
+Wrapping objects into composites with new interfaces and more powerful features,
+  as the Adapter and Facade patterns suggest~\citep{gamma1994design},
+  is another way to extend what already exists, and we discourage it:
+  a new interface hides the original object from its users and from the compiler,
+  while a decorator stays interchangeable with the object it decorates.
+
+\subsection{Currying Over Polymorphism}
+
+Suppose an object \ff{books} must tell whether it contains a given title.
+The traditional object-oriented answer is polymorphism:
+  \ff{books} exposes a \ff{contains} attribute
+  and the caller writes \ff{books.contains "Foo"}.
+Different kinds of \ff{books} implement it differently---
+  an in-memory list scans its elements,
+  while a database-backed one runs a \ff{SELECT} query.
+The algorithm stays under the control of \ff{books},
+  which is the strength of polymorphism,
+  but every such feature enlarges the interface of \ff{books},
+  and that interface keeps bloating as the code base grows.
+
+The opposite answer moves \ff{contains} out of \ff{books}
+  and makes it a free object that takes \ff{books} as an argument,
+  so the caller writes \ff{contains books "Foo"}.
+Now \ff{books} stays small,
+  but polymorphism is lost:
+  \ff{books} no longer decides how the search is performed.
+
+We suggest a third answer that keeps both benefits.
+The searching object is handed to the caller already bound to its collection,
+  as a partially applied object,
+  and the caller only completes it, as \ff{contains "Foo"}.
+The interface of \ff{books} stays minimal,
+  yet the concrete algorithm is still chosen by whoever assembled \ff{contains}.
+This is currying, or partial application~\citep{barendregt2012},
+  familiar from functional languages such as Haskell,
+  brought into an object-oriented setting.

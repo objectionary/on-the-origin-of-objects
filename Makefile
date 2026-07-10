@@ -8,7 +8,7 @@ SHELL=bash
 
 all: paper.pdf zip
 
-paper.pdf: paper.tex
+paper.pdf: paper.tex sections/*.tex
 	latexmk -pdf -latexoption=-interaction=errorstopmode -latexoption=-halt-on-error paper
 
 zip: *.tex

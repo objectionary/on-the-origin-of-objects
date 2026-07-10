@@ -1,0 +1,54 @@
+% SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
+% SPDX-License-Identifier: MIT
+
+\section{Introduction}
+
+Each object-oriented programming language offers its own set of objects,
+  classes, types, functions, constants, traits, templates, and so on,
+  which programmers can use off-the-shelf to model their specific use cases:
+  ``Development Kit'' in Java~\citep{jdk2024,jdk8},
+  ``Standard Library'' in
+    C++~\citep{cpp2024,josuttis2012cpp},
+    Python~\citep{python2024,hellmann2017python},
+    Swift~\citep{swift2024,deitel2015swift},
+    Rust~\citep{rust2024,blandy2021rust},
+    and
+    Ruby,
+  ``.NET Standard'' in C\#~\citep{net2023,abrams2005net},
+  and ``Built-in Objects'' in JavaScript~\citep{js2024,crockford2008js}.
+
+Each standard library (SL) freely defines its own principles of abstraction.
+For example, to get the absolute value of a numeric object \ff{x} in Java,
+  one has to call a static method of another class \ff{Math.abs(x)},
+  while in Ruby it would be a property of the same object \ff{x.abs}.
+For example, in Java, an attempt to get a value from a hash map by
+  a key will produce \ff{null} in case of its absence,
+  while in C++ it will return an empty iterator.
+There are many similar examples demonstrating
+  the absence of a common ground between SLs.
+
+Earlier, \citet{booch1990design} suggested their own components for OOP.
+We suggest our own taxonomy of objects for \eolang{}\footnote{%
+  \url{https://www.eolang.org}, 9.9.9},
+  a strictly formal~\citep{kudasov2022formalizing} object-oriented
+  programming language with an intentionally reduced
+  feature set~\citep{bugayenko2021eolang}.
+
+An object in \eolang{} is either a composition of other objects
+  or an atom, which is a foreign function interface
+  to a lower-level runtime such as, for example, JVM or Assembly.
+In this paper, we denote atoms by a star, for example: \adeff{times}.
+
+Throughout the paper, we use dark blue color
+  to highlight the names of objects,
+  as opposed to other pieces of fixed-width text.
+
+In this paper%
+  \footnote{\raggedright%
+    \LaTeX{} sources of this paper are maintained in the
+    \href{https://github.com/REPOSITORY}{REPOSITORY} GitHub repository,
+    the rendered version is
+    \href{https://github.com/REPOSITORY/releases/tag/0.0.0}{\ff{0.0.0}}.}
+  we don't provide exact specification of each object,
+  in order to avoid conflicts with their exact definitions
+  in the Objectionary\footnote{\url{https://github.com/objectionary/home}}.

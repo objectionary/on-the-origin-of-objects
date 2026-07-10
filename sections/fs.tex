@@ -1,0 +1,92 @@
+% SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
+% SPDX-License-Identifier: MIT
+
+\section{File System}\label{sec:fs}
+
+Here we define manipulations with files and directories.
+All objects presented in this Section belong to \ff{fs} package.
+
+The object \deff{path} is an abstraction of file path and is a decorator of \deff{string}.
+%
+The attribute \deff{separator} is a system-dependent default name-separator character.
+%
+The attribute \deff{joined} is a utility object that joins the given \deff{tuple}
+  of paths with the current OS separator and normalizes the result path.
+%
+The attribute \deff{as-file} is a \deff{file} created from the path itself.
+%
+The attribute \deff{as-dir} is a \deff{dir} created from the path itself.
+%
+The attribute \deff{is-absolute} is \deff{true} if the path is absolute and \deff{false} otherwise.
+%
+The attribute \deff{normalized} is a new \deff{path} with normalized \(uri\).
+Normalization includes converting multiple slashes into a single slash
+  and resolving ``.'' (current directory) and ``..'' (parent directory) segments.
+%
+The attribute \deff{resolved} is a new \deff{path} with a suffix appended to the current one.
+%
+The attribute \deff{basename} is the name of the file in the path.
+%
+The attribute \deff{extname} is the extension in the path.
+%
+The attribute \deff{dirname} is the name of the directory in the path.
+
+The object \deff{file} is an abstraction of a file and is a decorator of \deff{path},
+  which is the path of the file.
+%
+The attribute \deff{as-path} is a \deff{path} of the file.
+%
+The attribute \adeff{is-directory} is \deff{true} if the file is a directory.
+%
+The attribute \adeff{exists} is \deff{true} if the file exists.
+%
+The attribute \deff{touched} makes sure the file exists.
+%
+The attribute \deff{deleted} removes the file.
+%
+The attribute \adeff{size} is the size of the file in bytes.
+%
+The attribute \deff{moved} renames or moves the file to a new place.
+%
+The attribute \deff{open} opens the file.
+The \deff{open} object accepts two attributes: file open mode which is a \deff{string}
+  and file scope.
+The file scope attribute must be an abstract object with one void attribute
+  which is \deff{file-stream}.
+It has the attributes \adeff{read} and \adeff{write} which allow working with the file
+  as ``input'' and ``output''.
+The result of dataization of \ff{file.open} is the result of dataization
+  of its second argument ``scope''.
+The file descriptor is closed automatically when the scope is dataized.
+
+The object \deff{dir} is an abstraction of a directory.
+%
+The attribute \deff{made} creates the directory with all its parent directories.
+%
+The attribute \deff{deleted} deletes the directory recursively with all its subdirectories.
+%
+The attribute \adeff{walk} finds files in the directory using glob pattern matching.
+%
+The attribute \deff{tmpfile} is a temporary file in the directory.
+
+The object \deff{tmpdir} is a decorator of \deff{dir} that abstracts the system
+  directory for temporary files.
+
+In the next example, a temporary file is created and filled up with \ff{"Hello, world"}.
+Then the data is read from the file and written to \deff{malloc}.
+
+\begin{ffcode}
+malloc.of
+  12
+  seq * > [m]
+    tmpdir
+    .tmpfile
+    .open
+      "w"
+      f.write "Hello, world" > [f]
+    .open
+      "r"
+      m.put > [f] >>
+        f.read 12
+    m
+\end{ffcode}

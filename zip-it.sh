@@ -12,6 +12,7 @@ rm -rf package
 mkdir package
 cd package
 cp ../paper.tex .
+cp -r ../sections .
 mkdir bibliography
 cp ../bibliography/main.bib bibliography/main.bib
 for p in ffcode to-be-determined href-ul eolang iexec; do
@@ -20,11 +21,11 @@ done
 
 version=$(curl --silent -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/${REPO}/releases/latest" | jq -r '.tag_name')
 echo "Version is: ${version}"
-gsed -i "s|0\.0\.0|${version}|g" paper.tex
-gsed -i "s|REPOSITORY|${REPO}|g" paper.tex
+gsed -i "s|0\.0\.0|${version}|g" paper.tex sections/*.tex
+gsed -i "s|REPOSITORY|${REPO}|g" paper.tex sections/*.tex
 eo_version=$(curl --silent -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/objectionary/eo/releases/latest" | jq -r '.tag_name')
 echo "EO version is: ${eo_version}"
-gsed -i "s|9\.9\.9|${eo_version}|g" paper.tex
+gsed -i "s|9\.9\.9|${eo_version}|g" paper.tex sections/*.tex
 pdflatex -interaction=errorstopmode -halt-on-error -shell-escape paper.tex
 bibtex paper
 pdflatex -interaction=errorstopmode -halt-on-error paper.tex > /dev/null

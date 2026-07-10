@@ -1,0 +1,33 @@
+% SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
+% SPDX-License-Identifier: MIT
+
+\section{Number}\label{sec:number}
+
+The object \deff{number} is an abstraction of a floating point number
+  of eight bytes according to \citet{ieee754}.
+The bytes are encapsulated as the \deff{as-bytes} attribute.
+
+The \deff{eq} attribute is \deff{true} if the \deff{as-bytes}
+  is equal to another object, through the use of its \deff{eq}.
+
+The \adeff{plus} attribute is a sum of this number and another \deff{number}.
+The \deff{minus} attribute is the subtraction
+  of another \deff{number} from this number.
+The \adeff{times} attribute and \adeff{div} are multiplication
+  and division of this number and another \deff{number}.
+The \deff{neg} attribute is the same number with a different sign.
+The \deff{floor} attribute is a rounded down \deff{number}.
+
+The \adeff{gt} attribute is \deff{true} if it is ``greater than''
+  another \deff{number} and \deff{false} otherwise.
+Attributes \deff{lt}, \deff{lte}, and \deff{gte} are ``less than,''
+  ``less than or equal,'' and ``greater than or equal''
+  comparisons respectively.
+
+The \deff{is-nan}, \deff{is-finite}, and \deff{is-integer} attributes
+  are predicates about the number, while \deff{as-i64}, \deff{as-i32},
+  and \deff{as-i16} convert it to fixed-width integers.
+
+Special values are provided as separate objects: \deff{nan} for
+  ``not a number,'' together with \deff{pinf} (stands for ``positive infinity'')
+  and \deff{ninf} (stands for ``negative infinity'').

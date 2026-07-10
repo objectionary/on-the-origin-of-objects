@@ -1,0 +1,35 @@
+% SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
+% SPDX-License-Identifier: MIT
+
+\section{System}\label{sec:system}
+
+All objects presented in this Section belong to the \ff{sm} package.
+They provide access to the underlying operating system.
+
+The \deff{os} object represents the current operating system.
+The \adeff{name} attribute is its name, while \deff{is-windows},
+  \deff{is-linux}, and \deff{is-macos} are predicates about its family.
+
+The \deff{getenv} object reads an environment variable as a \deff{string};
+  an empty string means the variable does not exist.
+
+The \deff{eol} object is the
+  system-dependent line separator: \ff{\char`\\n} on UNIX
+  and \ff{\char`\\r\char`\\n} on Windows.
+
+The \deff{system-clock} object is a wall-clock time source backed by the
+  operating system; it decorates an \deff{i64} holding the number of
+  milliseconds since the Unix epoch.
+
+The \deff{posix} object makes a Unix system call by name through the POSIX
+  interface, while the \deff{win32} object makes a \ff{kernel32.dll}
+  function call by name; both accept a \deff{tuple} of arguments.
+The call returns an object whose \deff{code} attribute is the numeric
+  return code of the syscall and whose \deff{output} attribute is its output.
+For example, this code invokes the \ff{getpid} syscall with an empty
+  \deff{tuple} of arguments and reads back the identifier
+  of the currently running process:
+
+\begin{ffcode}
+(sm.posix "getpid" tuple.empty).code
+\end{ffcode}

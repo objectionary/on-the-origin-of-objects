@@ -1,0 +1,53 @@
+% SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
+% SPDX-License-Identifier: MIT
+
+\section{Math}\label{sec:math}
+
+All objects in this Section belong to the \ff{ms} package.
+%
+The \deff{random} object is a pseudo-random number generator
+  parameterized by a \deff{seed}; when dataized it behaves as a
+  \deff{number} between zero and one.
+The \deff{next} attribute is the next generator in the sequence,
+  the \deff{clocked} attribute seeds the generator from a given clock,
+  and the \deff{pseudo} attribute seeds it from the system clock.
+
+The \deff{angle} object is a decorator of \deff{number}.
+It assumes that the angle is in radians and has the following attributes
+  for trigonometric functions:
+  \adeff{sin}, \adeff{cos}, \deff{tan}, and \deff{ctan}.
+The \deff{degrees} attribute converts the angle from radians to degrees,
+  and the \deff{radians} attribute converts it back.
+
+The constants \deff{pi} and \deff{e} approximate \(\pi\) and Euler's number.
+%
+The \deff{real} object is a decorator of \deff{number}.
+%
+The \deff{numbers} object decorates a \deff{tuple} of numbers and provides
+  \deff{max} and \deff{min} attributes.
+%
+The \deff{integral} object calculates the definite integral of a function
+  between two limits.
+For example, this code approximates the integral of \(f(x) = x\)
+  from one to ten with fifteen partitions, yielding approximately \(49.5\):
+
+\begin{ffcode}
+ms.integral
+  x > [x]
+  1
+  10
+  15
+\end{ffcode}
+
+A few more decorators of \deff{number}:
+
+\begin{itemize}
+    \item \deff{abs}: absolute value of the number
+    \item \deff{exp}: Euler's number raised to the given power
+    \item \deff{mod}: remainder of the division by another number
+    \item \adeff{sqrt}: square root (\(\sqrt{\rho}\))
+    \item \adeff{pow}: the number raised to a given power (\(\rho^x\))
+    \item \adeff{ln}: natural logarithm (\(\ln \rho\))
+    \item \adeff{acos}: arccosine
+    \item \adeff{asin}: arcsine
+\end{itemize}

@@ -1,0 +1,74 @@
+% SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
+% SPDX-License-Identifier: MIT
+
+\section{Flow Control}\label{sec:flow}
+
+The \deff{seq} object is an abstraction of sequence of objects
+  to be dataized sequentially.
+For example, this code prints one message to the console
+  and then terminates the program due to
+  the inability to dataize the division by zero in the middle:
+
+\begin{ffcode}
+seq *
+  io.stdout "Hello, world!"
+  42.div 0
+  io.stdout "Bye!"
+\end{ffcode}
+
+The objects \deff{true} and \deff{false} both have
+  an attribute \deff{if} which is a branching mechanism,
+  expecting two arguments: a ``positive'' object, and a ``negative'' object.
+When being dataized, the object \ff{true.if} always returns
+  the ``positive'' object, the object \ff{false.if} always
+  returns the ``negative'' object.
+This code gives a title to a random number:
+
+\begin{ffcode}
+ms.random.pseudo > r
+io.stdout
+  tt.sprintf *1
+    "Coin toss: %s"
+    if.
+      r.gte 0.5
+      "heads"
+      "tails"
+\end{ffcode}
+
+The \deff{while} object is an iterating mechanism, expecting two arguments.
+Both are abstract objects with one free attribute for current iteration index.
+The first argument is a condition, the second one is the body.
+When being dataized, the object \deff{while} repeatedly dataizes
+  the body while the \deff{if} of the condition goes ``positive.''
+In the end, it returns the body or \deff{false} if no iterations happened.
+This code makes a few attempts to find a random number
+  that is smaller than 0.1:
+
+\begin{ffcode}
+ms.random.pseudo > r
+while
+  r.gte 0.1 > [i] >>
+  io.stdout > [i]
+    tt.sprintf *1
+      "Attempt #%d"
+      i
+\end{ffcode}
+
+The \deff{switch} object is an abstraction of multi-case
+  branching that encapsulates a \deff{tuple} of \((k, v)\) pairs;
+  the dataization result is equal to \(v\) of the first pair where
+  \(k\) is \deff{true}, or \deff{true} if no pair matches:
+
+\begin{ffcode}
+io.stdout
+  switch *
+    *
+      password.eq "swordfish"
+      "password is correct!"
+    *
+      password.eq ""
+      "empty password is not allowed"
+    *
+      false
+      "password is wrong"
+\end{ffcode}

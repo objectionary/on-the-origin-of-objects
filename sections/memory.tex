@@ -1,0 +1,47 @@
+% SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
+% SPDX-License-Identifier: MIT
+
+\section{Memory}\label{sec:memory}
+
+The \deff{malloc} object is an abstraction of a block of
+  random-access memory.
+A copy is created through one of its attributes: \deff{of} allocates
+  a block of a given size, \deff{empty} allocates an empty block, and
+  \deff{for} allocates a block sized to hold a given object.
+The allocated block behaves like \deff{bytes}, but additionally has
+  \adeff{write}, \adeff{read}, \deff{copy}, and \deff{put} attributes.
+In this example, one kilobyte of memory with random data
+  is allocated when a copy of \deff{malloc} is created,
+  six bytes are written starting at the 200th byte,
+  and then a string is read back and \ff{"Hello!"} is printed:
+
+\begin{ffcode}
+malloc.of
+  1024
+  seq * > [m]
+    m.write 200 "Hello!"
+    io.stdout
+      string
+        m.read 200 6
+\end{ffcode}
+
+The \deff{malloc} object also supports resizing via
+  the \adeff{resized} attribute and copying the data within
+  the allocated memory block via the \deff{copy} attribute.
+In the next example, \deff{malloc} is allocated and filled with 5 bytes,
+  then resized to 10 bytes and its content is duplicated.
+The result block contains \ff{"hellohello"}.
+
+\begin{ffcode}
+malloc.of
+  5
+  seq * > [m]
+    m.write 0 "hello"
+    m.resized 10
+    m.copy 0 5 5
+\end{ffcode}
+
+The result of dataization of \deff{malloc} is the result
+  of dataization of its second argument, which is the scope
+  where the memory block is allocated and cleared automatically
+  when dataization has happened.

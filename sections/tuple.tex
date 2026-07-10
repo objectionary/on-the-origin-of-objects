@@ -1,0 +1,20 @@
+% SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
+% SPDX-License-Identifier: MIT
+
+\section{Tuple}\label{sec:tuple}
+
+The \deff{tuple} object is an abstraction of an immutable sequence of objects.
+For example, this code represents a tuple \ff{x} of three numbers:
+
+\begin{ffcode}
+* 65535 0xF21 3.14 > x
+\end{ffcode}
+
+The \deff{with} attribute is a new \deff{tuple} with all elements
+  from the current tuple and a new element added to the end of it.
+%
+The \deff{at} attribute is the element of the tuple at the specified
+  index---positive indices are zero-based starting from the left,
+  and negative indices start at -1 from the right.
+%
+The \deff{length} attribute is the total number of elements in the tuple.

@@ -1,0 +1,89 @@
+% SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
+% SPDX-License-Identifier: MIT
+
+\section{I/O Streams}\label{sec:streams}
+
+All objects presented in this Section belong to the \ff{io} package.
+
+It is expected that an input stream has the following interface:
+
+\begin{ffcode}
+[] > input
+  [size] > read /bytes
+\end{ffcode}
+
+It is expected that an output stream has the following interface:
+
+\begin{ffcode}
+[] > output
+  [bytes] > write /true
+\end{ffcode}
+
+The \deff{console} object is a basic I/O object that allows interaction
+  with the operating system console.
+It behaves as ``input'' and ``output.''
+%
+The \deff{stdout} object is an ``output'' that prints a \deff{string} to the standard output stream.
+%
+The \deff{stdin} object is an ``input'' and an abstraction of a \deff{string}
+  currently available in the standard input stream.
+The attribute \deff{next-line} reads a line until the EOL character (\ff{\char`\\n}).
+The attribute \deff{all-lines} reads all lines as long as possible.
+If there is no string in the stream, the object blocks dataization and waits.
+This code endlessly reads strings from the console and immediately prints them back:
+
+\begin{ffcode}
+while
+  true > [i]
+  io.stdout > [i]
+    io.stdin.next-line
+\end{ffcode}
+
+The object \deff{bytes-as-input} is an ``input'' created from \deff{bytes}.
+Reading from it returns the requested number of bytes taken from the wrapped block.
+For example, this code wraps a string and reads its first five bytes,
+  which decode back to \ff{"Hello"}:
+
+\begin{ffcode}
+(io.bytes-as-input "Hello, world!".as-bytes).read 5
+\end{ffcode}
+
+The object \deff{malloc-as-output} is an ``output'' directed towards a copy of \deff{malloc}.
+Bytes written to it are stored in the memory block, from where they may be read back.
+For example, this code writes a string to the output and then prints
+  the content of the block as \ff{"Hello!"}:
+
+\begin{ffcode}
+malloc.of
+  6
+  seq * > [m]
+    (io.malloc-as-output m).write
+      "Hello!".as-bytes
+    io.stdout
+      string m
+\end{ffcode}
+
+The object \deff{tee-input} is an ``input'' and a channel between an ``input''
+  and an ``output,'' which moves all available bytes from the former to the
+  latter when being dataized.
+%
+For example, this code writes text to a temporary file:
+
+\begin{ffcode}
+(fs.file "/tmp/foo.txt").open
+  io.tee-input > [f]
+    io.bytes-as-input
+      "Hello, world!".as-bytes
+    f
+\end{ffcode}
+
+The object \deff{input-length} is an object which reads all the bytes
+  from the provided ``input'' and returns its length.
+%
+The object \deff{input-as-bytes} reads all the bytes from the provided ``input''
+  and returns them as \deff{bytes}.
+%
+The object \deff{copied} copies all the bytes from an ``input'' to an ``output''
+  and returns the number of bytes copied.
+%
+The objects \deff{dead-input} and \deff{dead-output} are stubs which read from and write to nothing.

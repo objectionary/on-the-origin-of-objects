@@ -1,0 +1,119 @@
+% SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
+% SPDX-License-Identifier: MIT
+
+\section{Structs}\label{sec:structs}
+
+All objects presented in this Section belong to the \ff{ss} package.
+
+The object \deff{list} is a decorator of \deff{tuple} that adds a
+  collection API.
+%
+The attribute \deff{is-empty} is \deff{true} if the length of the tuple is zero.
+%
+The attribute \deff{eq} is \deff{true} if both lists have the same length
+  and each element is equal to the corresponding element of another list.
+%
+The attribute \deff{with} is a new list with a new element
+  appended to the end of it, while \deff{withi} inserts a new element
+  at the \(i\)-th position.
+%
+The attribute \deff{without} is a new list with all elements equal
+  to the given one removed.
+%
+The attribute \deff{each} dataizes a given object for every element.
+%
+The \deff{front} and \deff{back} attributes are the first and the last
+  \(N\) elements, \deff{slice} is a sub-list between two indices, and
+  \deff{shifted} is the list without its first \(N\) elements.
+%
+The \deff{sorted} attribute is a new list with elements sorted using
+  the \deff{lt} attribute of the elements.
+%
+The \deff{concat} attribute is a new list that concatenates
+  the current list with the one provided as an argument.
+
+The functional operations over a list are standalone objects of the
+  \ff{ss} package, each taking the list as its first argument.
+The objects \deff{reduced}, \deff{mapped}, \deff{filtered}, and
+  \deff{eachi} are respectively similar to \ff{reduce()}, \ff{map()},
+  \ff{filter()}, and \ff{forEach()} methods of the \ff{Array} object
+  in JavaScript~\citep{EcmaScript}.
+The ``twin'' objects \deff{reducedi}, \deff{mappedi}, and \deff{filteredi}
+  are semantically the same, but pass an extra \deff{number} index to their
+  function.
+The \deff{contains}, \deff{index-of}, and \deff{last-index-of} objects
+  search a list for an element, while \deff{withouti} is a new list with
+  the \(i\)-th element removed.
+The \deff{bytes-as-array} object represents a sequence of \deff{bytes}
+  as a \deff{tuple} of one-byte sequences.
+For example, this code doubles every element of a list,
+  keeps the ones greater than four,
+  and sums the survivors, resulting in \(14\):
+
+\begin{ffcode}
+ss.reduced
+  ss.filtered
+    ss.mapped
+      ss.list (* 1 2 3 4)
+      x.times 2 > [x]
+    x.gt 4 > [x]
+  0
+  a.plus x > [a x]
+\end{ffcode}
+
+The object \deff{map} is a hash map built from a \deff{tuple} of \deff{map.entry}
+  objects which are pairs \((k, v)\).
+The \deff{map} ensures that all \(k\) are always unique.
+It's expected that each \(k\) is dataizable so it's possible to calculate \deff{hash-code-of} it.
+%
+The \deff{with} attribute is a new map with a pair added or replaced,
+  and \deff{without} is a new map with a key removed.
+%
+The \deff{found} attribute tries to find an object in the map by the given key.
+The returned object has two attributes:
+  \deff{exists} which is \deff{true} if the object was found;
+  and \deff{get} which is the found object or \adeff{error}.
+%
+The \deff{keys} attribute is the \deff{list} of map keys.
+%
+The \deff{values} attribute is the \deff{list} of map values.
+%
+The \deff{size} attribute is the \deff{size} of the map.
+%
+The \deff{has} attribute is \deff{true} if the map contains the given \(key\).
+For example, this code builds a map of two entries
+  and reads the value \(2\) back through its key:
+
+\begin{ffcode}
+ss.map > m
+  *
+    ss.map.entry "one" 1
+    ss.map.entry "two" 2
+(m.found "two").get
+\end{ffcode}
+
+The object \deff{set} is an unordered collection of unique objects,
+  built on top of \deff{map}.
+It's expected that each element is dataizable so it's possible to calculate \deff{hash-code-of} it.
+%
+Its \deff{with} and \deff{without} attributes add and remove an element,
+  \deff{has} checks membership, and \deff{size} is the number of elements.
+
+The object \deff{hash-code-of} is the pseudo-unique floating-point numeric
+  representation of an object.
+It's expected that the given object is dataizable.
+
+The object \deff{range} is a \deff{list} that contains a range of elements.
+It accepts two attributes: \deff{start} and \deff{end}.
+The attribute \deff{start} must be an abstract object that must have an attribute
+  \deff{next} to get the next element and an attribute \deff{lt} to compare with
+  the \deff{end} object.
+Every next element also must have attributes \deff{next} and \deff{lt}.
+The first object in the chain must have a default value.
+
+The object \deff{range-of-numbers} is a \deff{range} of integer numbers
+  from \deff{start} to \deff{end} (soft border) with step = \(1\).
+It accepts two void attributes \deff{start} and \deff{end} which must be integer \deff{number}s.
+If they're not, an \adeff{error} is returned.
+For example, \ff{ss.range-of-numbers 1 10} is the list
+  \ff{* 1 2 3 4 5 6 7 8 9}, since the upper bound is excluded.

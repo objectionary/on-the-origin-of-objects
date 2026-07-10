@@ -1,0 +1,88 @@
+% SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
+% SPDX-License-Identifier: MIT
+
+\section{Texts}\label{sec:strings}
+
+All objects presented in this Section belong to the \ff{tt} package.
+
+The \adeff{sscanf} object encapsulates two \deff{string} objects:
+  a format and a content.
+It behaves like a tuple of scanned data objects.
+For example, this code parses a hexadecimal number from the console:
+
+\begin{ffcode}
+at.
+  tt.sscanf
+    "%x"
+    io.stdin
+  0
+\end{ffcode}
+
+The \adeff{sprintf} object builds a string according to the format
+  provided and compliant with \citet[Chapter 5]{posix}, for example:
+
+\begin{ffcode}
+tt.sprintf *1
+  "Hi, %s! The weight is %0.2f."
+  "Jeff"
+  3.14
+\end{ffcode}
+
+A few more decorators of \deff{string}:
+
+\begin{itemize}
+    \item \deff{trimmed}: removes both leading and trailing spaces
+    \item \deff{trimmed-left}: removes leading spaces
+    \item \deff{trimmed-right}: removes trailing spaces
+    \item \deff{joined}: joins a tuple of strings with this one as a glue
+    \item \deff{chained}: concatenates itself with other strings
+    \item \deff{repeated}: repeats itself a given number of times
+    \item \deff{slice}: takes a piece of itself as another string
+    \item \deff{at}: retrieves the symbol at a given index
+    \item \deff{contains}: checks whether it contains a substring
+    \item \deff{contains-all}: checks whether it contains all given substrings
+    \item \deff{contains-any}: checks whether it contains any given substring
+    \item \deff{starts-with}: checks whether it starts with a substring
+    \item \deff{ends-with}: checks whether it ends with a substring
+    \item \deff{index-of}: finds the first occurrence of a substring
+    \item \deff{last-index-of}: finds the last occurrence of a substring
+    \item \deff{up-cased}: makes it upper case
+    \item \deff{low-cased}: makes it lower case
+    \item \deff{replaced}: finds and replaces a substring
+    \item \deff{split}: breaks it into a tuple of strings
+    \item \deff{nsplit}: breaks it into at most a given number of strings
+    \item \deff{as-number}: converts itself to \deff{number}
+    \item \deff{as-ascii}: reads a single character as its ASCII code
+    \item \deff{is-alpha}: checks whether all characters are letters
+    \item \deff{is-digit}: checks whether all characters are digits
+    \item \deff{is-alphanumeric}: checks whether all characters are letters or digits
+    \item \deff{is-ascii}: checks whether all characters are ASCII
+\end{itemize}
+
+The \deff{string-buffer} object allows building a string incrementally,
+  appending pieces through its \deff{with} attribute.
+For example, this code builds the string \ff{"Hello, Jeff"}
+  and afterwards behaves as a plain \deff{string}:
+
+\begin{ffcode}
+tt.string-buffer "Hello"
+  .with ", "
+  .with "Jeff"
+\end{ffcode}
+
+The \deff{regex} object is an abstraction of a regular expression
+  in Perl-compatible format, with full support of Unicode.
+The \deff{matches} attribute is \deff{true} if the given text
+  matches the pattern.
+The \deff{match} attribute is a matcher over the given text: its
+  \deff{next} attribute is the first matched block, each block exposes
+  \deff{text}, \deff{start}, and \deff{group}, and its own \deff{next}
+  attribute is the following block.
+
+\begin{ffcode}
+tt.regex "/[a-z]+/" > r
+r.match "!hello!world!" > m
+eq.
+  m.next.text
+  "hello"
+\end{ffcode}

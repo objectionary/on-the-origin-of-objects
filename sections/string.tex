@@ -1,0 +1,16 @@
+% SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
+% SPDX-License-Identifier: MIT
+
+\section{String}\label{sec:string}
+
+The \deff{string} object is an abstraction of a piece of
+  Unicode text in UTF-8 encoding, according to \citet{unicode}.
+UTF-8 uses one byte for the first 128 code points,
+  and up to 4 bytes for other characters.
+The text is encapsulated as the \deff{as-bytes} attribute.
+
+The \adeff{slice} attribute takes a piece of a string as another \deff{string}.
+The \deff{length} attribute is a total count of characters in the string.
+
+Strings in other encodings, such as UTF-16 or CP1251,
+  may be implemented through direct manipulations with \deff{bytes}.

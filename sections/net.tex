@@ -1,0 +1,52 @@
+% SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
+% SPDX-License-Identifier: MIT
+
+\section{Net}\label{sec:sockets}
+
+Objects used for both server-side and client-side TCP sockets
+  work in accordance with \citet{posix}.
+All objects presented in this Section belong to the \ff{nk} package.
+
+The \deff{socket} object is an abstraction of a TCP socket.
+The \deff{connect} attribute establishes a connection.
+It accepts an abstract object with one void attribute which is the socket descriptor.
+The socket descriptor has the following attributes:
+
+\begin{itemize}
+    \item \deff{send}: send a message to the socket
+    \item \deff{recv}: receive \(x\) amount of bytes from the socket
+    \item \deff{as-input}: make ``input'' from socket
+    \item \deff{as-output}: make ``output'' from socket
+\end{itemize}
+
+When you dataize \ff{socket.connect}, it creates a new socket,
+  connects to the given IP on the given port, dataizes the provided scope,
+  closes the socket and returns bytes retrieved from scope dataization.
+An \adeff{error} is returned if any of the described steps failed.
+
+This code opens a connection to TCP port 80 of \ff{localhost} and
+  then reads the entire stream as a Unicode string:
+
+\begin{ffcode}
+(nk.socket "127.0.0.1" 80).connect
+  io.tee-input > [s]
+    s.as-input
+    io.console
+\end{ffcode}
+
+The \deff{listen} attribute allows you to listen to incoming connections as a server.
+It accepts an abstract object with one void attribute which is the socket descriptor.
+The current socket descriptor has the same attributes as the descriptor
+  from \ff{socket.connect} and also one extra attribute \deff{accept}.
+This attribute is used to wait for an incoming connection.
+It also accepts an abstract object with one void attribute
+  which is the client socket descriptor, which was connected to your server.
+
+This code emulates a server on TCP port 8080 of \ff{localhost},
+  then it accepts an incoming connection and sends \ff{"Hello, world"} to it:
+
+\begin{ffcode}
+(nk.socket "127.0.0.1" 8080).listen
+  s.accept > [s]
+    client.send "Hello, world" > [client]
+\end{ffcode}

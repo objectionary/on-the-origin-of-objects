@@ -1,0 +1,39 @@
+% SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
+% SPDX-License-Identifier: MIT
+
+\section{Bytes}\label{sec:bytes}
+
+The center of the taxonomy is the \deff{bytes} object,
+  which is an abstraction of a sequence of bytes.
+The sequence can either be empty or contain
+  a theoretically unlimited number of bytes.
+A byte is a unit of information that consists
+  of eight adjacent binary digits (bits), each of which consists of a \ff{0}
+  or \ff{1}.
+In \eolang{} syntax, a sequence of bytes is denoted as either \eohex{---}
+  (double dash) for an empty one or as a concatenation of \eohex{xx-},
+  where \ff{xx} is a hexadecimal representation of a byte.
+For example, the \ff{2A-} is a one-byte sequence,
+  where the only byte equals to the decimal number 42.
+
+The \deff{bytes} objects has a few atom attributes for bitwise operations:
+  \adeff{and},
+  \adeff{or},
+  \adeff{not},
+  and
+  \adeff{right}.
+Also, a few object attributes:
+  \deff{xor}
+  and
+  \deff{left}.
+
+The object also has the \adeff{eq} attribute for byte-by-byte comparing
+  itself with another sequence of bytes.
+
+The \adeff{size} attribute is the total number of bytes in the sequence.
+
+The \adeff{slice} attribute represents a subsequence inside the current one.
+
+The \adeff{concat} attribute is a new sequence,
+  which is a concatenation of two byte sequences:
+  the current and the provided one.

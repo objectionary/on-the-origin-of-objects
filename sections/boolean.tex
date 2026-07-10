@@ -1,0 +1,12 @@
+% SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
+% SPDX-License-Identifier: MIT
+
+\section{Boolean}\label{sec:boolean}
+
+The \deff{bool} object abstracts a boolean value, parameterized by
+  its \deff{if} attribute---an object of two arguments that returns either
+  its first argument (for ``true'') or its second one (for ``false'').
+The two objects \deff{true} and \deff{false} are simply two applications
+  of \deff{bool}, with opposite implementations of \deff{if}.
+
+Every boolean also has \deff{not}, \deff{and}, and \deff{or} attributes.
