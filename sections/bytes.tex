@@ -11,29 +11,23 @@ A byte is a unit of information that consists
   of eight adjacent binary digits (bits), each of which consists of a \ff{0}
   or \ff{1}.
 In \eolang{} syntax, a sequence of bytes is denoted as either \eohex{---}
-  (double dash) for an empty one or as a concatenation of \eohex{xx-},
-  where \ff{xx} is a hexadecimal representation of a byte.
+  (double dash) for an empty one or as a concatenation of \eohex{XX-},
+  where \ff{XX} is a hexadecimal representation of a byte.
 For example, the \ff{2A-} is a one-byte sequence,
   where the only byte equals to the decimal number 42.
 
-The \deff{bytes} objects has a few atom attributes for bitwise operations:
-  \adeff{and},
-  \adeff{or},
-  \adeff{not},
-  and
-  \adeff{right}.
-Also, a few object attributes:
-  \deff{xor}
-  and
-  \deff{left}.
+The \deff{bytes} objects has eight atom attributes:
 
-The object also has the \adeff{eq} attribute for byte-by-byte comparing
-  itself with another sequence of bytes.
+\begin{itemize}
+  \adeff{and} for bit-by-bit disjunction;
+  \adeff{or} for bit-by-bit conjunction;
+  \adeff{not} for bit-by-bit inversion;
+  \adeff{right} for bitwise shift right;
+  \adeff{size} for the total count of bytes in the sequence;
+  \adeff{concat} for concatenating two sequences;
+  \adeff{slice} for taking a piece of a sequence;
+  \adeff{eq} for comparing two byte sequences.
+\end{itemize}
 
-The \adeff{size} attribute is the total number of bytes in the sequence.
-
-The \adeff{slice} attribute represents a subsequence inside the current one.
-
-The \adeff{concat} attribute is a new sequence,
-  which is a concatenation of two byte sequences:
-  the current and the provided one.
+These objects are sufficient building blocks for all other objects,
+  provided they don't need access to external resources.
