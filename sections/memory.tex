@@ -1,7 +1,7 @@
 % SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
 % SPDX-License-Identifier: MIT
 
-\section{Memory}\label{sec:memory}
+\subsection{Memory}\label{sec:memory}
 
 The \deff{malloc} object is an abstraction of a memory management system.
 We use its \adeff{of} atom to allocate a \deff{chunk} of a given size.
@@ -9,10 +9,10 @@ We use its \adeff{of} atom to allocate a \deff{chunk} of a given size.
 The \deff{chunk} behaves like \deff{bytes}, but additionally has four atoms:
 
 \begin{itemize}
-  \adeff{size} to get the size of the chuck in bytes;
-  \adeff{write} to write a few bytes;
-  \adeff{read} to read a few bytes;
-  \adeff{resized} to return a new chunk with same data but new size.
+  \item \adeff{size} to get the size of the chuck in bytes;
+  \item \adeff{write} to write a few bytes;
+  \item \adeff{read} to read a few bytes;
+  \item \adeff{resized} to return a new chunk with same data but new size.
 \end{itemize}
 
 In this example, first, one kilobyte of memory with random data is allocated

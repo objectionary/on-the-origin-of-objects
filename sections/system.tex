@@ -1,12 +1,12 @@
 % SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
 % SPDX-License-Identifier: MIT
 
-\section{System}\label{sec:system}
+\subsection{System}\label{sec:system}
 
 The \adeff{os} represents the name of the current operating system.
 
-The \adeff{posix} object makes a Unix system call by name through the POSIX.
-The \deff{win32} object makes a \ff{kernel32.dll} function call by name.
+The \adeff{posix} atom makes a Unix system call by name through the POSIX.
+The \adeff{win32} atom makes a \ff{kernel32.dll} function call by name.
 They both accept a \deff{tuple} of arguments.
 The call returns an object whose \deff{code} attribute is the numeric
   return code of the syscall and whose \deff{output} attribute is its output.

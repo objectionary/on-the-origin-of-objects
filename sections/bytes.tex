@@ -1,7 +1,7 @@
 % SPDX-FileCopyrightText: Copyright (c) 2024-2026 Yegor Bugayenko
 % SPDX-License-Identifier: MIT
 
-\section{Bytes}\label{sec:bytes}
+\subsection{Bytes}\label{sec:bytes}
 
 The center of the taxonomy is the \deff{bytes} object,
   which is an abstraction of a sequence of bytes.
@@ -19,14 +19,14 @@ For example, the \ff{2A-} is a one-byte sequence,
 The \deff{bytes} objects has eight atom attributes:
 
 \begin{itemize}
-  \adeff{and} for bit-by-bit disjunction;
-  \adeff{or} for bit-by-bit conjunction;
-  \adeff{not} for bit-by-bit inversion;
-  \adeff{right} for bitwise shift right;
-  \adeff{size} for the total count of bytes in the sequence;
-  \adeff{concat} for concatenating two sequences;
-  \adeff{slice} for taking a piece of a sequence;
-  \adeff{eq} for comparing two byte sequences.
+  \item \adeff{and} for bit-by-bit disjunction;
+  \item \adeff{or} for bit-by-bit conjunction;
+  \item \adeff{not} for bit-by-bit inversion;
+  \item \adeff{right} for bitwise shift right;
+  \item \adeff{size} for the total count of bytes in the sequence;
+  \item \adeff{concat} for concatenating two sequences;
+  \item \adeff{slice} for taking a piece of a sequence;
+  \item \adeff{eq} for comparing two byte sequences.
 \end{itemize}
 
 These objects are sufficient building blocks for all other objects,
