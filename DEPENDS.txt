@@ -54,5 +54,6 @@ hard transparent
 hard trimspaces
 hard upquote
 hard url
+hard was
 hard wrapfig
 hard xstring
